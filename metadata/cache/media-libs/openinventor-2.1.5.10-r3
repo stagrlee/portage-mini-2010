@@ -1,0 +1,22 @@
+media-libs/mesa[motif] x11-libs/openmotif >=media-libs/jpeg-6b >=media-libs/freetype-2.0 media-fonts/corefonts dev-util/byacc
+media-libs/mesa[motif] x11-libs/openmotif >=media-libs/jpeg-6b >=media-libs/freetype-2.0 media-fonts/corefonts
+0
+ftp://oss.sgi.com/projects/inventor/download/inventor-2.1.5-10.src.tar.gz
+
+http://oss.sgi.com/projects/inventor/
+LGPL-2
+SGI OpenInventor Toolkit and Utilities
+alpha amd64 sparc x86
+eutils flag-o-matic multilib portability toolchain-funcs versionator
+
+
+
+
+2
+
+compile install prepare
+
+
+
+
+

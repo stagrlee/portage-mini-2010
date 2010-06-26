@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( games-fps/enemy-territory[dedicated] ) opengl? ( || ( games-fps/enemy-territory[opengl] games-fps/enemy-territory[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/enemy-territory[opengl] games-fps/enemy-territory[-dedicated] ) ) )
+0
+http://etpro.anime.net/etpro-3_2_6.zip
+mirror strip
+http://bani.anime.net/etpro/
+as-is
+Enemy Territory ETPro - a series of minor additions to Enemy Territory to make it more fun
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

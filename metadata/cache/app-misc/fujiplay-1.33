@@ -1,0 +1,22 @@
+
+
+0
+http://topo.math.u-psud.fr/~bousch/fujiplay.tgz
+
+http://topo.math.u-psud.fr/~bousch/fujiplay.html
+public-domain
+Utility for Fujifilm/Leica digital cameras (via serial port)
+x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm unpack
+
+
+
+
+

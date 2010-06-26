@@ -1,0 +1,22 @@
+dev-libs/openssl sys-libs/zlib >=sys-devel/bison-2.1
+dev-libs/openssl sys-libs/zlib !>=sys-freebsd/freebsd-ubin-6.2_beta1
+0
+http://mu.org/~mux/csup-snap-20060318.tgz
+
+http://www.mu.org/~mux/csup.html
+BSD
+A rewrite of CVSup
+~amd64 ~ppc ~x86 ~x86-fbsd
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

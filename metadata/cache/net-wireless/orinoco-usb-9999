@@ -1,0 +1,22 @@
+kernel_linux? ( virtual/modutils ) sys-apps/sed kernel_linux? ( virtual/linux-sources ) dev-vcs/subversion net-misc/rsync
+!net-wireless/orinoco-sn net-wireless/wireless-tools net-wireless/orinoco-fwutils kernel_linux? ( virtual/modutils )
+0
+
+
+http://www.nongnu.org/orinoco/
+GPL-2 MPL-1.1
+ORiNOCO IEEE 802.11 wireless LAN driver
+
+eutils linux-info linux-mod multilib portability subversion toolchain-funcs versionator
+kernel_linux
+
+
+
+
+
+compile install postinst postrm preinst setup unpack
+
+
+
+
+

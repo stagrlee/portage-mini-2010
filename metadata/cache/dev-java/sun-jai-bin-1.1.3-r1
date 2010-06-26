@@ -1,0 +1,22 @@
+>=dev-java/java-config-2.1.9-r1
+>=virtual/jre-1.3 >=dev-java/java-config-2.1.9-r1
+0
+!amd64? ( http://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-i586.tar.gz ) amd64? ( http://download.java.net/media/jai/builds/release/1_1_3/jai-1_1_3-lib-linux-amd64.tar.gz )
+mirror
+https://jai.dev.java.net/
+sun-bcla-jai
+JAI is a class library for managing images.
+~amd64
+eutils java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+elibc_FreeBSD
+
+
+
+
+
+compile install postinst preinst setup unpack
+
+
+
+
+

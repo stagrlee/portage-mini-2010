@@ -1,0 +1,22 @@
+
+virtual/cron virtual/qmail
+0
+http://untroubled.org/qmail-notify/archive/qmail-notify-0.93.tar.gz
+
+http://untroubled.org/qmail-notify/
+GPL-2
+Delayed delivery notification for qmail.
+amd64 ~hppa ~ppc sparc x86
+multilib toolchain-funcs
+
+
+
+
+
+
+compile install postinst
+
+
+
+
+

@@ -1,0 +1,22 @@
+dev-python/empy dev-python/imaging >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+dev-python/empy dev-python/imaging >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+http://www.chrisarndt.de/en/software/pylize/download/pylize-1.3b.tar.bz2
+
+http://www.chrisarndt.de/en/software/pylize/
+GPL-2
+Python HTML Slideshow Generator using HTML and CSS
+~amd64 ppc x86
+multilib python toolchain-funcs
+
+
+
+
+3
+
+compile install postinst postrm setup
+
+
+
+
+

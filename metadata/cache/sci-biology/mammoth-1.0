@@ -1,0 +1,22 @@
+|| ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b || ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+
+0
+mammoth-1.0-src.tgz
+fetch
+http://ub.cbm.uam.es/software.php
+mammoth
+MAtching Molecular Models Obtained from THeory
+~x86
+autotools eutils fortran libtool multilib portability toolchain-funcs
+debug
+
+
+
+
+
+install nofetch setup unpack
+
+
+
+
+

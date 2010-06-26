@@ -1,0 +1,22 @@
+!games-board/scid dev-lang/tk tb4? ( app-arch/unzip )
+!games-board/scid dev-lang/tk
+0
+mirror://sourceforge/chessdb/ChessDB-3.6.18.tar.gz tb4? ( mirror://sourceforge/chessdb/4-piece-tablebases.zip )
+
+http://chessdb.sourceforge.net/
+GPL-2
+A free Chess Database
+amd64 x86
+base eutils games multilib portability toolchain-funcs
+tb4
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

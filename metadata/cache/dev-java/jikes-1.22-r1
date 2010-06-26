@@ -1,0 +1,22 @@
+
+
+0
+mirror://sourceforge/jikes/jikes-1.22.tar.bz2
+
+http://jikes.sourceforge.net/
+IBM
+IBM's open source, high performance Java compiler
+alpha amd64 ia64 ppc ppc64 x86
+base eutils flag-o-matic multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

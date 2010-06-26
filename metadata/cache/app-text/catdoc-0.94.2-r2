@@ -1,0 +1,22 @@
+tk? ( >=dev-lang/tk-8.1 ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+tk? ( >=dev-lang/tk-8.1 )
+0
+http://ftp.wagner.pp.ru/pub/catdoc/catdoc-0.94.2.tar.gz
+
+http://www.wagner.pp.ru/~vitus/software/catdoc/
+GPL-2
+A convertor for Microsoft Word, Excel and RTF Files to text
+~amd64 ~ppc ~x86
+autotools eutils libtool multilib portability toolchain-funcs
+tk
+
+
+
+3
+
+compile configure install prepare
+
+
+
+
+

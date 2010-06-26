@@ -1,0 +1,22 @@
+>=dev-python/jaxml-3.01 >=app-admin/eselect-python-20091230 =dev-lang/python-2* >=dev-vcs/git-1.6
+>=dev-python/jaxml-3.01 >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+
+
+http://git.overlays.gentoo.org/gitweb/?p=proj/metagen.git;a=summary
+GPL-2
+metadata.xml generator for ebuilds
+
+distutils eutils git multilib portability python toolchain-funcs
+
+
+
+
+3
+
+compile install postinst postrm prepare test unpack
+
+
+
+
+

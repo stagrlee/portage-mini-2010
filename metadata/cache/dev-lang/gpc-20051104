@@ -1,0 +1,22 @@
+
+
+0
+http://www.math.uni.wroc.pl/~hebisch/gpc/gpc-20051104.tar.bz2 ftp://gcc.gnu.org/pub/gcc/releases/gcc-3.4.5/gcc-core-3.4.5.tar.bz2
+
+http://gnu-pascal.de
+GPL-2
+Gnu Pascal Compiler
+~amd64 ~ppc ~sparc ~x86
+eutils flag-o-matic multilib portability toolchain-funcs versionator
+nls
+
+
+
+
+
+compile install postinst unpack
+
+
+
+
+

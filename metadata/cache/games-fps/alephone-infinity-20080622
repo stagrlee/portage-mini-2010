@@ -1,0 +1,22 @@
+app-arch/unzip
+games-fps/alephone
+0
+http://trilogyrelease.bungie.org/files/MarathonInfinity.zip mirror://gentoo/alephone-infinity.png
+mirror
+http://trilogyrelease.bungie.org/
+bungie-marathon
+Aleph One - Marathon Infinity
+amd64 ~ppc ~ppc64 x86
+base eutils games multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install postinst preinst setup unpack
+
+
+
+
+

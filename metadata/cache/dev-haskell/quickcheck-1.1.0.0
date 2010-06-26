@@ -1,0 +1,22 @@
+>=dev-lang/ghc-6.6 doc? ( dev-haskell/haddock ) >=dev-haskell/cabal-1.2
+>=dev-lang/ghc-6.6 dev-lang/ghc
+1
+http://hackage.haskell.org/packages/archive/QuickCheck/1.1.0.0/QuickCheck-1.1.0.0.tar.gz
+
+http://haskell.org/ghc/
+BSD
+An automatic, specification based testing utility for Haskell programs
+alpha amd64 hppa ia64 ~ppc sparc x86
+base eutils ghc-package haskell-cabal multilib portability toolchain-funcs versionator
+doc profile
+
+
+
+
+
+compile install postinst prerm setup test unpack
+
+
+
+
+

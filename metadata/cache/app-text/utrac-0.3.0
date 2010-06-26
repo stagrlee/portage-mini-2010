@@ -1,0 +1,22 @@
+sys-apps/sed
+
+0
+http://utrac.sourceforge.net/download/utrac-0.3.0.tar.gz
+
+http://utrac.sourceforge.net/
+GPL-2
+Universal Text Recognizer and Converter
+~x86
+
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

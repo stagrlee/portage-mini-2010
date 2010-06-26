@@ -1,0 +1,22 @@
+ssl? ( dev-libs/openssl ) zlib? ( sys-libs/zlib ) postgres? ( dev-db/postgresql-server ) !postgres? ( virtual/mysql ) sys-devel/bison
+ssl? ( dev-libs/openssl ) zlib? ( sys-libs/zlib ) postgres? ( dev-db/postgresql-server ) !postgres? ( virtual/mysql )
+0
+http://mydns.bboy.net/download/mydns-1.1.0.tar.bz2
+
+http://mydns.bboy.net/
+GPL-2
+A DNS-Server which gets its data from mysql-databases
+alpha amd64 ~hppa ia64 ~ppc sparc x86
+eutils multilib portability toolchain-funcs
+debug nls postgres ssl static zlib
+
+
+
+
+
+compile install postinst unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+>=media-libs/libogg-1.0 >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+>=media-libs/libogg-1.0 >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+mirror://gentoo/pyogg-1.3-r1.tar.gz
+
+http://www.andrewchatham.com/pyogg/
+LGPL-2
+Python bindings for the ogg library
+alpha amd64 hppa ia64 ~mips ppc ppc64 sparc x86 ~x86-fbsd
+distutils multilib python toolchain-funcs
+
+
+
+
+3
+
+compile configure install postinst postrm prepare
+
+
+
+
+

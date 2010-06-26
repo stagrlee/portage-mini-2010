@@ -1,0 +1,22 @@
+sys-libs/db >=mail-mta/sendmail-8.9
+sys-libs/db >=mail-mta/sendmail-8.9
+0
+ftp://ftp.cc.umanitoba.ca/src/drac.tar.Z
+
+http://mail.cc.umanitoba.ca/drac/
+as-is
+A robust implementation of POP-before-SMTP
+x86
+eutils multilib portability toolchain-funcs
+debug
+
+
+
+
+
+compile install
+
+
+
+
+

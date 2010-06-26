@@ -1,0 +1,22 @@
+app-text/enscript dev-util/dialog
+app-text/enscript dev-util/dialog
+0
+mirror://sourceforge/pnm2ppa/pnm2ppa-1.12.tar.gz
+
+http://pnm2ppa.sourceforge.net
+GPL-2
+Print driver for Hp Deskjet 710, 712, 720, 722, 820, 1000 series
+~amd64 ~x86
+eutils flag-o-matic multilib portability toolchain-funcs
+
+
+
+
+2
+
+compile install postinst prepare
+
+
+
+
+

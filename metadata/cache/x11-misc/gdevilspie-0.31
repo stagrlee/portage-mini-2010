@@ -1,0 +1,22 @@
+>=dev-python/pygtk-2 dev-python/libwnck-python x11-misc/devilspie >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+>=dev-python/pygtk-2 dev-python/libwnck-python x11-misc/devilspie >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+http://gdevilspie.googlecode.com/files/gdevilspie-0.31.tar.bz2
+
+http://code.google.com/p/gdevilspie/
+GPL-2
+A user friendly interface to the devilspie window matching daemon, to create rules easily.
+~amd64 ~x86
+distutils multilib python toolchain-funcs
+
+
+
+
+2
+
+compile install postinst postrm prepare setup
+
+
+
+
+

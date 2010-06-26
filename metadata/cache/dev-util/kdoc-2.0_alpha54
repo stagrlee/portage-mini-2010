@@ -1,0 +1,22 @@
+dev-lang/perl
+dev-lang/perl
+0
+mirror://gentoo/kdoc-2.0a54.tar.bz2
+test
+http://www.ph.unimelb.edu.au/~ssk/kde/kdoc/
+GPL-2
+C++ and IDL Source Documentation System
+amd64 ppc sparc x86 ~amd64-linux ~x86-linux ~ppc-macos ~sparc-solaris
+
+
+
+
+
+
+
+install
+
+
+
+
+

@@ -1,0 +1,22 @@
+dev-libs/openobex net-wireless/bluez
+dev-libs/openobex net-wireless/bluez
+0
+http://oss.bdit.de/download/opd-v0.2-2003-03-18.tgz
+
+http://oss.bdit.de/opd.html
+as-is
+OBEX Push daemon for BlueZ and IrDA.
+~amd64 x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+2
+
+compile install postinst prepare
+
+
+
+
+

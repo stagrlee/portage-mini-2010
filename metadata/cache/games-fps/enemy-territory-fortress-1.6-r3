@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( games-fps/enemy-territory[dedicated] ) opengl? ( || ( games-fps/enemy-territory[opengl] games-fps/enemy-territory[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/enemy-territory[opengl] games-fps/enemy-territory[-dedicated] ) ) )
+0
+http://liflg.j0ke.net/files/final/etf_1.6-english-5.run
+mirror strip
+http://www.etfgame.com/
+freedist
+Enemy Territory Fortress - a class-based teamplay modification
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

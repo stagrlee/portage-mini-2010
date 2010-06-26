@@ -1,0 +1,22 @@
+dev-libs/ffcall emacs? ( virtual/emacs )
+dev-libs/ffcall emacs? ( virtual/emacs )
+0
+http://www.complang.tuwien.ac.at/forth/gforth/gforth-0.6.2.tar.gz http://www.complang.tuwien.ac.at/forth/gforth/Patches/0.6.2-debug.diff
+
+http://www.gnu.org/software/gforth
+GPL-2
+GNU Forth is a fast and portable implementation of the ANSI Forth language
+~ppc ~x86 ~x86-fbsd
+elisp-common eutils flag-o-matic multilib portability toolchain-funcs
+emacs force-reg
+
+
+
+
+
+compile install postinst postrm setup unpack
+
+
+
+
+

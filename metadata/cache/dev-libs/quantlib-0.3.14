@@ -1,0 +1,22 @@
+sys-devel/libtool emacs? ( virtual/emacs ) doc? ( app-doc/doxygen ) dev-libs/boost || ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+dev-libs/boost
+0
+mirror://sourceforge/quantlib/QuantLib-0.3.14.tar.gz
+
+http://www.quantlib.org
+BSD
+A comprehensive software framework for quantitative finance
+~alpha ~amd64 ~ppc ~sparc ~x86
+autotools eutils libtool multilib portability toolchain-funcs
+doc emacs examples
+
+
+
+
+
+compile install unpack
+
+
+
+
+

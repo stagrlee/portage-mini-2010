@@ -1,0 +1,22 @@
+berkdb? ( >=sys-libs/db-3.2 ) gif? ( media-libs/giflib ) jpeg? ( media-libs/jpeg:0 ) png? ( media-libs/libpng )
+berkdb? ( >=sys-libs/db-3.2 ) gif? ( media-libs/giflib ) jpeg? ( media-libs/jpeg:0 ) png? ( media-libs/libpng )
+0
+mirror://sourceforge/spamprobe/spamprobe-1.4d.tar.gz
+
+http://spamprobe.sourceforge.net/
+QPL
+Fast, intelligent, automatic spam detector using Bayesian analysis.
+amd64 ~ppc x86
+eutils multilib portability toolchain-funcs
+berkdb gif jpeg png
+
+
+
+2
+
+configure install prepare
+
+
+
+
+

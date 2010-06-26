@@ -1,0 +1,22 @@
+>=dev-vcs/git-1.6
+
+0
+
+
+http://sparse.wiki.kernel.org/index.php/Main_Page
+OSL-1.1
+C semantic parser
+
+eutils flag-o-matic git multilib portability toolchain-funcs
+
+
+
+
+2
+
+compile configure install prepare unpack
+
+
+
+
+

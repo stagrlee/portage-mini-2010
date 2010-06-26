@@ -1,0 +1,22 @@
+app-arch/unzip >=dev-java/java-config-2.1.9-r1
+>=virtual/jre-1.4 >=dev-java/java-config-2.1.9-r1
+0
+amd64? ( http://download.java.net/media/java3d/builds/stable/1_4_0-build5/java3d-1_4_0-build5-linux-amd64.zip ) x86? ( http://download.java.net/media/java3d/builds/stable/1_4_0-build5/java3d-1_4_0-build5-linux-i586.zip )
+
+https://j3d-core.dev.java.net/
+sun-jrl sun-jdl
+Sun Java3D API Core
+~amd64 ~x86 -*
+eutils java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+elibc_FreeBSD
+
+
+
+
+
+compile install postinst preinst setup unpack
+
+
+
+
+

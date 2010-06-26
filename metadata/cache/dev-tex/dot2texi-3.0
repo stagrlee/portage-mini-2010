@@ -1,0 +1,22 @@
+app-arch/unzip virtual/latex-base >=sys-apps/texinfo-4.2-r5
+pstricks? ( dev-texlive/texlive-pstricks ) pgf? ( dev-tex/pgf ) dev-texlive/texlive-latexrecommended dev-texlive/texlive-latexextra >=dev-tex/dot2tex-2.7.0 virtual/latex-base
+0
+mirror://gentoo/dot2texi-3.0.zip
+
+http://www.ctan.org/tex-archive/help/Catalogue/entries/dot2texi.html
+GPL-2
+Create graphs within LaTeX using the dot2tex tool
+~amd64 ~x86
+base eutils latex-package multilib portability toolchain-funcs
+pgf pstricks examples
+
+
+
+
+
+compile install postinst postrm unpack
+
+
+
+
+

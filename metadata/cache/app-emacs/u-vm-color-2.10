@@ -1,0 +1,22 @@
+app-emacs/vm >=virtual/emacs-21
+app-emacs/vm >=virtual/emacs-21
+0
+mirror://gentoo/u-vm-color-2.10.el.bz2
+
+http://ulf.epplejasper.de/EmacsVM.html
+GPL-2
+Color schemes for VM
+amd64 ppc x86
+elisp elisp-common eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm setup unpack
+
+
+
+
+

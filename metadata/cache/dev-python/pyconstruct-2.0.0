@@ -1,0 +1,22 @@
+app-arch/unzip >=app-admin/eselect-python-20091230 || ( =dev-lang/python-2.7* =dev-lang/python-2.6* =dev-lang/python-2.5* )
+>=app-admin/eselect-python-20091230 || ( =dev-lang/python-2.7* =dev-lang/python-2.6* =dev-lang/python-2.5* )
+0
+mirror://sourceforge/pyconstruct/construct-2.00-distro.zip
+
+http://construct.wikispaces.com/ http://pypi.python.org/pypi/construct
+public-domain
+Library for constructing (parsing and building) of binary and textual data structures
+~amd64
+multilib python toolchain-funcs
+
+
+
+
+3
+
+install postinst postrm
+
+
+
+
+

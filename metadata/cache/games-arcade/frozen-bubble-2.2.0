@@ -1,0 +1,22 @@
+>=dev-lang/perl-5.6.1 >=media-libs/sdl-mixer-1.2.3[mikmod,vorbis] media-libs/sdl-pango media-libs/sdl-image[gif,png] dev-perl/sdl-perl dev-perl/Locale-gettext sys-devel/autoconf >=sys-apps/sed-4 dev-lang/perl[-build]
+>=dev-lang/perl-5.6.1 >=media-libs/sdl-mixer-1.2.3[mikmod,vorbis] media-libs/sdl-pango media-libs/sdl-image[gif,png] dev-perl/sdl-perl dev-perl/Locale-gettext dev-lang/perl[-build]
+0
+http://www.frozen-bubble.org/data/frozen-bubble-2.2.0.tar.bz2
+
+http://www.frozen-bubble.org/
+GPL-2
+A Puzzle Bubble clone written in perl (now with network support)
+alpha amd64 hppa ia64 ppc sparc x86
+base eutils games gnome2-utils multilib perl-module portability toolchain-funcs
+
+
+
+
+2
+
+compile configure install postinst postrm preinst prepare setup test unpack
+
+
+
+
+

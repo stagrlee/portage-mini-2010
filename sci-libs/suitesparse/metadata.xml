@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>sci</herd>
+<longdescription lang="en">
+  SuiteSparse is a suite of sparse matrix libraries from University of
+  Florida Computer Science Department. Currently, this includes:
+    * AMD: symmetric approximate minimum degree
+    * BTF: permutation to block triangular form
+    * CAMD: symmetric approximate minimum degree
+    * CCOLAMD: constrained column approximate minimum degree
+    * COLAMD: column approximate minimum degree
+    * CHOLMOD: sparse supernodal Cholesky factorization and update/downdate
+    * CSparse: a concise sparse matrix package
+    * CXSparse: an extended version of CSparse
+    * KLU: sparse LU factorization, for circuit simulation
+    * LDL: a simple LDL^T factorization
+    * SPQR: multifrontal sparse QT factorization
+    * UMFPACK: sparse multifrontal LU factorization
+    * UFconfig: common configuration for all but CSparse
+  The Gentoo package does not include the suitesparse MATLAB tools from
+  upstream, from the packages above and the following MATLAB-only packages:
+    * RBio: MATLAB toolbox for reading/writing sparse matrices
+    * LINFACTOR: solve Ax=b using LU or CHOL
+    * MESHND: 2D and 3D mesh generation and nested dissection
+    * SSMULT: sparse matrix times sparse matrix 
+</longdescription>
+<use>
+  <flag name='metis'>
+    Use METIS (<pkg>sci-libs/metis</pkg>
+    or <pkg>sci-libs/parmetis</pkg>) for partitioning
+  </flag>
+</use>
+</pkgmetadata>

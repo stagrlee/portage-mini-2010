@@ -1,0 +1,22 @@
+xattr? ( sys-apps/acl ) >=dev-vcs/git-1.6
+!sys-fs/mtd dev-libs/lzo sys-libs/zlib >=sys-apps/util-linux-2.16
+0
+
+
+http://git.infradead.org/?p=mtd-utils.git;a=summary
+GPL-2
+MTD userspace tools
+
+eutils git multilib portability toolchain-funcs
+xattr
+
+
+
+
+
+compile install unpack
+
+
+
+
+

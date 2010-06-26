@@ -1,0 +1,22 @@
+games-util/loki_patch
+sys-libs/glibc x11-libs/libX11 x11-libs/libXext x11-libs/libXau x11-libs/libXdmcp !ppc? ( sys-libs/lib-compat-loki ) media-libs/libsdl media-libs/sdl-ttf media-libs/sdl-mixer media-libs/smpeg media-libs/freetype sys-libs/zlib
+0
+x86? ( mirror://lokigames/smac/smac-6.0a-x86.run ) amd64? ( mirror://lokigames/smac/smac-6.0a-x86.run ) ppc? ( http://mirrors.dotsrc.org/lokigames/installers/smac/smac-install-ppc.run )
+strip
+http://www.lokigames.com/products/smac/
+LOKI-EULA
+Linux port of the popular strategy game from Firaxis
+~amd64 ~ppc ~x86
+base eutils games multilib portability toolchain-funcs
++videos
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

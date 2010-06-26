@@ -1,0 +1,22 @@
+
+virtual/opengl
+0
+http://demos.linuxgamepublishing.com/mindrover/mindrover_demo.run
+strip
+http://www.linuxgamepublishing.com/info.php?id=9
+as-is
+Control a robot as it races across Europa
+x86
+base eutils games multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install postinst preinst setup unpack
+
+
+
+
+

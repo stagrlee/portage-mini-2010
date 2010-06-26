@@ -1,0 +1,22 @@
+>=sys-apps/sed-4 >=app-admin/eselect-python-20091230 dev-lang/python
+dev-python/pycrypto gtk? ( >=dev-python/pygtk-2 ) >=app-admin/eselect-python-20091230 dev-lang/python
+0
+mirror://sourceforge/kedpm/kedpm-0.4.0.tar.gz
+
+http://kedpm.sourceforge.net/
+GPL-2
+Ked Password Manager helps to manage large amounts of passwords and related information
+x86 ppc amd64
+distutils eutils multilib portability python toolchain-funcs
+gtk
+
+
+
+
+
+compile install postinst postrm test unpack
+
+
+
+
+

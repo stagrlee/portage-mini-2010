@@ -1,0 +1,22 @@
+
+
+0
+http://www.linuxant.com/drivers/dgc/archive/dgcmodem-1.07/dgcmodem-1.07.tar.gz
+
+http://www.linuxant.com/drivers/dgc/
+GPL-2
+Driver for Connexant DGC modems
+~x86
+linux-info multilib toolchain-funcs versionator
+
+
+
+
+
+
+compile config install postinst prerm setup
+
+
+
+
+

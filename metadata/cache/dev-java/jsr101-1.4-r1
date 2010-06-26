@@ -1,0 +1,22 @@
+>=virtual/jdk-1.5 java-virtuals/servlet-api:2.5 java-virtuals/saaj-api >=dev-java/java-config-2.1.9-r1 >=sys-apps/portage-2.1.2.7
+>=virtual/jre-1.5 java-virtuals/servlet-api:2.5 java-virtuals/saaj-api >=dev-java/java-config-2.1.9-r1 >=sys-apps/portage-2.1.2.7
+0
+mirror://apache/ws/axis/1_4/axis-src-1_4.tar.gz
+
+http://jcp.org/aboutJava/communityprocess/first/jsr101/
+Apache-2.0
+Java(TM) API for XML-Based RPC Specification Interface Classes
+amd64 ~ppc x86 ~x86-fbsd
+eutils java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+elibc_FreeBSD
+
+
+
+1
+
+compile install preinst setup
+
+
+
+
+

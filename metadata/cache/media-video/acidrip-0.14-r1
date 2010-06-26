@@ -1,0 +1,22 @@
+dev-lang/perl dev-perl/gtk2-perl >=media-video/lsdvd-0.10 media-video/mplayer[encode] encode? ( >=media-sound/lame-3.92 ) dev-lang/perl[-build]
+dev-lang/perl dev-perl/gtk2-perl >=media-video/lsdvd-0.10 media-video/mplayer[encode] encode? ( >=media-sound/lame-3.92 ) dev-lang/perl[-build]
+0
+mirror://gentoo/acidrip-0.14.tar.gz
+mirror
+http://untrepid.com/acidrip/
+GPL-2
+A gtk-perl mplayer/mencoder frontend for ripping DVDs
+amd64 ~ppc x86
+base eutils multilib perl-app perl-module portability toolchain-funcs
+encode
+
+
+
+2
+
+compile configure install prepare test unpack
+
+
+
+
+

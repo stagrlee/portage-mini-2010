@@ -1,0 +1,22 @@
+>=dev-vcs/git-1.6
+
+0
+
+
+http://savannah.gnu.org/projects/config
+GPL-2
+Updated config.sub and config.guess file from GNU
+
+eutils git multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

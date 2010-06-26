@@ -1,0 +1,22 @@
+sdl? ( media-libs/libsdl ) !x11-libs/tslib
+sdl? ( media-libs/libsdl ) !x11-libs/tslib
+0
+mirror://gentoo/joystick-20060731.tar.bz2
+
+http://atrey.karlin.mff.cuni.cz/~vojtech/input/
+GPL-2
+joystick testing utilities
+~amd64 ~ppc x86
+eutils multilib portability toolchain-funcs
+sdl
+
+
+
+2
+
+compile install prepare
+
+
+
+
+

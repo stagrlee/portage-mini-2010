@@ -1,0 +1,22 @@
+=dev-lang/ruby-1.8* >=dev-libs/geoip-1.2.1 virtual/ruby
+=dev-lang/ruby-1.8* >=dev-libs/geoip-1.2.1 virtual/ruby
+0
+http://www.rubynet.org/modules/net/geoip/net-geoip-0.06.tar.gz
+
+http://www.maxmind.com/app/ruby
+BSD
+Ruby bindings for the GeoIP library
+amd64 ia64 ppc ~ppc64 x86
+eutils multilib portability ruby toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

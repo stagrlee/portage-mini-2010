@@ -1,0 +1,22 @@
+>=sys-libs/ncurses-5.2-r5 X? ( x11-libs/libXaw x11-libs/libXpm x11-libs/libXt ) X? ( x11-proto/xproto x11-apps/bdftopcf x11-apps/mkfontdir )
+>=sys-libs/ncurses-5.2-r5 X? ( x11-libs/libXaw x11-libs/libXpm x11-libs/libXt )
+0
+mirror://sourceforge/nethack/nethack-343-src.tgz
+
+http://www.nethack.org/
+nethack
+The ultimate old-school single player dungeon exploration game
+amd64 hppa ppc sparc x86 ~x86-fbsd
+base eutils flag-o-matic games multilib portability toolchain-funcs
+X
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

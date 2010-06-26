@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>net-mail</herd>
+<maintainer>
+  <email>mrness@gentoo.org</email>
+  <name>Alin Nastac</name>
+</maintainer>
+<longdescription>A statistical-algorithmic hybrid anti-spam filter</longdescription>
+<use>
+	<flag name='daemon'>
+		Enable support for DSPAM to run in --daemon mode
+	</flag>
+	<flag name='debug'>
+		Enable debugging support (don't enable this unless something needs testing!)
+	</flag>
+	<flag name='debug-bnr'>
+		Activates debugging output for Bayesian Noise Reduction
+	</flag>
+	<flag name='debug-verbose'>
+		Cause DSPAM produce verbose debug output and write them into LOGDIR/dspam.debug file.
+		Never enable this for production builds!
+	</flag>
+	<flag name='large-domain'>
+		Builds for large domain rather than for domain scale
+	</flag>
+	<flag name='user-homedirs'>
+		uild with user homedir support
+	</flag>
+	<flag name='virtual-users'>
+		Build with virtual-users support
+	</flag>
+</use>
+</pkgmetadata>

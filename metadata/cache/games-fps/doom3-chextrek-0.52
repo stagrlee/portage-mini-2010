@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( games-fps/doom3[dedicated] ) opengl? ( || ( games-fps/doom3[opengl] games-fps/doom3[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/doom3[opengl] games-fps/doom3[-dedicated] ) ) )
+0
+chextrek_beta_052.zip
+fetch
+http://doom3.filefront.com/file/Chex_Trek_Beyond_the_Quest;82325
+as-is
+Doom 3 Chex Trek: Beyond the Quest - Green slimeballs mod for kids
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install nofetch postinst preinst prepare setup unpack
+
+
+
+
+

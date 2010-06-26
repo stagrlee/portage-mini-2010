@@ -1,0 +1,22 @@
+
+|| ( ~dev-lang/perl-5.10.1 ~perl-core/Module-Load-0.16 )
+0
+
+
+
+
+runtime require of both modules and files
+~amd64 ~ppc ~x86
+
+
+
+
+
+
+
+-
+
+
+
+
+

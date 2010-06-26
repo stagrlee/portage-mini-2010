@@ -1,0 +1,22 @@
+x11-libs/libX11 xft? ( x11-libs/libXft ) x11-proto/xproto
+x11-libs/libX11 xft? ( x11-libs/libXft )
+0
+http://xvnkb.sourceforge.net/xvnkb-0.2.9a.tar.bz2
+
+http://xvnkb.sourceforge.net/
+GPL-2
+Vietnamese input keyboard for X
+~amd64 ~ppc ~x86
+eutils multilib portability toolchain-funcs
+spell xft
+
+
+
+
+
+compile install postinst
+
+
+
+
+

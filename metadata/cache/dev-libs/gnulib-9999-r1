@@ -1,0 +1,22 @@
+>=dev-vcs/git-1.6
+
+0
+
+
+http://www.gnu.org/software/gnulib
+GPL-2
+Gnulib is a library of common routines intended to be shared at the source level.
+
+eutils git multilib portability toolchain-funcs
+doc
+
+
+
+
+
+compile install unpack
+
+
+
+
+

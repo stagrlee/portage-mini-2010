@@ -1,0 +1,22 @@
+media-libs/sdl-mixer >=dev-libs/libbulletml-0.0.3 virtual/opengl
+media-libs/sdl-mixer >=dev-libs/libbulletml-0.0.3 virtual/opengl
+0
+mirror://sourceforge/noiz2sa/noiz2sa-0.51a.tar.gz
+
+http://www.asahi-net.or.jp/~cs8k-cyu/windows/noiz2sa_e.html http://sourceforge.net/projects/noiz2sa/
+BSD
+Abstract Shooting Game
+amd64 ~ppc x86
+base eutils games multilib portability toolchain-funcs
+
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

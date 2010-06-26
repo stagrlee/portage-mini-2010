@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>freedesktop</herd>
+<use>
+  <flag name='applet'>Build tracker monitor applet</flag>
+  <flag name='gsf'>Enable <pkg>gnome-extra/libgsf</pkg> based data extractor
+  </flag>
+  <flag name="iptc">Enable extraction of IPTC data from pictures</flag>
+  <flag name="kmail">Build kmail data miner</flag>
+  <flag name="laptop">Make tracker power management aware</flag>
+  <flag name="nautilus">Enable tracker to integrate with
+    <pkg>gnome-base/nautilus</pkg> by providing entries in its context menu
+  </flag>
+  <flag name="playlist">Add support for playlists</flag>
+  <flag name="strigi">Add support for <pkg>app-misc/strigi</pkg> search
+  engine.</flag>
+</use>
+</pkgmetadata>

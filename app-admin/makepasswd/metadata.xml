@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<herd>no-herd</herd>
+	<longdescription lang="en">
+		A random password generator, for all your secure password needs.
+	</longdescription>
+	<maintainer>
+		<email>hwoarang@gentoo.org</email>
+		<name>Markos Chandras</name>
+		<description>Proxy maintainer</description>
+	</maintainer>
+	<maintainer>
+		<email>gentoo@xmw.de</email>
+		<name>Michael Weber</name>
+		<description>Maintainer</description>
+	</maintainer>
+</pkgmetadata>

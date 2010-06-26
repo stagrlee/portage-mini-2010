@@ -1,0 +1,22 @@
+
+
+0
+http://www.coldsync.org/download/coldsync-2.2.5.tar.gz
+
+http://www.coldsync.org/
+Artistic
+A command-line tool to synchronize PalmOS PDAs with Unix workstations
+~ppc sparc x86
+eutils multilib portability toolchain-funcs
+nls perl
+
+
+
+
+
+compile install unpack
+
+
+
+
+

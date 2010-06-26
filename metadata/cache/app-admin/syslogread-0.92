@@ -1,0 +1,22 @@
+>=dev-libs/bglibs-1.106
+sys-process/daemontools
+0
+http://untroubled.org/syslogread/archive/syslogread-0.92.tar.gz
+
+http://untroubled.org/syslogread/
+GPL-2
+Syslog message handling tools
+~x86
+eutils multilib portability toolchain-funcs
+
+
+
+virtual/logger
+2
+
+config configure install postinst prepare setup
+
+
+
+
+

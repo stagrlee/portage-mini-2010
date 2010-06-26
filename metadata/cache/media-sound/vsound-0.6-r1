@@ -1,0 +1,22 @@
+>=media-sound/sox-14.2.0
+>=media-sound/sox-14.2.0
+0
+http://www.vsound.org/vsound-0.6.tar.gz
+
+http://www.vsound.org/
+GPL-2
+A virtual audio loopback cable
+amd64 ~ppc sparc x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+2
+
+install postinst prepare
+
+
+
+
+

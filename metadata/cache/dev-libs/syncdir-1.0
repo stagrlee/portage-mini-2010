@@ -1,0 +1,22 @@
+
+
+0
+http://untroubled.org/syncdir/syncdir-1.0.tar.gz
+
+http://untroubled.org/syncdir
+GPL-2
+Provides an alternate implementation for open, link, rename, and unlink
+x86 sparc
+multilib toolchain-funcs
+
+
+
+
+
+
+compile install
+
+
+
+
+

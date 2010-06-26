@@ -1,0 +1,22 @@
+>=virtual/jdk-1.4 =dev-java/jgoodies-looks-1.2* app-arch/unzip >=dev-java/java-config-2.1.9-r1
+>=virtual/jre-1.4 =dev-java/jgoodies-looks-1.2* >=dev-java/java-config-2.1.9-r1
+0
+mirror://sourceforge/opcion/Opcion_v1.1.1_src.zip
+
+http://opcion.sourceforge.net/
+GPL-2
+Free font viewer written in Java
+amd64 ppc x86
+eutils java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+elibc_FreeBSD
+
+
+
+
+
+compile install preinst setup unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+>=mail-filter/dspam-3.8.0[-user-homedirs] dev-perl/GD[png] dev-perl/GD-Graph3d dev-perl/GDGraph dev-perl/GDTextUtil >=app-admin/webapp-config-1.50.15 || ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+>=mail-filter/dspam-3.8.0[-user-homedirs] dev-perl/GD[png] dev-perl/GD-Graph3d dev-perl/GDGraph dev-perl/GDTextUtil >=app-admin/webapp-config-1.50.15
+3.8.0-r1
+http://dspam.nuclearelephant.com/sources/dspam-3.8.0.tar.gz mirror://gentoo/dspam-3.8.0-patches-20071231.tar.gz
+
+http://dspam.nuclearelephant.com/
+GPL-2
+Web based administration and user controls for dspam
+~amd64 ~ppc sparc x86
+autotools eutils libtool multilib portability toolchain-funcs webapp
+vhosts
+
+
+
+2
+
+compile configure install postinst prepare prerm setup
+
+
+
+
+

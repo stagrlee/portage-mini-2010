@@ -1,0 +1,22 @@
+dev-python/imaging media-libs/opencv >=app-admin/eselect-python-20091230 dev-lang/python
+dev-python/imaging media-libs/opencv >=app-admin/eselect-python-20091230 dev-lang/python
+0
+http://www.pedemonte.eu/pyqr/files/PyQrcodec_Linux.tar.gz
+
+http://www.pedemonte.eu/pyqr/index.py/pyqrhome
+LGPL-2.1
+PyQrCodec is a Python module for encoding and decoding QrCode images.
+~amd64 ~x86
+distutils multilib python toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm unpack
+
+
+
+
+

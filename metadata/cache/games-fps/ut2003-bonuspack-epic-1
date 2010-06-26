@@ -1,0 +1,22 @@
+app-arch/unzip
+games-fps/ut2003
+1
+UT2003-epicbonuspackone.exe
+fetch strip
+http://www.unrealtournament2003.com/
+ut2003
+Epic Bonus Pack for UT2003
+x86
+base eutils games multilib portability toolchain-funcs
+
+
+
+
+
+
+compile config install nofetch postinst preinst setup unpack
+
+
+
+
+

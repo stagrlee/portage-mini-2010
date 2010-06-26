@@ -1,0 +1,22 @@
+sys-devel/flex
+
+0
+http://www.striker.ottawa.on.ca/~aland/pscan/pscan.tar.gz
+test
+http://www.striker.ottawa.on.ca/~aland/pscan/
+GPL-2
+A limited problem scanner for C source files
+~amd64 ppc x86
+multilib toolchain-funcs
+
+
+
+
+
+
+compile install
+
+
+
+
+

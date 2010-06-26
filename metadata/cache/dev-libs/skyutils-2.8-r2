@@ -1,0 +1,22 @@
+ssl? ( dev-libs/openssl ) || ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+ssl? ( dev-libs/openssl )
+0
+mirror://gentoo/skyutils-2.8.tar.gz
+
+None available
+GPL-2
+Library of assorted C utility functions.
+amd64 ppc ~ppc64 ~sparc x86
+autotools eutils flag-o-matic libtool multilib portability toolchain-funcs
+ssl
+
+
+
+
+
+compile install unpack
+
+
+
+
+

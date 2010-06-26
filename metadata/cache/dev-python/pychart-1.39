@@ -1,0 +1,22 @@
+app-text/ghostscript-gpl >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+app-text/ghostscript-gpl >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+http://download.gna.org/pychart/PyChart-1.39.tar.gz doc? ( http://download.gna.org/pychart/pychart-doc.tar.gz )
+
+http://home.gna.org/pychart/
+GPL-2
+Python library for creating charts
+amd64 ~ia64 ~ppc x86
+distutils multilib python toolchain-funcs
+doc examples
+
+
+
+3
+
+compile install postinst postrm prepare
+
+
+
+
+

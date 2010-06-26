@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( games-fps/doom3[dedicated] ) opengl? ( || ( games-fps/doom3[opengl] games-fps/doom3[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/doom3[opengl] games-fps/doom3[-dedicated] ) ) )
+0
+http://ducttape.glenmurphy.com/ducttape0006.zip
+mirror strip
+http://ducttape.glenmurphy.com/
+as-is
+Doom 3 Duct Tape - sticks flashlights to your machinegun and shotgun
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

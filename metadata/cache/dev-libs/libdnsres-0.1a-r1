@@ -1,0 +1,22 @@
+dev-libs/libevent =sys-devel/automake-1.8* >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+dev-libs/libevent
+0
+http://www.monkey.org/~provos/libdnsres-0.1a.tar.gz
+
+http://www.monkey.org/~provos/libdnsres/
+|| ( as-is BSD )
+A non-blocking DNS resolver library
+amd64 ~ppc sparc x86
+autotools eutils libtool multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

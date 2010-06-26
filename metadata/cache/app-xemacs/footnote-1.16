@@ -1,0 +1,22 @@
+app-editors/xemacs
+app-xemacs/mail-lib app-xemacs/xemacs-base
+0
+http://ftp.xemacs.org/pub/xemacs/packages/footnote-1.16-pkg.tar.gz
+
+http://xemacs.org/
+GPL-2
+Footnoting in mail message editing modes.
+alpha amd64 ppc ppc64 sparc x86
+xemacs-packages
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

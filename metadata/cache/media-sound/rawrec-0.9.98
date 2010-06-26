@@ -1,0 +1,22 @@
+
+
+0
+mirror://sourceforge/rawrec/rawrec-0.9.98.tar.gz
+
+http://rawrec.sourceforge.net/
+GPL-2
+CLI program to play and record audiofiles.
+alpha amd64 ppc ppc64 sparc x86
+eutils flag-o-matic multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

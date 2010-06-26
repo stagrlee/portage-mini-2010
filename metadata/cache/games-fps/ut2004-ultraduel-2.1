@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( || ( games-server/ut2004-ded games-fps/ut2004[dedicated] ) ) opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) )
+0
+http://blitz.unrealplayground.com/downloads/1on1-Ultra-Duel-2K4.zip http://blitz.unrealplayground.com/downloads/1on1-Ultra-Duel-2K4_Patch21.zip
+mirror strip
+http://blitz.unrealplayground.com/ultraduel/
+freedist
+UT2004 Ultra Duel - Improved 1-on-1 deathmatch bot AI
+~amd64 ~x86
+base eutils games games-mods multilib portability toolchain-funcs versionator
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

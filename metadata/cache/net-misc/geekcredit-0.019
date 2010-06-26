@@ -1,0 +1,22 @@
+virtual/python app-crypt/gnupg >=app-admin/eselect-python-20091230
+virtual/python app-crypt/gnupg >=app-admin/eselect-python-20091230
+0
+http://download.gna.org/geekcredit/gc-0.019.tgz
+
+http://home.gna.org/geekcredit/
+GPL-2
+Digital complementary currency for internet.
+x86 ~ppc
+multilib python toolchain-funcs
+
+
+
+
+
+
+compile install postinst
+
+
+
+
+

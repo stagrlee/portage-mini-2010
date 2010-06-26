@@ -1,0 +1,22 @@
+opengl? ( virtual/opengl media-libs/openal media-libs/libsdl[joystick] ) !dedicated? ( virtual/opengl media-libs/openal media-libs/libsdl[joystick] ) dev-vcs/subversion net-misc/rsync
+opengl? ( virtual/opengl media-libs/openal media-libs/libsdl[joystick] ) !dedicated? ( virtual/opengl media-libs/openal media-libs/libsdl[joystick] ) games-fps/quake3-data teamarena? ( games-fps/quake3-teamarena )
+0
+
+
+http://ioquake3.org/
+GPL-2
+Quake III Arena - 3rd installment of the classic id 3D first-person shooter
+
+base eutils flag-o-matic games multilib portability subversion toolchain-funcs
+dedicated opengl teamarena
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

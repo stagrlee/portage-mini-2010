@@ -1,0 +1,22 @@
+>=gnustep-base/gnustep-make-2.0 virtual/gnustep-back
+>=gnustep-base/gnustep-make-2.0 virtual/gnustep-back debug? ( >=sys-devel/gdb-6.0 )
+0
+http://www.gnustep.it/enrico/gworkspace/gworkspace-0.8.3.tar.gz
+
+http://www.gnustep.it/enrico/gworkspace/
+GPL-2
+A clipboard for GNUstep that can hold things for later copy and paste.
+amd64 ppc x86
+eutils flag-o-matic gnustep-2 gnustep-base multilib portability toolchain-funcs
+debug doc
+
+
+
+
+
+compile install postinst setup unpack
+
+
+
+
+

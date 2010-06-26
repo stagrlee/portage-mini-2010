@@ -1,0 +1,22 @@
+!<net-wireless/linux-wlan-ng-0.2.2 kernel_linux? ( virtual/modutils ) sys-apps/sed kernel_linux? ( virtual/linux-sources )
+!<net-wireless/linux-wlan-ng-0.2.2 kernel_linux? ( virtual/modutils )
+0
+ftp://ftp.linux-wlan.org/pub/linux-wlan-ng/linux-wlan-ng-0.2.8.tar.bz2
+
+http://linux-wlan.org
+|| ( GPL-2 MPL-1.1 )
+Kernel modules for Prism2/2.5/3 based 802.11b USB wireless LAN products
+~amd64 ~ppc ~x86
+eutils linux-info linux-mod multilib portability toolchain-funcs versionator
+debug kernel_linux
+
+
+
+
+
+compile install postinst postrm preinst setup unpack
+
+
+
+
+

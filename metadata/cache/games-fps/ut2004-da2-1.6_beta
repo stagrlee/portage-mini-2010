@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( || ( games-server/ut2004-ded games-fps/ut2004[dedicated] ) ) opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) )
+0
+mirror://liflg/defence.alliance2_1.6beta-english.run
+mirror strip
+http://www.planetunreal.com/da/2/
+free-noncomm
+UT2004 Defence Alliance 2 - assault mod with improved bot AI
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+>=virtual/jdk-1.4 app-arch/unzip >=dev-java/java-config-2.1.9-r1
+>=virtual/jre-1.4 >=dev-java/java-config-2.1.9-r1
+0
+jmx-1_2_1-ri.zip
+fetch
+http://java.sun.com/products/JavaManagement/index.jsp
+sun-bcla-jmx
+Java Management Extensions for managing and monitoring devices, applications, and services.
+amd64 ppc ppc64 x86 ~x86-freebsd ~amd64-linux ~x86-linux ~x86-macos
+eutils java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+elibc_FreeBSD doc examples
+
+
+
+
+
+compile install nofetch preinst setup
+
+
+
+
+

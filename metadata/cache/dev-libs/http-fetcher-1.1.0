@@ -1,0 +1,22 @@
+
+
+0
+mirror://sourceforge/http-fetcher/http_fetcher-1.1.0.tar.gz
+
+http://http-fetcher.sourceforge.net/
+LGPL-2.1
+small, robust, flexible library for downloading files via HTTP using the GET method
+alpha amd64 ppc x86
+
+debug
+
+
+
+
+
+compile install unpack
+
+
+
+
+

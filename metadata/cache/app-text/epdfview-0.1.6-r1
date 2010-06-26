@@ -1,0 +1,22 @@
+>=app-text/poppler-0.12.3-r3[cairo] >=x11-libs/gtk+-2.6:2 cups? ( >=net-print/cups-1.1 ) >=dev-util/pkgconfig-0.9 nls? ( sys-devel/gettext ) test? ( dev-util/cppunit )
+>=app-text/poppler-0.12.3-r3[cairo] >=x11-libs/gtk+-2.6:2 cups? ( >=net-print/cups-1.1 ) nls? ( virtual/libintl )
+0
+http://trac.emma-soft.com/epdfview/chrome/site/releases/epdfview-0.1.6.tar.bz2
+
+http://trac.emma-soft.com/epdfview/
+GPL-2
+Lightweight PDF viewer using Poppler and GTK+ libraries.
+amd64 hppa ppc ppc64 sparc x86 ~x86-fbsd
+eutils multilib portability toolchain-funcs
+cups nls test
+
+
+
+2
+
+configure install prepare
+
+
+
+
+

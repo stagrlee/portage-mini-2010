@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+
+<pkgmetadata>
+
+	<herd>graphics</herd>
+
+
+	<maintainer>
+		<email>lu_zero@gentoo.org</email>
+		<name>Luca Barbato</name>
+	</maintainer>
+
+	<longdescription>Blender, the open source software for 3D modeling, animation, rendering, post-production, interactive creation and playback. Available for Windows, Linux, Irix, Sun Solaris, FreeBSD or Mac OS X.</longdescription>
+	<use>
+		<flag name='blender-game'>
+			Adds game engine support to blender
+		</flag>
+		<flag name='player'>
+			Enable blender player
+		</flag>
+		<flag name='verse'>
+			Adds verse clustering features to blender
+		</flag>
+	</use>
+</pkgmetadata>

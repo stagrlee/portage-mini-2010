@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( || ( games-server/ut2004-ded games-fps/ut2004[dedicated] ) ) opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) )
+0
+http://www.deathball.net/downloads/deathball24w.zip
+mirror strip
+http://www.deathball.net/
+freedist
+UT2004 Deathball - Fast-paced first person sport mod
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

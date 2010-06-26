@@ -1,0 +1,22 @@
+>=virtual/jdk-1.4 app-arch/unzip source? ( app-arch/zip ) >=dev-java/java-config-2.1.9-r1
+>=virtual/jre-1.4 >=dev-java/java-config-2.1.9-r1
+0
+http://www.autel.cz/dmi/HIGLayout1.0.zip
+
+http://www.autel.cz/dmi/tutorial.html
+LGPL-2.1
+Java Swing layout manager that's powerful and easy to use
+amd64 ~ppc x86
+eutils java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+doc examples source elibc_FreeBSD
+
+
+
+
+
+compile install preinst setup unpack
+
+
+
+
+

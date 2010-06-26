@@ -1,0 +1,22 @@
+libtommath? ( dev-libs/libtommath ) tomsfastmath? ( dev-libs/tomsfastmath ) !libtommath? ( !tomsfastmath? ( dev-libs/libtommath ) ) doc? ( virtual/latex-base app-text/ghostscript-gpl )
+libtommath? ( dev-libs/libtommath ) tomsfastmath? ( dev-libs/tomsfastmath ) !libtommath? ( !tomsfastmath? ( dev-libs/libtommath ) )
+0
+http://libtomcrypt.org/files/crypt-1.06.tar.bz2
+
+http://libtomcrypt.org/
+public-domain
+modular and portable cryptographic toolkit
+amd64 ppc x86
+eutils flag-o-matic multilib portability toolchain-funcs
+doc libtommath tomsfastmath
+
+
+
+
+
+compile install test unpack
+
+
+
+
+

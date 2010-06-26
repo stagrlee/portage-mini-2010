@@ -1,0 +1,22 @@
+>=net-misc/mdidentd-1.04c ssl? ( dev-libs/openssl ) boost? ( dev-libs/boost )
+>=net-misc/mdidentd-1.04c ssl? ( dev-libs/openssl ) boost? ( dev-libs/boost )
+0
+http://www.linuxftw.com/ezbounce/files/ezbounce-1.99.14.tar.gz
+test
+http://www.linuxftw.com/ezbounce/
+GPL-2
+a small IRC bouncer
+~amd64 ~ppc ~x86
+eutils multilib portability toolchain-funcs
+ssl boost
+
+
+
+
+
+compile install unpack
+
+
+
+
+

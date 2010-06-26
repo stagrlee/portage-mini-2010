@@ -1,0 +1,22 @@
+
+|| ( ~dev-lang/perl-5.10.1 ~perl-core/Math-BigInt-FastCalc-0.19 )
+0
+
+
+
+
+Math::BigInt::Calc with some XS for more speed
+amd64 hppa ppc x86
+
+
+
+
+
+
+
+-
+
+
+
+
+

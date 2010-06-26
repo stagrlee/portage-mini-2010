@@ -1,0 +1,22 @@
+app-arch/lha
+
+0
+
+
+http://www.idsoftware.com/games/quake/quake/
+as-is
+iD Software's Quake 1 ... the data files
+amd64 ppc x86
+base eutils games multilib portability toolchain-funcs
+
+
+
+
+2
+interactive
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

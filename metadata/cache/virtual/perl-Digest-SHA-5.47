@@ -1,0 +1,22 @@
+
+|| ( ~dev-lang/perl-5.10.1 ~perl-core/Digest-SHA-5.47 )
+0
+
+
+
+
+Perl extension for SHA-1/224/256/384/512
+alpha amd64 hppa ia64 ppc ppc64 sparc x86
+
+
+
+
+
+
+
+-
+
+
+
+
+

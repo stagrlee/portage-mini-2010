@@ -1,0 +1,22 @@
+
+
+0
+http://ep09.pld-linux.org/~mmazur/poink/poink-2.03.tar.gz
+
+http://directory.fsf.org/security/system/poink.html
+GPL-2
+TCP/IP-based ping implementation
+amd64 ~ppc x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

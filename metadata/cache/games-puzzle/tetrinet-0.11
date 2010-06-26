@@ -1,0 +1,22 @@
+>=sys-libs/ncurses-5
+>=sys-libs/ncurses-5
+0
+http://tetrinet.or.cz/download/tetrinet-0.11.tar.bz2
+
+http://tetrinet.or.cz/
+public-domain
+console based tetrinet inc. standalone server
+~amd64 ppc x86
+base eutils flag-o-matic games multilib portability toolchain-funcs
+ipv6
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+
+sys-libs/glibc x86? ( media-libs/libsdl[opengl] media-libs/sdl-mixer[mp3,vorbis] media-libs/sdl-image[jpeg,png] ) amd64? ( app-emulation/emul-linux-x86-soundlibs app-emulation/emul-linux-x86-sdl )
+0
+mirror://sourceforge/sauerbraten/sauerbraten_2008_06_17_ctf_edition_linux.tar.bz2
+strip
+http://sauerbraten.org/
+ZLIB
+free multiplayer/singleplayer first person shooter (major redesign of the Cube FPS)
+~amd64 ~x86
+base eutils games multilib portability toolchain-funcs
+
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

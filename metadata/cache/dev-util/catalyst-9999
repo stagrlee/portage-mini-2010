@@ -1,0 +1,22 @@
+>=dev-vcs/git-1.6
+dev-lang/python app-crypt/shash virtual/cdrtools ccache? ( dev-util/ccache ) ia64? ( sys-fs/dosfstools ) kernel_linux? ( app-misc/zisofs-tools >=sys-fs/squashfs-tools-2.1 )
+0
+
+
+http://wolf31o2.org/projects/catalyst
+GPL-2
+release metatool used for creating releases based on Gentoo Linux
+
+eutils git multilib portability toolchain-funcs
+ccache
+
+
+
+
+
+install postinst setup unpack
+
+
+
+
+

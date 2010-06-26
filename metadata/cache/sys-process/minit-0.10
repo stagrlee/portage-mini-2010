@@ -1,0 +1,22 @@
+>=dev-libs/libowfat-0.28-r1 dev-libs/dietlibc
+>=dev-libs/libowfat-0.28-r1 dev-libs/dietlibc
+0
+http://dl.fefe.de/minit-0.10.tar.bz2
+
+http://www.fefe.de/minit/
+GPL-2
+a small yet feature-complete init
+~x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install postinst unpack
+
+
+
+
+

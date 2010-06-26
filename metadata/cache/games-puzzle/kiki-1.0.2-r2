@@ -1,0 +1,22 @@
+media-libs/libsdl[opengl] media-libs/sdl-image media-libs/sdl-mixer virtual/opengl virtual/glu virtual/glut dev-lang/swig >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+media-libs/libsdl[opengl] media-libs/sdl-image media-libs/sdl-mixer virtual/opengl virtual/glu virtual/glut >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+mirror://sourceforge/kiki/kiki-1.0.2-src.tgz
+
+http://kiki.sourceforge.net/
+public-domain
+Fun 3D puzzle game using SDL/OpenGL
+ppc x86
+base eutils games multilib portability python toolchain-funcs
+
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+
+
+0
+http://http.distributed.net/pub/dcti/v2.9015/dnetc504-linux-x86-elf-uclibc.tar.gz
+mirror
+http://www.distributed.net
+distributed.net
+distributed.net client
+-* x86
+eutils linux-info multilib portability toolchain-funcs versionator
+
+
+
+
+
+
+install postinst postrm preinst setup
+
+
+
+
+

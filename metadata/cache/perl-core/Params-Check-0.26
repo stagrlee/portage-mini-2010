@@ -1,0 +1,22 @@
+virtual/perl-Locale-Maketext-Simple
+virtual/perl-Locale-Maketext-Simple
+0
+mirror://cpan/authors/id/K/KA/KANE/Params-Check-0.26.tar.gz
+
+http://search.cpan.org/dist/Params-Check/
+|| ( Artistic GPL-2 )
+A generic input parsing/checking mechanism
+~amd64 ~ppc ~x86
+alternatives base eutils multilib perl-module portability toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm preinst prerm setup test unpack
+
+
+
+
+

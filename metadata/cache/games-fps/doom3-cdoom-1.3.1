@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( games-fps/doom3[dedicated] ) opengl? ( || ( games-fps/doom3[opengl] games-fps/doom3[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/doom3[opengl] games-fps/doom3[-dedicated] ) ) )
+0
+classic_doom_3_131.zip
+fetch
+http://cdoom.d3files.com/
+as-is
+Doom 3 Classic Doom - Doom 1 conversion for Doom 3
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install nofetch postinst preinst prepare setup unpack
+
+
+
+
+

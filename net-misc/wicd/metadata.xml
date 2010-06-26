@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>no-herd</herd>
+<maintainer>
+  <email>darkside@gentoo.org</email>
+</maintainer>
+<use>
+	<flag name='gtk'>Installs a gtk UI. This is enabled by default because it is
+		intended behavior. Requires <pkg>dev-python/pygtk</pkg></flag>
+	<flag name='ioctl'>Installs additional python libraries to use as a backend.
+	This will improve speed but is experimental.</flag>
+	<flag name='ncurses'>Installs a ncurses UI</flag>
+	<flag name='pm-utils'>Installs the pm-utils hooks for suspend/resume and
+		requires <pkg>sys-power/pm-utils</pkg></flag>
+</use>
+</pkgmetadata>

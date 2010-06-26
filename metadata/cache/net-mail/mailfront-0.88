@@ -1,0 +1,22 @@
+>=dev-libs/bglibs-1.006 >=sys-apps/sed-4
+>=dev-libs/bglibs-1.006 net-libs/cvm virtual/qmail
+0
+http://untroubled.org/mailfront/archive/mailfront-0.88.tar.gz
+
+http://untroubled.org/mailfront/
+GPL-2
+Mail server network protocol front-ends
+x86 ~sparc ~ppc
+fixheadtails multilib toolchain-funcs
+
+
+
+
+
+
+compile config install postinst unpack
+
+
+
+
+

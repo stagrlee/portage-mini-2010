@@ -1,0 +1,22 @@
+
+
+x86_64-pc-linux-uclibc
+http://uclibc.org/downloads/uClibc-0.9.30.tar.bz2 iconv? ( !userlocales? ( pregen? ( http://www.uclibc.org/downloads/uClibc-locale-030818.tgz ) ) ) mirror://gentoo/uClibc-0.9.30-patches-1.0.tar.bz2
+strip
+http://www.uclibc.org/
+LGPL-2
+C library for developing embedded Linux systems
+-* ~amd64 ~arm ~m68k ~mips ~ppc ~sh ~sparc ~x86
+eutils flag-o-matic multilib portability savedconfig toolchain-funcs
+build elibc_uclibc uclibc-compat debug hardened ssp iconv ipv6 minimal nls pregen userlocales wordexp crosscompile_opts_headers-only savedconfig
+
+
+elibc_uclibc? ( virtual/libc )
+
+
+compile install postinst setup test unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+net-zope/zope-browserresource net-zope/zope-interface net-zope/zope-pagetemplate net-zope/zope-publisher dev-python/setuptools >=app-admin/eselect-python-20091230 dev-lang/python
+net-zope/zope-browserresource net-zope/zope-interface net-zope/zope-pagetemplate net-zope/zope-publisher >=app-admin/eselect-python-20091230 dev-lang/python
+0
+http://pypi.python.org/packages/source/z/zope.ptresource/zope.ptresource-3.9.0.tar.gz
+
+http://pypi.python.org/pypi/zope.ptresource
+ZPL
+Page template resource plugin for zope.browserresource
+~alpha ~amd64 ~ppc ~sparc ~x86
+distutils multilib python toolchain-funcs
+
+
+
+
+2
+
+compile install postinst postrm prepare
+
+
+
+
+

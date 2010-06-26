@@ -1,0 +1,22 @@
+sys-libs/ncurses
+sys-libs/ncurses
+0
+http://www.earth.li/projectpurple/files/seatris-0.0.14.tar.gz
+
+http://www.earth.li/projectpurple/progs/seatris.html
+GPL-2
+A color ncurses tetris clone
+amd64 ~ppc ppc64 x86
+base eutils games multilib portability toolchain-funcs
+
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

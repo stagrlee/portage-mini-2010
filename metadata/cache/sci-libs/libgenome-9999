@@ -1,0 +1,22 @@
+doc? ( app-doc/doxygen ) dev-vcs/subversion net-misc/rsync || ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+
+0
+
+
+http://gel.ahabs.wisc.edu/mauve/
+GPL-2
+Library for sci-biology/mauve
+
+autotools eutils libtool multilib portability subversion toolchain-funcs
+doc
+
+
+
+2
+
+install preinst prepare unpack
+
+
+
+
+

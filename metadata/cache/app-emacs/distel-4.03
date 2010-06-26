@@ -1,0 +1,22 @@
+>=dev-lang/erlang-11.2.5[emacs] >=virtual/emacs-21
+>=dev-lang/erlang-11.2.5[emacs] >=virtual/emacs-21
+0
+http://distel.googlecode.com/files/distel-4.03.tgz
+
+http://fresh.homeunix.net/~luke/distel/
+BSD
+Distributed Emacs Lisp for Erlang
+~amd64 ~x86
+elisp elisp-common eutils multilib portability toolchain-funcs
+doc
+
+
+
+2
+
+compile configure install postinst postrm prepare setup unpack
+
+
+
+
+

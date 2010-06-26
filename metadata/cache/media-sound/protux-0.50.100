@@ -1,0 +1,22 @@
+>=virtual/jdk-1.5 source? ( app-arch/zip ) >=dev-java/java-config-2.1.9-r1
+>=virtual/jdk-1.5 source? ( app-arch/zip ) >=dev-java/java-config-2.1.9-r1
+0
+http://protux.sourceforge.net/releases/protux-0.50.100.tar.gz
+
+http://protux.sourceforge.net/
+GPL-2
+Professional Audio Tools for GNU/Linux
+~amd64 ~ppc x86
+eutils java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+source elibc_FreeBSD
+
+
+
+
+
+compile install preinst setup unpack
+
+
+
+
+

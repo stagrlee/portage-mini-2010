@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( || ( games-fps/quake3[dedicated] games-fps/quake3-bin[dedicated] ) ) opengl? ( || ( || ( games-fps/quake3[opengl] games-fps/quake3[-dedicated] ) || ( games-fps/quake3-bin[opengl] games-fps/quake3-bin[-dedicated] ) ) ) !dedicated? ( !opengl? ( || ( || ( games-fps/quake3[opengl] games-fps/quake3[-dedicated] ) || ( games-fps/quake3-bin[opengl] games-fps/quake3-bin[-dedicated] ) ) ) )
+0
+nsco_beta191a.zip nsco_beta193upd.zip
+strip mirror fetch
+http://ns-co.net/
+freedist
+Quake III Navy Seals: Covert Operations - a US Navy Seals conversion mod
+amd64 ~ppc x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install nofetch postinst preinst prepare setup unpack
+
+
+
+
+

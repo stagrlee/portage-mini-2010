@@ -1,0 +1,22 @@
+=app-pda/libopensync-0.22* net-libs/neon dev-util/pkgconfig
+=app-pda/libopensync-0.22* net-libs/neon
+0
+http://dev.gentooexperimental.org/~peper/distfiles/libopensync-plugin-sunbird-0.22.tar.bz2
+
+http://www.opensync.org/
+LGPL-2.1
+OpenSync Sunbird Plugin
+~amd64 ~x86
+eutils flag-o-matic multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install
+
+
+
+
+

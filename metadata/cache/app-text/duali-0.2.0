@@ -1,0 +1,22 @@
+>=app-admin/eselect-python-20091230 =dev-lang/python-2*
+>=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+mirror://sourceforge/arabeyes/duali-0.2.0.tar.bz2
+
+http://www.arabeyes.org/project.php?proj=Duali
+as-is
+Arabic dictionary based on the DICT protocol
+alpha amd64 ~hppa ia64 ~mips ppc ~sparc x86
+multilib python toolchain-funcs
+
+
+app-dicts/duali-data
+
+3
+
+install postinst postrm
+
+
+
+
+

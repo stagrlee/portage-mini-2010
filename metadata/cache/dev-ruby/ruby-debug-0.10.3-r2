@@ -1,0 +1,22 @@
+test? ( ruby_targets_ruby18? ( ~dev-ruby/ruby-debug-base-0.10.3[ruby_targets_ruby18] >=dev-ruby/columnize-0.1[ruby_targets_ruby18] ) ) ruby_targets_ruby18? ( dev-lang/ruby:1.8 ) test? ( ruby_targets_ruby18? ( virtual/rubygems[ruby_targets_ruby18] ) )
+ruby_targets_ruby18? ( ~dev-ruby/ruby-debug-base-0.10.3[ruby_targets_ruby18] >=dev-ruby/columnize-0.1[ruby_targets_ruby18] ) ruby_targets_ruby18? ( dev-lang/ruby:1.8 ) ruby_targets_ruby18? ( virtual/rubygems[ruby_targets_ruby18] )
+0
+mirror://rubygems/ruby-debug-0.10.3.gem
+
+http://rubyforge.org/projects/ruby-debug/
+BSD-2
+CLI interface to ruby-debug
+~amd64 ~ppc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x86-solaris
+eutils multilib portability ruby-fakegem ruby-ng toolchain-funcs
+test ruby_targets_ruby18 test
+
+
+
+2
+
+compile configure install prepare setup test unpack
+
+
+
+
+

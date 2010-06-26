@@ -1,0 +1,22 @@
+>=net-p2p/freenet-0.7 >=virtual/jdk-1.4 >=dev-java/java-config-2.1.9-r1
+>=dev-java/java-config-2.1.9-r1
+0
+mirror://gentoo/NativeThread-0_pre20080330.tar.bz2
+
+http://www.freenetproject.org/
+GPL-2
+NativeThread for priorities on linux for freenet
+~amd64 ~x86
+eutils flag-o-matic java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+elibc_FreeBSD
+
+
+
+
+
+compile install preinst setup unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+!app-shells/ksh
+!app-shells/ksh
+0
+ftp://ftp.cs.mun.ca/pub/pdksh/pdksh-5.2.14.tar.gz ftp://ftp.cs.mun.ca/pub/pdksh/pdksh-5.2.14-patches.1
+test
+http://www.cs.mun.ca/~michael/pdksh/
+as-is
+The Public Domain Korn Shell
+alpha amd64 ~hppa ia64 ~mips ppc ppc64 s390 sparc x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+app-arch/unzip >=dev-java/java-config-2.1.9-r1
+>=virtual/jre-1.5 >=dev-java/java-config-2.1.9-r1
+0
+jvmstat-3_0.zip
+fetch strip
+http://java.sun.com/performance/jvmstat/
+sun-bcla-jvmstat
+A set of monitoring APIs and tools for monitoring the performance of the JVM in production environments.
+~amd64 ~x86
+eutils java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
+doc elibc_FreeBSD
+
+
+
+
+
+compile install nofetch preinst setup
+
+
+
+
+

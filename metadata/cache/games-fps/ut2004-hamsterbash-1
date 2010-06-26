@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( || ( games-server/ut2004-ded games-fps/ut2004[dedicated] ) ) opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) )
+0
+http://server088.eigensoft.com/HamsterBashFinal.zip
+mirror strip
+http://www.eigensoft.com/hamsterbash.htm
+freedist
+UT2004 Hamster Bash - Cute and violent hamster cage rampage mod
+~amd64 ~x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

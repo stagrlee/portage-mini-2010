@@ -1,0 +1,22 @@
+emacs? ( app-emacs/pymacs app-emacs/python-mode ) >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+emacs? ( app-emacs/pymacs app-emacs/python-mode ) >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+mirror://sourceforge/bicyclerepair/bicyclerepair-0.9.tar.gz
+
+http://bicyclerepair.sourceforge.net/
+as-is
+Bicycle Repair Man is the Python Refactoring Browser
+amd64 ~ia64 ppc ppc64 x86
+distutils elisp-common eutils multilib portability python toolchain-funcs
+emacs
+
+
+
+3
+
+compile install postinst postrm prepare test
+
+
+
+
+

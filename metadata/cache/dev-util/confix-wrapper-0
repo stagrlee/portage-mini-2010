@@ -1,0 +1,22 @@
+
+
+0
+
+
+http://confix.sourceforge.net
+as-is
+Wrapper to select either confix1.py or confix2.py
+~amd64 ~x86 ~ppc-aix ~ia64-hpux ~x86-interix ~x86-linux ~sparc-solaris ~x86-solaris
+
+
+
+
+
+
+
+install
+
+
+
+
+

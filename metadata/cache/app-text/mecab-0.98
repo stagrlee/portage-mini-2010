@@ -1,0 +1,22 @@
+dev-lang/perl virtual/libiconv || ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+dev-lang/perl virtual/libiconv
+0
+mirror://sourceforge/mecab/mecab-0.98.tar.gz
+test
+http://mecab.sourceforge.net/
+|| ( BSD LGPL-2.1 GPL-2 )
+Yet Another Part-of-Speech and Morphological Analyzer
+~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd
+autotools eutils libtool multilib portability toolchain-funcs
+unicode
+
+>=app-dicts/mecab-ipadic-2.7.0.20070610
+
+2
+
+configure install prepare
+
+
+
+
+

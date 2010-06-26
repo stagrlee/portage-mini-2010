@@ -1,0 +1,22 @@
+net-libs/libpcap || ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+net-libs/libpcap
+0
+http://www.frenchfries.net/paul/tcpstat/tcpstat-1.5.tar.gz
+
+http://www.frenchfries.net/paul/tcpstat/
+GPL-2
+Reports network interface statistics
+~amd64 ~ppc ~ppc64 sparc x86
+autotools eutils flag-o-matic libtool multilib portability toolchain-funcs
+ipv6
+
+
+
+
+
+compile install unpack
+
+
+
+
+

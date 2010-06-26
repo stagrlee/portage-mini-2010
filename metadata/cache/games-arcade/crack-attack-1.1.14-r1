@@ -1,0 +1,22 @@
+virtual/glut sdl? ( media-libs/libsdl media-libs/sdl-mixer ) gtk? ( >=x11-libs/gtk+-2.6:2 ) dev-util/pkgconfig
+virtual/glut sdl? ( media-libs/libsdl media-libs/sdl-mixer ) gtk? ( >=x11-libs/gtk+-2.6:2 )
+0
+http://savannah.nongnu.org/download/crack-attack/crack-attack-1.1.14.tar.bz2
+
+http://www.nongnu.org/crack-attack/
+GPL-2
+Addictive OpenGL-based block game
+amd64 arm hppa ia64 ppc sparc x86
+base eutils games multilib portability toolchain-funcs
+gtk sdl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

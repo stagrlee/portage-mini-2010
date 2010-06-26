@@ -1,0 +1,22 @@
+>=media-libs/jpeg-6b:0
+>=media-libs/jpeg-6b:0
+0
+http://www.cc.jyu.fi/~tjko/src/jpeginfo-1.6.0.tar.gz
+
+http://www.cc.jyu.fi/~tjko/projects.html
+GPL-2
+Prints information and tests integrity of JPEG/JFIF files.
+alpha amd64 ppc ppc64 sparc x86 ~amd64-linux ~x86-linux ~ppc-macos
+eutils multilib portability toolchain-funcs
+
+
+
+
+2
+
+configure install prepare
+
+
+
+
+

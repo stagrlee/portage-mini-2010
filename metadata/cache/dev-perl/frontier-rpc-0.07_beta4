@@ -1,0 +1,22 @@
+dev-perl/XML-Parser dev-perl/libwww-perl dev-lang/perl
+dev-perl/XML-Parser dev-perl/libwww-perl dev-lang/perl
+0
+http://perl-xml.sourceforge.net/xml-rpc/Frontier-RPC-0.07b4.tar.gz
+
+http://perl-xml.sourceforge.net/xml-rpc/
+|| ( Artistic GPL-2 )
+A Perl 5 module for performing remote procedure calls using extensible markup language
+alpha amd64 arm hppa ia64 ppc ppc64 s390 sh sparc x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x64-solaris ~x86-solaris
+base eutils multilib perl-module portability toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm preinst prerm setup test unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+>=app-admin/eselect-python-20091230 dev-lang/python
+>=app-admin/eselect-python-20091230 dev-lang/python
+0
+mirror://gentoo/python-iwscan-20080402.tar.bz2
+
+http://projects.otaku42.de/browser/python-iwscan
+GPL-2
+A Python extension for iwscan access
+amd64 ppc ppc64 x86
+distutils multilib python toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm unpack
+
+
+
+
+

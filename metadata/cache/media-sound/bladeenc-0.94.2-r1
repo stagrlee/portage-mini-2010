@@ -1,0 +1,22 @@
+
+
+0
+http://bladeenc.mp3.no/source/bladeenc-0.94.2-src-stable.tar.gz
+
+http://bladeenc.mp3.no/
+GPL-2
+An mp3 encoder
+amd64 ppc ppc64 sparc x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+2
+
+install prepare
+
+
+
+
+

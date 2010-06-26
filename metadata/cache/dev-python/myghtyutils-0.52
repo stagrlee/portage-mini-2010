@@ -1,0 +1,22 @@
+dev-python/myghty app-arch/unzip dev-python/setuptools >=app-admin/eselect-python-20091230 >=dev-lang/python-2.4 dev-lang/python
+dev-python/myghty >=app-admin/eselect-python-20091230 >=dev-lang/python-2.4 dev-lang/python
+0
+http://cheeseshop.python.org/packages/source/M/MyghtyUtils/MyghtyUtils-0.52.zip
+
+http://www.myghty.org
+MIT
+Set of utility classes used by Myghty templating.
+~amd64 ~x86
+distutils multilib python toolchain-funcs
+test
+
+
+
+
+
+compile install postinst postrm unpack
+
+
+
+
+

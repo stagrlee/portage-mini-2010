@@ -1,0 +1,22 @@
+app-arch/unzip
+x86? ( =virtual/libstdc++-3.3 ) amd64? ( app-emulation/emul-linux-x86-compat ) dedicated? ( games-fps/enemy-territory[dedicated] ) opengl? ( || ( games-fps/enemy-territory[opengl] games-fps/enemy-territory[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/enemy-territory[opengl] games-fps/enemy-territory[-dedicated] ) ) )
+0
+http://dragons-perch.net/tce/tcetest049.zip http://freeserver.name/files/installer/linux/tcetest049.zip http://mirror.rosvosektori.net/tcetest049.zip http://dragons-perch.net/tce/tce049b_all_os_fixed.zip
+mirror strip
+http://truecombat.com/
+freedist
+Enemy Territory True Combat - a team-based realism modification
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

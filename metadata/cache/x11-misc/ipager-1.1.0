@@ -1,0 +1,22 @@
+media-libs/imlib2[X] x11-libs/libXmu xinerama? ( x11-libs/libXinerama ) dev-util/scons
+media-libs/imlib2[X] x11-libs/libXmu xinerama? ( x11-libs/libXinerama )
+0
+http://www.useperl.ru/ipager/src/ipager-1.1.0.tar.gz
+
+http://www.useperl.ru/ipager/index.en.html
+MIT
+A themable desktop pager for fluxbox and other window managers
+~amd64 ~x86
+eutils multilib portability toolchain-funcs
+xinerama
+
+
+
+2
+
+compile install prepare
+
+
+
+
+

@@ -1,0 +1,22 @@
+x11-libs/qt-gui:4 >=sys-apps/sed-4
+x11-libs/qt-gui:4
+0
+http://scythia.free.fr/wp-content/scythia_0.9.3-2-src.tar.gz
+
+http://scythia.free.fr/
+GPL-3
+Just a small FTP client
+amd64 ~x86
+base eutils gnome2-utils multilib portability qt4-r2 toolchain-funcs
+
+
+
+
+3
+
+compile configure install postinst postrm preinst prepare unpack
+
+
+
+
+

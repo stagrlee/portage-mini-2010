@@ -1,0 +1,22 @@
+net-libs/libpcap sys-libs/ncurses
+net-libs/libpcap sys-libs/ncurses
+0
+http://nethogs.sourceforge.net/nethogs-0.6.1-pre2.tar.gz
+
+http://nethogs.sf.net/
+GPL-1
+A small 'net top' tool, grouping bandwidth by process
+amd64 x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

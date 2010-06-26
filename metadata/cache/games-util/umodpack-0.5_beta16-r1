@@ -1,0 +1,22 @@
+dev-lang/perl virtual/perl-IO-Compress dev-perl/Archive-Zip dev-perl/Tie-IxHash tk? ( dev-perl/perl-tk )
+dev-lang/perl virtual/perl-IO-Compress dev-perl/Archive-Zip dev-perl/Tie-IxHash tk? ( dev-perl/perl-tk )
+0
+http://umodpack.sourceforge.net/umodpack-0.5b16-allinone.tar.gz
+
+http://umodpack.sourceforge.net/
+Artistic
+portable and useful [un]packer for Unreal Tournament's Umod files
+amd64 ppc x86
+base eutils multilib perl-module portability toolchain-funcs
+tk
+
+
+
+
+
+compile install postinst postrm preinst prerm setup test unpack
+
+
+
+
+

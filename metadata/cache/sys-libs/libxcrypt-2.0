@@ -1,0 +1,22 @@
+
+
+0
+mirror://gentoo/libxcrypt-2.0.tar.bz2
+
+http://www.suse.de/us/private/products/suse_linux/i386/packages_personal/libxcrypt.html
+LGPL-2
+A replacement for libcrypt with DES, MD5 and blowfish support
+~amd64 ~x86
+
+
+
+
+
+
+
+install
+
+
+
+
+

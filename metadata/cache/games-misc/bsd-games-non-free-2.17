@@ -1,0 +1,22 @@
+sys-libs/ncurses sys-devel/bison sys-devel/flex
+sys-libs/ncurses
+0
+ftp://metalab.unc.edu/pub/Linux/games/bsd-games-non-free-2.17.tar.gz
+
+http://www.advogato.org/proj/bsd-games/
+|| ( BSD free-noncomm )
+collection of games from NetBSD
+amd64 ppc x86
+base eutils games multilib portability toolchain-funcs
+
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

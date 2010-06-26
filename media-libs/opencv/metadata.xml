@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>no-herd</herd>
+<maintainer>
+  <email>tanderson@gentoo.org</email>
+  <name>Thomas Anderson</name>
+</maintainer>
+<longdescription>
+OpenCV (Open Source Computer Vision) is a library of programming functions mainly aimed at real time computer vision.
+Example applications of the OpenCV library are Human-Computer Interaction (HCI); Object Identification, Segmentation and Recognition;
+Face Recognition; Gesture Recognition; Motion Tracking, Ego Motion, Motion Understanding; Structure From Motion (SFM); and Mobile Robotics.
+</longdescription>
+<use>
+  <flag name="ipp">Enable Intel Integrated Primitive support</flag>
+  <flag name="octave">Enable octave support</flag>
+  <flag name="sse3">Enable optimization for SSE3 capable chips</flag>
+  <flag name="deprecated">Enable deprecated (old) python support</flag>
+</use>
+</pkgmetadata>

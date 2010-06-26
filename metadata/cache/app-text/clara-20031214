@@ -1,0 +1,22 @@
+x11-libs/libX11
+x11-libs/libX11
+0
+mirror://gentoo/clara-20031214.tar.gz
+test
+http://www.claraocr.org/
+GPL-2
+An OCR (Optical Character Recognition) program
+amd64 ppc x86 ~ppc-macos ~sparc-solaris
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+compile install postinst unpack
+
+
+
+
+

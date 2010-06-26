@@ -1,0 +1,22 @@
+!sys-apps/count !media-libs/libextractor !app-shells/fish !dev-perl/HTML-Clean >=sys-apps/sed-4
+!sys-apps/count !media-libs/libextractor !app-shells/fish !dev-perl/HTML-Clean
+0
+http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-2.8.tar.gz
+
+http://www.w3.org/Tools/HTML-XML-utils/
+W3C
+A number of simple utilities for manipulating HTML and XML files.
+alpha ppc sparc x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+install unpack
+
+
+
+
+

@@ -1,0 +1,60 @@
+#!/sbin/runscript
+# Copyright 1999-2009 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo-x86/mail-filter/sid-milter/files/sid-filter.init,v 1.3 2009/12/12 10:53:15 mrness Exp $
+
+depend() {
+	# need net
+	use dns logger net
+}
+
+parse_opts() {
+	local filter_opt filter_flag=
+	for filter_opt in ${SID_FILTER_OPTS}; do
+		case "${filter_flag}" in
+			-u)	filter_user=${filter_opt}
+				;;
+			-P)	filter_pid=${filter_opt}
+				;;
+		esac
+		[ -n "${filter_user}" -a -n "${filter_pid}" ] && break
+		filter_flag=${filter_opt}
+	done
+
+	if [ -z "${filter_user}" ]; then 
+		filter_user=milter
+		SID_FILTER_OPTS="${SID_FILTER_OPTS} -u ${filter_user}"
+	fi
+	if [ -z "${filter_pid}" ]; then 
+		filter_pid="/var/run/sid-filter.pid"
+		SID_FILTER_OPTS="${SID_FILTER_OPTS} -P ${filter_pid}"
+	fi
+}
+
+start() {
+	local filter_user= filter_pid=
+
+	parse_opts
+	if ! (touch ${filter_pid} && chown ${filter_user} ${filter_pid}) ; then
+		eerror "Failed to create pidfile"
+		return 1
+	fi
+
+	ebegin "Starting Sender-ID Filter"
+	start-stop-daemon --start --exec /usr/bin/sid-filter -- ${SID_FILTER_OPTS}
+	eend $?
+}
+
+stop() {
+	local filter_user= filter_pid=
+
+	parse_opts
+
+	ebegin "Stopping Sender-ID Filter"
+	start-stop-daemon --stop --quiet --name sid-filter --pidfile ${filter_pid}
+	eend $?
+
+	if [ $? = 0 -a -f "${filter_pid}" ]; then
+		rm ${filter_pid}
+	fi
+}

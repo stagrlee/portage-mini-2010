@@ -1,0 +1,22 @@
+>=app-admin/eselect-python-20091230 >=dev-lang/python-2.3 dev-lang/python
+>=app-admin/eselect-python-20091230 >=dev-lang/python-2.3 dev-lang/python
+0
+mirror://sourceforge/cherrypy/CherryTemplate-1.0.0.tar.gz
+
+http://cherrytemplate.python-hosting.com/
+BSD
+Easy and powerful templating module for Python
+~amd64 ~ia64 ~ppc ~x86
+distutils multilib python toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm unpack
+
+
+
+
+

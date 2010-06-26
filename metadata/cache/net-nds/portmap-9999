@@ -1,0 +1,22 @@
+selinux? ( sec-policy/selinux-portmap ) tcpd? ( >=sys-apps/tcp-wrappers-7.6-r7 ) >=dev-vcs/git-1.6
+selinux? ( sec-policy/selinux-portmap ) tcpd? ( >=sys-apps/tcp-wrappers-7.6-r7 )
+0
+
+
+ftp://ftp.porcupine.org/pub/security/index.html
+as-is
+Netkit - portmapper
+
+eutils git multilib portability toolchain-funcs
+selinux tcpd
+
+
+
+
+
+compile install setup unpack
+
+
+
+
+

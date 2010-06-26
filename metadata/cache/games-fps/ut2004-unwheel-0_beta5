@@ -1,0 +1,22 @@
+app-arch/unzip
+dedicated? ( || ( games-server/ut2004-ded games-fps/ut2004[dedicated] ) ) opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) !dedicated? ( !opengl? ( || ( games-fps/ut2004[opengl] games-fps/ut2004[-dedicated] ) ) )
+0
+unwheel_r5.zip UnWheel-R5_BonusPack-Volume_1.zip
+fetch
+http://unwheel.beyondunreal.com/
+freedist
+UT2004 UnWheel - multiplayer driving mod focusing on fun driving
+amd64 x86
+base eutils games games-mods multilib portability toolchain-funcs
+dedicated opengl dedicated opengl
+
+
+
+2
+
+compile configure install nofetch postinst preinst prepare setup unpack
+
+
+
+
+

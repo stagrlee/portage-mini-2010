@@ -1,0 +1,22 @@
+=sys-devel/automake-1.4* >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+
+0
+http://bard.sytes.net/takcd/takcd-0.10.tar.gz
+
+http://bard.sytes.net/takcd/
+GPL-2
+Command line CD player
+alpha amd64 ~hppa ia64 ~mips ~ppc sparc x86
+autotools eutils libtool multilib portability toolchain-funcs
+
+
+
+
+
+
+install unpack
+
+
+
+
+

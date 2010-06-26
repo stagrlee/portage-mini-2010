@@ -1,0 +1,22 @@
+>=net-zope/zope-component-3.8.0 net-zope/zope-copy net-zope/zope-interface net-zope/zope-proxy net-zope/zope-schema app-arch/unzip dev-python/setuptools >=app-admin/eselect-python-20091230 dev-lang/python
+>=net-zope/zope-component-3.8.0 net-zope/zope-copy net-zope/zope-interface net-zope/zope-proxy net-zope/zope-schema >=app-admin/eselect-python-20091230 dev-lang/python
+0
+http://pypi.python.org/packages/source/z/zope.location/zope.location-3.9.0.zip
+
+http://pypi.python.org/pypi/zope.location
+ZPL
+Zope Location
+~alpha ~amd64 ~ppc ~sparc ~x86
+distutils multilib python toolchain-funcs
+
+
+
+
+2
+
+compile install postinst postrm prepare
+
+
+
+
+

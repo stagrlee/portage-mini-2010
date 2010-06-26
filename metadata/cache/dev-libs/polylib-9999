@@ -1,0 +1,22 @@
+>=dev-vcs/git-1.6 || ( =sys-devel/automake-1.11* =sys-devel/automake-1.10* ) >=sys-devel/autoconf-2.61 >=sys-devel/libtool-2.2.6b
+
+0
+
+
+http://icps.u-strasbg.fr/polylib/
+GPL-2
+ppl port of cloog
+
+autotools eutils git libtool multilib portability toolchain-funcs
+
+
+
+
+
+
+install unpack
+
+
+
+
+

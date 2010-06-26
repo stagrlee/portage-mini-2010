@@ -1,0 +1,22 @@
+>=app-admin/eselect-python-20091230 >=dev-lang/python-1.5.2 dev-lang/python
+>=app-admin/eselect-python-20091230 >=dev-lang/python-1.5.2 dev-lang/python
+0
+mirror://sourceforge/piddle/piddle-1.0.15.tar.gz
+
+http://piddle.sourceforge.net/
+LGPL-2.1
+Cross-media, cross-platform 2D graphics package
+~amd64 ia64 x86
+distutils multilib python toolchain-funcs
+
+
+
+
+
+
+compile install postinst postrm unpack
+
+
+
+
+

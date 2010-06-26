@@ -1,0 +1,22 @@
+java? ( || ( >=virtual/jdk-1.2 >=virtual/jre-1.2 ) ) net-libs/libpcap
+java? ( || ( >=virtual/jdk-1.2 >=virtual/jre-1.2 ) ) net-libs/libpcap
+0
+mirror://sourceforge/neti/neti-2.0.tar.gz
+test
+http://www.neti.gatech.edu
+GPL-2
+NETI@Home research project from GATech
+~ppc x86
+
+zlib java
+
+
+
+
+
+compile install
+
+
+
+
+

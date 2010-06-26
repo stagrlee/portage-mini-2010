@@ -1,0 +1,22 @@
+virtual/os-headers doc? ( app-text/openjade dev-perl/SGMLSpm app-text/docbook-sgml-dtd app-text/docbook-sgml-utils ) >=dev-vcs/git-1.6
+
+0
+
+
+http://www.linux-foundation.org/en/Net:Iputils
+BSD
+Network monitoring tools including ping and ping6
+
+eutils flag-o-matic git multilib portability toolchain-funcs
+static ipv6 doc
+
+
+
+
+
+compile install unpack
+
+
+
+
+

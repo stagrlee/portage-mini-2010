@@ -1,0 +1,22 @@
+
+!dev-lang/tendra
+0
+http://download.savannah.nongnu.org/releases/tinycc/tcc-0.9.23.tar.gz
+test
+http://bellard.org/tcc/
+LGPL-2.1
+A very small C compiler for ix86
+-* x86
+eutils multilib portability toolchain-funcs
+
+
+
+
+
+
+install unpack
+
+
+
+
+

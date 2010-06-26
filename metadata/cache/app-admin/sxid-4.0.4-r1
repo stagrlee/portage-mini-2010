@@ -1,0 +1,22 @@
+sys-apps/sed sys-devel/gcc sys-devel/autoconf
+virtual/mailx
+0
+http://www.phunnypharm.org/pub/sxid/sxid_4.0.4.tar.gz
+
+http://freshmeat.net/projects/sxid
+GPL-2
+suid, sgid file and directory checking
+-amd64 ppc sparc x86
+multilib toolchain-funcs
+
+
+
+
+
+
+compile install postinst
+
+
+
+
+

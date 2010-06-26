@@ -1,0 +1,22 @@
+ssl? ( dev-libs/openssl )
+ssl? ( dev-libs/openssl )
+0
+http://www.cycom.se/uploads/36/19/rrs-1.70.tar.gz
+
+http://www.cycom.se/dl/rrs
+MIT
+Reverse Remote Shell
+~amd64 ppc x86
+eutils multilib portability toolchain-funcs
+ssl
+
+
+
+
+
+compile install unpack
+
+
+
+
+
