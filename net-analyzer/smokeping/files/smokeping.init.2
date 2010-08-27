@@ -27,7 +27,7 @@ start() {
 	ebegin "Starting smokeping"
 	LC_ALL=C \
 	start-stop-daemon --start --name smokeping \
-		--pidfile /var/run/smokeping.pid \
+		--pidfile /var/run/smokeping/smokeping.pid \
 		--exec /usr/bin/smokeping \
 		--chuid smokeping:smokeping
 	eend $?
@@ -36,7 +36,7 @@ start() {
 stop() {
 	ebegin "Stopping smokeping"
 	start-stop-daemon --stop \
-		--pidfile /var/run/smokeping.pid
+		--pidfile /var/run/smokeping/smokeping.pid
 	eend $?
 }
 
