@@ -1,5 +1,5 @@
 ####################################################################
-# $Header: /var/cvsroot/gentoo-x86/profiles/package.mask,v 1.11885 2010/08/27 15:42:04 flameeyes Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/package.mask,v 1.11889 2010/08/29 22:38:49 phajdan.jr Exp $
 #
 # When you add an entry to the top of this file, add your name, the date, and
 # an explanation of why something is getting masked. Please be extremely
@@ -30,6 +30,20 @@
 ## app-misc/some-package
 
 #--- END OF EXAMPLES ---
+
+# Doug Goldstein <cardoe@gentoo.org> (28 Aug 2010)
+# Need to investigate build errors on some kernels
+=app-emulation/kvm-kmod-2.6.35
+
+# Diego E. Pettenò <flameeyes@gentoo.org> (28 Aug 2010)
+#  on behalf of QA team
+#
+# Broken ebuild (dosed rather than sed during unpack); bug
+# #175327; maintainer needed; last revision bump in 2005,
+# last version bump in 2003; no user in tree.
+#
+# Removal on 2010-10-27
+sys-devel/omni
 
 # Diego E. Pettenò <flameeyes@gentoo.org> (27 Aug 2010)
 #  on behalf of QA team
@@ -158,6 +172,7 @@ games-emulation/xmame
 # Experimental binary package compiled on Gentoo.
 ~www-client/chromium-bin-5.0.375.125
 ~www-client/chromium-bin-5.0.375.127
+~www-client/chromium-bin-6.0.472.51
 
 # Michael Sterrett <mr_bones_@gentoo.org> (13 Aug 2010)
 # Mask for removal 20100913
@@ -402,11 +417,6 @@ dev-dotnet/nautilusburn-sharp
 =dev-db/postgresql-server-8.0*
 =dev-db/postgresql-docs-7.4*
 =dev-db/postgresql-docs-8.0*
-
-# Pacho Ramos <pacho@gentoo.org> (09 Jul 2010)
-# Masked for removal in 30 days since it's no longer needed now that we
-# don't have old anjuta versions in the tree, see bug #327593
-dev-libs/gnome-build
 
 # Doug Goldstein <cardoe@gentoo.org> (07 Jul 2010)
 # No actual Gentoo support yet. If you're interested, please see bug #295993
