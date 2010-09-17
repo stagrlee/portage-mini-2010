@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-lang/parrot/parrot-2.6.0.ebuild,v 1.1 2010/07/23 15:02:04 tove Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-lang/parrot/parrot-2.6.0.ebuild,v 1.3 2010/09/16 16:40:21 scarabeus Exp $
 
 EAPI=3
 
@@ -16,7 +16,7 @@ KEYWORDS="~amd64 ~ppc ~ppc64 ~sparc ~x86"
 IUSE="opengl nls doc examples gdbm gmp ssl +unicode pcre"
 
 RDEPEND="sys-libs/readline
-	opengl? ( virtual/glut )
+	opengl? ( media-libs/freeglut )
 	nls? ( sys-devel/gettext )
 	unicode? ( >=dev-libs/icu-2.6 )
 	gdbm? ( >=sys-libs/gdbm-1.8.3-r1 )
@@ -42,6 +42,7 @@ src_configure() {
 		--linkflags="${LDFLAGS}" \
 		--prefix="${EROOT}"/usr \
 		--libdir="${EROOT}"/usr/$(get_libdir) \
+		--mandir="${EROOT}"/usr/share/man \
 		--sysconfdir="${EROOT}"/etc \
 		--sharedstatedir="${EROOT}"/var/lib/parrot \
 		--pkgconfigdir=pkgconfig \

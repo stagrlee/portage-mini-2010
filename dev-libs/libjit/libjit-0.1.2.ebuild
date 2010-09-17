@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-libs/libjit/libjit-0.1.2.ebuild,v 1.2 2010/08/03 08:45:44 ali_bush Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/libjit/libjit-0.1.2.ebuild,v 1.5 2010/09/05 17:16:58 phajdan.jr Exp $
 
 EAPI=2
 
@@ -12,7 +12,7 @@ SRC_URI="mirror://gnu/dotgnu/libjit/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~x86"
+KEYWORDS="amd64 ~arm x86"
 IUSE="doc examples interpreter long-double"
 
 DEPEND="doc? ( app-text/texi2html )"
@@ -45,11 +45,11 @@ src_compile() {
 
 src_test () {
 	if use interpreter || use long-double ; then
-		make check || die "Tests failed."
+		emake check || die "Tests failed."
 	else
-		ewarn "Skipping Tests due to missing use flags"
-		einfo "Please enable either the interpreter or long-double use flags"
-		einfo "if you want to run tests."
+		ewarn "Skipping Tests due to missing use flags:"
+		ewarn "Please enable either the interpreter or long-double use flags"
+		ewarn "if you want to run tests."
 	fi
 }
 

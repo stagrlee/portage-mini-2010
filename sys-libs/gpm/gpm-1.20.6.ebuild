@@ -1,8 +1,8 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/gpm/gpm-1.20.6.ebuild,v 1.4 2010/08/29 01:10:59 phajdan.jr Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-libs/gpm/gpm-1.20.6.ebuild,v 1.11 2010/09/14 21:34:39 jer Exp $
 
-# emacs support disabled due to Bug 99533
+# emacs support disabled due to #99533 #335900
 
 inherit eutils toolchain-funcs flag-o-matic
 
@@ -12,11 +12,11 @@ SRC_URI="http://linux.schottelius.org/gpm/archives/${P}.tar.lzma"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc x86"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh ~sparc x86"
 IUSE="selinux"
 
 DEPEND="sys-libs/ncurses
-	|| ( app-arch/xz-utils app-arch/lzma-utils )"
+	app-arch/xz-utils"
 RDEPEND="selinux? ( sec-policy/selinux-gpm )"
 
 src_unpack() {
@@ -30,6 +30,7 @@ src_compile() {
 	econf \
 		--libdir=/$(get_libdir) \
 		--sysconfdir=/etc/gpm \
+		emacs=/bin/false \
 		|| die "econf failed"
 
 	# workaround broken release

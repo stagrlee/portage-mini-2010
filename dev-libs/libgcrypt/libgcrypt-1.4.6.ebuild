@@ -1,10 +1,10 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-libs/libgcrypt/libgcrypt-1.4.6.ebuild,v 1.1 2010/07/15 22:26:17 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/libgcrypt/libgcrypt-1.4.6.ebuild,v 1.5 2010/09/14 03:24:45 phajdan.jr Exp $
 
 EAPI="2"
 
-inherit eutils flag-o-matic toolchain-funcs
+inherit autotools eutils flag-o-matic toolchain-funcs
 
 DESCRIPTION="General purpose crypto library based on the code used in GnuPG"
 HOMEPAGE="http://www.gnupg.org/"
@@ -13,13 +13,16 @@ SRC_URI="mirror://gnupg/libgcrypt/${P}.tar.bz2
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="~alpha amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc x86 ~sparc-fbsd ~x86-fbsd"
 IUSE=""
 
 RDEPEND=">=dev-libs/libgpg-error-1.5"
 DEPEND="${RDEPEND}"
 
 src_prepare() {
+	# Fix build failure with non-bash /bin/sh.
+	eautoreconf
+
 	epunt_cxx
 }
 

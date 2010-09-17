@@ -1,8 +1,8 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/xfce-base/exo/exo-0.3.107.ebuild,v 1.10 2010/08/29 17:55:04 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/xfce-base/exo/exo-0.3.107.ebuild,v 1.12 2010/09/14 13:23:34 ssuominen Exp $
 
-EAPI=2
+EAPI=3
 inherit xfconf python multilib
 
 DESCRIPTION="Extensions, widgets and framework library with session management support"
@@ -49,10 +49,10 @@ src_prepare() {
 
 pkg_postinst() {
 	xfconf_pkg_postinst
-	python_mod_optimize "$(python_get_sitedir)"
+	python_mod_optimize exo-0.3 pyexo.py
 }
 
 pkg_postrm() {
 	xfconf_pkg_postrm
-	python_mod_cleanup "$(python_get_sitedir)"
+	python_mod_cleanup exo-0.3 pyexo.py
 }

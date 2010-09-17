@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-shells/bash/bash-4.1_p7.ebuild,v 1.1 2010/05/20 03:01:41 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-shells/bash/bash-4.1_p7.ebuild,v 1.6 2010/09/14 21:33:46 jer Exp $
 
 EAPI="1"
 
@@ -37,7 +37,7 @@ SRC_URI="mirror://gnu/bash/${MY_P}.tar.gz $(patches)
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm hppa ~ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh ~sparc x86 ~sparc-fbsd ~x86-fbsd"
 IUSE="afs bashlogger examples mem-scramble +net nls plugins vanilla"
 
 DEPEND=">=sys-libs/ncurses-5.2-r2
@@ -107,6 +107,8 @@ src_compile() {
 	# Force linking with system curses ... the bundled termcap lib
 	# sucks bad compared to ncurses
 	myconf="${myconf} --with-curses"
+
+	myconf="${myconf} --without-lispdir" #335896
 
 	use plugins && append-ldflags -Wl,-rpath,/usr/$(get_libdir)/bash
 	econf \

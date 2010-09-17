@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-text/evince/evince-2.30.3.ebuild,v 1.5 2010/08/19 21:45:12 eva Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-text/evince/evince-2.30.3.ebuild,v 1.7 2010/09/15 18:45:30 eva Exp $
 
 EAPI="2"
 
@@ -11,7 +11,7 @@ HOMEPAGE="http://www.gnome.org/projects/evince/"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc x86 ~x86-fbsd ~x86-freebsd ~x86-interix ~amd64-linux ~x86-linux ~x64-solaris"
+KEYWORDS="~alpha amd64 ~arm ~ia64 ppc ~ppc64 ~sparc x86 ~x86-fbsd ~x86-freebsd ~x86-interix ~amd64-linux ~x86-linux ~x64-solaris"
 
 IUSE="dbus debug djvu doc dvi gnome gnome-keyring nautilus t1lib tiff"
 # tests introspection
@@ -25,7 +25,9 @@ RDEPEND="
 	>=dev-libs/libxml2-2.5
 	>=x11-libs/gtk+-2.14
 	>=x11-libs/libSM-1
-	>=x11-themes/gnome-icon-theme-2.17.1
+	|| (
+		>=x11-themes/gnome-icon-theme-2.17.1
+		>=x11-themes/hicolor-icon-theme-0.10 )
 	dbus? ( >=dev-libs/dbus-glib-0.71 )
 	gnome? ( >=gnome-base/gconf-2 )
 	gnome-keyring? ( >=gnome-base/gnome-keyring-2.22.0 )
@@ -82,10 +84,10 @@ src_prepare() {
 	# Fix .desktop file so menu item shows up
 	epatch "${FILESDIR}"/${PN}-0.7.1-display-menu.patch
 
-	# Make it libtool-1 compatible
-	rm -v m4/lt* m4/libtool.m4 || die "removing libtool macros failed"
+	# Do not depend on gnome-icon-theme, bug #326855
+	sed 's/gnome-icon-theme//' -i configure.ac configure || die "sed failed"
 
-	# gconf-2.m4 is needed for autoconf; bug 291339
+	# gconf-2.m4 is needed for autoconf, bug #291339
 	if ! use gnome; then
 		cp "${FILESDIR}/gconf-2.m4" m4/ || die "Copying gconf-2.m4 failed!"
 	fi

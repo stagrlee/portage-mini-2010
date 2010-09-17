@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-crypt/seahorse/seahorse-2.30.1.ebuild,v 1.4 2010/08/01 11:42:26 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-crypt/seahorse/seahorse-2.30.1.ebuild,v 1.6 2010/09/11 18:49:41 josejx Exp $
 
 EAPI="2"
 
@@ -11,15 +11,16 @@ HOMEPAGE="http://www.gnome.org/projects/seahorse/index.html"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~ia64 ~ppc ~ppc64 ~sparc x86 ~x86-fbsd"
+KEYWORDS="~alpha amd64 ~ia64 ppc ~ppc64 ~sparc x86 ~x86-fbsd"
 IUSE="avahi debug doc ldap libnotify test"
 
+# FIXME: add introspection support
 RDEPEND="
 	>=gnome-base/gconf-2.0
 	>=dev-libs/glib-2.10
 	>=x11-libs/gtk+-2.18
 	>=dev-libs/dbus-glib-0.72
-	>=gnome-base/gnome-keyring-2.25.5
+	>=gnome-base/gnome-keyring-2.29.4
 	net-libs/libsoup:2.4
 	x11-misc/shared-mime-info
 

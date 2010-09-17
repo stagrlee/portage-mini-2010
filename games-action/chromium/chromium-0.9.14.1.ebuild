@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-action/chromium/chromium-0.9.14.1.ebuild,v 1.1 2010/06/24 05:53:08 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-action/chromium/chromium-0.9.14.1.ebuild,v 1.3 2010/09/16 16:47:46 scarabeus Exp $
 
 EAPI=2
 inherit eutils games
@@ -13,7 +13,7 @@ SRC_URI="mirror://sourceforge/chromium-bsu/${MY_P}.tar.gz"
 LICENSE="Clarified-Artistic"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="+mixer nls +sdl"
+IUSE="mixer nls +sdl"
 
 RDEPEND="media-fonts/dejavu
 	media-libs/quesoglc
@@ -31,7 +31,7 @@ RDEPEND="media-fonts/dejavu
 		media-libs/libsdl[X]
 		media-libs/sdl-image[png]
 	)
-	!sdl? ( virtual/glut )"
+	!sdl? ( media-libs/freeglut )"
 DEPEND="${RDEPEND}
 	nls? ( sys-devel/gettext )"
 
@@ -42,7 +42,6 @@ src_configure() {
 		--disable-dependency-tracking \
 		--disable-ftgl \
 		--enable-glc \
-		--with-font-path="/usr/share/fonts/dejavu/DejaVuSerif-Bold.ttf" \
 		$(use_enable mixer sdlmixer) \
 		$(use_enable !mixer openal) \
 		$(use_enable nls) \

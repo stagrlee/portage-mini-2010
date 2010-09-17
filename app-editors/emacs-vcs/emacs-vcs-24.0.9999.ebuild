@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-editors/emacs-vcs/emacs-vcs-24.0.9999.ebuild,v 1.8 2010/07/18 15:43:14 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-editors/emacs-vcs/emacs-vcs-24.0.9999.ebuild,v 1.10 2010/09/13 08:44:13 fauli Exp $
 
 EAPI=2
 
@@ -28,7 +28,7 @@ HOMEPAGE="http://www.gnu.org/software/emacs/"
 LICENSE="GPL-3 FDL-1.3 BSD as-is MIT W3C unicode"
 SLOT="24"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-fbsd"
-IUSE="alsa dbus gconf gif gpm gtk gzip-el hesiod jpeg kerberos m17n-lib motif png sound source svg tiff toolkit-scroll-bars X Xaw3d xft +xpm"
+IUSE="alsa dbus gconf gif gpm gtk gzip-el hesiod imagemagick jpeg kerberos libxml2 m17n-lib motif png sound source svg tiff toolkit-scroll-bars X Xaw3d xft +xpm"
 RESTRICT="strip"
 
 RDEPEND="sys-libs/ncurses
@@ -44,12 +44,14 @@ RDEPEND="sys-libs/ncurses
 		x11-libs/libXt
 		x11-misc/xbitmaps
 		gconf? ( >=gnome-base/gconf-2.26.2 )
+		libxml2? ( >=dev-libs/libxml2-2.2.0 )
 		gif? ( media-libs/giflib )
 		jpeg? ( media-libs/jpeg:0 )
 		png? ( media-libs/libpng )
 		svg? ( >=gnome-base/librsvg-2.0 )
 		tiff? ( media-libs/tiff )
 		xpm? ( x11-libs/libXpm )
+		imagemagick? ( >=media-gfx/imagemagick-6.6.2 )
 		xft? (
 			media-libs/fontconfig
 			media-libs/freetype
@@ -147,12 +149,12 @@ src_configure() {
 
 	if use X; then
 		myconf="${myconf} --with-x"
-		myconf="${myconf} $(use_with gconf)"
+		myconf="${myconf} $(use_with gconf) $(use_with libxml2 xml2)"
 		myconf="${myconf} $(use_with toolkit-scroll-bars)"
 		myconf="${myconf} $(use_with gif) $(use_with jpeg)"
 		myconf="${myconf} $(use_with png) $(use_with svg rsvg)"
 		myconf="${myconf} $(use_with tiff) $(use_with xpm)"
-		myconf="${myconf} $(use_with xft)"
+		myconf="${myconf} $(use_with imagemagick) $(use_with xft)"
 
 		if use xft; then
 			myconf="${myconf} $(use_with m17n-lib libotf)"

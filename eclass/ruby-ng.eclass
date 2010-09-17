@@ -1,6 +1,6 @@
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/ruby-ng.eclass,v 1.26 2010/08/22 07:28:24 graaff Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/ruby-ng.eclass,v 1.28 2010/09/10 13:03:39 flameeyes Exp $
 #
 # @ECLASS: ruby-ng.eclass
 # @MAINTAINER:
@@ -131,6 +131,28 @@ _ruby_atoms_samelib_generic() {
 	eshopts_pop
 }
 
+# @FUNCTION: ruby_implementation_command
+# @RETURN: the path to the given ruby implementation
+# @DESCRIPTION:
+# Not all implementations have the same command basename as the
+# target; namely Ruby Enterprise 1.8 uses ree18 and rubyee18
+# respectively. This function translate between the two
+ruby_implementation_command() {
+	local _ruby_name=$1
+
+		# Add all USE_RUBY values where the flag name diverts from the binary here
+	case $1 in
+		ree18)
+			_ruby_name=rubyee18
+			;;
+		ruby19)
+			_ruby_name=ruby1.9
+			;;
+	esac
+
+	echo $(type -p ${_ruby_name} 2>/dev/null)
+}
+
 _ruby_atoms_samelib() {
 	local atoms=$(_ruby_atoms_samelib_generic "$*")
 
@@ -231,7 +253,7 @@ _ruby_invoke_environment() {
 	# Special case, for the always-lovely GitHub fetches. With this,
 	# we allow the star glob to just expand to whatever directory it's
 	# called.
-	if [[ ${sub_S} = *"*" ]]; then
+	if [[ ${sub_S} = *"*"* ]]; then
 		pushd "${WORKDIR}"/all &>/dev/null
 		sub_S=$(eval ls -d ${sub_S} 2>/dev/null)
 		popd &>/dev/null
@@ -263,23 +285,11 @@ _ruby_each_implementation() {
 		# only proceed if it's requested
 		use ruby_targets_${_ruby_implementation} || continue
 
-		local _ruby_name=$_ruby_implementation
-
-		# Add all USE_RUBY values where the flag name diverts from the binary here
-		case $_ruby_implementation in
-			ree18)
-				_ruby_name=rubyee18
-				;;
-			ruby19)
-				_ruby_name=ruby1.9
-				;;
-		esac
-
-		RUBY=$(type -p $_ruby_name 2>/dev/null)
+		RUBY=$(ruby_implementation_command ${_ruby_implementation})
 		invoked=yes
 
 		if [[ -n "$1" ]]; then
-			_ruby_invoke_environment $_ruby_implementation "$@"
+			_ruby_invoke_environment ${_ruby_implementation} "$@"
 		fi
 
 		unset RUBY

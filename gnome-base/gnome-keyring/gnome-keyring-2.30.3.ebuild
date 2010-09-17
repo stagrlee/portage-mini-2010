@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/gnome-base/gnome-keyring/gnome-keyring-2.30.3.ebuild,v 1.8 2010/08/27 18:30:15 eva Exp $
+# $Header: /var/cvsroot/gentoo-x86/gnome-base/gnome-keyring/gnome-keyring-2.30.3.ebuild,v 1.10 2010/09/11 18:27:56 josejx Exp $
 
 EAPI="2"
 
@@ -11,7 +11,7 @@ HOMEPAGE="http://www.gnome.org/"
 
 LICENSE="GPL-2 LGPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~ia64 ~ppc ~ppc64 ~sh ~sparc x86"
+KEYWORDS="~alpha amd64 ~arm ~ia64 ppc ~ppc64 ~sh ~sparc x86"
 IUSE="debug doc pam test"
 # USE=valgrind is probably not a good idea for the tree
 
@@ -27,6 +27,7 @@ DEPEND="${RDEPEND}
 	sys-devel/gettext
 	>=dev-util/intltool-0.35
 	>=dev-util/pkgconfig-0.9
+	>=dev-util/gtk-doc-am-1.9
 	doc? ( >=dev-util/gtk-doc-1.9 )"
 PDEPEND="gnome-base/libgnome-keyring"
 
@@ -58,14 +59,4 @@ src_prepare() {
 src_test() {
 	unset DBUS_SESSION_BUS_ADDRESS
 	Xemake check || die "emake check failed!"
-}
-
-pkg_preinst() {
-	gnome2_pkg_preinst
-	preserve_old_lib /usr/$(get_libdir)/libgnome-keyring.so.0
-}
-
-pkg_postinst() {
-	gnome2_pkg_postinst
-	preserve_old_lib_notify /usr/$(get_libdir)/libgnome-keyring.so.0
 }

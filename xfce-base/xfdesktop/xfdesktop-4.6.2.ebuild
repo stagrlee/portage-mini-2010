@@ -1,8 +1,8 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/xfce-base/xfdesktop/xfdesktop-4.6.2.ebuild,v 1.10 2010/08/29 17:44:50 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/xfce-base/xfdesktop/xfdesktop-4.6.2.ebuild,v 1.14 2010/09/07 02:08:34 ssuominen Exp $
 
-EAPI=2
+EAPI=3
 EAUTORECONF=yes
 inherit xfconf
 
@@ -14,7 +14,7 @@ SRC_URI="mirror://xfce/src/xfce/${PN}/4.6/${P}.tar.bz2
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd ~x86-freebsd ~x86-interix ~amd64-linux ~x86-linux ~x86-solaris"
-IUSE="+branding debug xfce_plugins_menu thunar"
+IUSE="+branding debug +xfce_plugins_menu thunar"
 
 LINGUAS="be ca cs da de el es et eu fi fr he hu it ja ko nb_NO nl pa pl pt_BR ro ru sk sv tr uk vi zh_CN zh_TW"
 
@@ -74,6 +74,12 @@ src_prepare() {
 			-e 's:xfce-stripes.png:gentoo-minimal-1280x1024.jpg:' \
 			common/xfdesktop-common.h || die
 	fi
+
+	# Outdated files and we install HTML files to $PF
+	sed -i \
+		-e '/xfce4-help.desktop/d' \
+		modules/menu/menu-data/{Makefile.am,xfce-applications.menu} || die
+
 	xfconf_src_prepare
 }
 

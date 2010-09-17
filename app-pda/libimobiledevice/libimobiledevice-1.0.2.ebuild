@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-pda/libimobiledevice/libimobiledevice-1.0.2.ebuild,v 1.4 2010/08/01 09:46:38 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-pda/libimobiledevice/libimobiledevice-1.0.2.ebuild,v 1.6 2010/09/16 17:44:38 josejx Exp $
 
 EAPI=3
 

@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-admin/sabayon/sabayon-2.30.0.ebuild,v 1.5 2010/08/23 20:53:13 eva Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-admin/sabayon/sabayon-2.30.0.ebuild,v 1.8 2010/09/11 18:56:08 josejx Exp $
 
 EAPI="2"
 GCONF_DEBUG="no"
@@ -12,7 +12,7 @@ HOMEPAGE="http://www.gnome.org/projects/sabayon/"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~ia64 ~ppc ~ppc64 ~sparc x86"
+KEYWORDS="~alpha amd64 ~ia64 ppc ~ppc64 ~sparc x86"
 IUSE=""
 
 # Unfortunately the configure.ac is wildly insufficient, so dependencies have
@@ -22,6 +22,7 @@ COMMON_DEPEND=">=dev-lang/python-2.4
 	>=x11-libs/gtk+-2.6.0
 	>=dev-python/pygtk-2.16
 	>=dev-python/pygobject-2.15
+	app-admin/pessulus
 	x11-libs/pango
 	dev-python/python-ldap
 	x11-base/xorg-server[kdrive]"

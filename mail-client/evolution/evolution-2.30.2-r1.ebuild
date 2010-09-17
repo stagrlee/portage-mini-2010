@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-client/evolution/evolution-2.30.2-r1.ebuild,v 1.6 2010/08/24 08:19:58 eva Exp $
+# $Header: /var/cvsroot/gentoo-x86/mail-client/evolution/evolution-2.30.2-r1.ebuild,v 1.8 2010/09/11 18:52:47 josejx Exp $
 
 EAPI="2"
 GCONF_DEBUG="no"
@@ -10,11 +10,11 @@ inherit autotools gnome2 flag-o-matic python versionator
 DESCRIPTION="Integrated mail, addressbook and calendaring functionality"
 HOMEPAGE="http://www.gnome.org/projects/evolution/"
 SRC_URI="${SRC_URI}
-	mirror://gentoo/${P}-patches.tar.bz2"
+	mirror://gentoo/${PN}-2.30.2-patches.tar.bz2"
 
 LICENSE="GPL-2 LGPL-2 OPENLDAP"
 SLOT="2.0"
-KEYWORDS="~alpha amd64 ~ia64 ~ppc ~ppc64 ~sparc x86 ~x86-fbsd"
+KEYWORDS="~alpha amd64 ~ia64 ppc ~ppc64 ~sparc x86 ~x86-fbsd"
 IUSE="crypt doc gstreamer kerberos ldap networkmanager nntp pda profile python ssl"
 # pst
 # mono - disabled because it just crashes on startup :S

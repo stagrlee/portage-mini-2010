@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/kde4-base.eclass,v 1.68 2010/08/13 05:05:40 reavertm Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/kde4-base.eclass,v 1.74 2010/09/14 12:39:51 reavertm Exp $
 
 # @ECLASS: kde4-base.eclass
 # @MAINTAINER:
@@ -62,9 +62,9 @@ case ${KDEBASE} in
 		# Determine SLOT from PVs
 		case ${PV} in
 			*.9999*) SLOT="${PV/.9999*/}" ;; # stable live
-			4.6* | 4.5.[6-9]*) SLOT="4.6" ;;
-			4.5* | 4.4.[6-9]*) SLOT="4.5" ;;
-			4.4* | 4.3.[6-9]*) SLOT="4.4" ;;
+			4.6* | 4.5.[6-9][0-9]*) SLOT="4.6" ;;
+			4.5* | 4.4.[6-9][0-9]*) SLOT="4.5" ;;
+			4.4* | 4.3.[6-9][0-9]*) SLOT="4.4" ;;
 			9999*) SLOT="live" ;; # regular live
 			*) die "Unsupported ${PV}" ;;
 		esac
@@ -113,21 +113,6 @@ EXPORT_FUNCTIONS pkg_setup src_unpack src_prepare ${export_fns} pkg_postinst pkg
 unset buildsystem_eclass
 unset export_fns
 
-case ${KDEBASE} in
-	kde-base)
-		HOMEPAGE="http://www.kde.org/"
-		LICENSE="GPL-2"
-		;;
-	koffice)
-		HOMEPAGE="http://www.koffice.org/"
-		LICENSE="GPL-2"
-		;;
-	kdevelop)
-		HOMEPAGE="http://www.kdevelop.org/"
-		LICENSE="GPL-2"
-		;;
-esac
-
 # @ECLASS-VARIABLE: OPENGL_REQUIRED
 # @DESCRIPTION:
 # Is qt-opengl required? Possible values are 'always', 'optional' and 'never'.
@@ -156,13 +141,24 @@ CPPUNIT_REQUIRED="${CPPUNIT_REQUIRED:-never}"
 # @DESCRIPTION:
 # Is kde required? Possible values are 'always', 'optional' and 'never'.
 # This variable must be set before inheriting any eclasses. Defaults to 'always'
-# If set to always or optional, KDE_MINIMAL may be overriden as well.
+# If set to 'always' or 'optional', KDE_MINIMAL may be overriden as well.
 # Note that for kde-base packages this variable is fixed to 'always'.
 KDE_REQUIRED="${KDE_REQUIRED:-always}"
+
+# @ECLASS-VARIABLE: KDE_HANDBOOK
+# @DESCRIPTION:
+# Set to enable handbook in application. Possible values are 'always', 'optional'
+# (handbook USE flag) and 'never'.
+# This variable must be set before inheriting any eclasses. Defaults to 'never'.
+# It adds default handbook dirs for kde-base packages to KMEXTRA and in any case it
+# ensures buildtime and runtime dependencies.
+KDE_HANDBOOK="${KDE_HANDBOOK:-never}"
 
 # Setup packages inheriting this eclass
 case ${KDEBASE} in
 	kde-base)
+		HOMEPAGE="http://www.kde.org/"
+		LICENSE="GPL-2"
 		if [[ $BUILD_TYPE = live ]]; then
 			# Disable tests for live ebuilds
 			RESTRICT+=" test"
@@ -182,6 +178,14 @@ case ${KDEBASE} in
 		esac
 		# Block installation of other SLOTS unless kdeprefix
 		RDEPEND+=" $(block_other_slots)"
+		;;
+	koffice)
+		HOMEPAGE="http://www.koffice.org/"
+		LICENSE="GPL-2"
+		;;
+	kdevelop)
+		HOMEPAGE="http://www.kdevelop.org/"
+		LICENSE="GPL-2"
 		;;
 esac
 
@@ -272,6 +276,7 @@ unset cppuintdepend
 # KDE dependencies
 # Qt accessibility classes are needed in various places, bug 325461
 kdecommondepend="
+	dev-lang/perl
 	>=x11-libs/qt-core-${QT_MINIMAL}:4[qt3support,ssl]
 	>=x11-libs/qt-gui-${QT_MINIMAL}:4[accessibility,dbus]
 	>=x11-libs/qt-qt3support-${QT_MINIMAL}:4[accessibility,kde]
@@ -285,32 +290,24 @@ kdecommondepend="
 		x11-libs/libXxf86vm
 	)
 "
-#perl is not needed on host (+ difficult crosscompilation)
-tc-is-cross-compiler || kdecommondepend+=" dev-lang/perl"
 
 if [[ ${PN} != kdelibs ]]; then
-	if [[ ${KDEBASE} = kde-base ]]; then
-		kdecommondepend+=" $(add_kdebase_dep kdelibs)"
-	else
-		kdecommondepend+="
-			>=kde-base/kdelibs-${KDE_MINIMAL}
-		"
-		if [[ ${KDEBASE} = kdevelop ]]; then
-			if [[ ${PN} != kdevplatform ]]; then
-				# @ECLASS-VARIABLE: KDEVPLATFORM_REQUIRED
-				# @DESCRIPTION:
-				# Specifies whether kdevplatform is required. Possible values are 'always' (default) and 'never'.
-				# Applies to KDEBASE=kdevelop only.
-				KDEVPLATFORM_REQUIRED="${KDEVPLATFORM_REQUIRED:-always}"
-				case ${KDEVPLATFORM_REQUIRED} in
-					always)
-						kdecommondepend+="
-							>=dev-util/kdevplatform-${KDEVPLATFORM_VERSION}
-						"
-						;;
-					*) ;;
-				esac
-			fi
+	kdecommondepend+=" $(add_kdebase_dep kdelibs)"
+	if [[ ${KDEBASE} = kdevelop ]]; then
+		if [[ ${PN} != kdevplatform ]]; then
+			# @ECLASS-VARIABLE: KDEVPLATFORM_REQUIRED
+			# @DESCRIPTION:
+			# Specifies whether kdevplatform is required. Possible values are 'always' (default) and 'never'.
+			# Applies to KDEBASE=kdevelop only.
+			KDEVPLATFORM_REQUIRED="${KDEVPLATFORM_REQUIRED:-always}"
+			case ${KDEVPLATFORM_REQUIRED} in
+				always)
+					kdecommondepend+="
+						>=dev-util/kdevplatform-${KDEVPLATFORM_VERSION}
+					"
+					;;
+				*) ;;
+			esac
 		fi
 	fi
 fi
@@ -322,21 +319,46 @@ kdedepend="
 		x11-proto/xf86vidmodeproto
 	)
 "
+kderdepend=""
+
+kdehandbookdepend="
+	app-text/docbook-xml-dtd:4.2
+	app-text/docbook-xsl-stylesheets
+"
+kdehandbookrdepend="
+	$(add_kdebase_dep kdelibs 'handbook')
+"
+case ${KDE_HANDBOOK} in
+	always)
+		kdedepend+=" ${kdehandbookdepend}"
+		[[ ${PN} != kdelibs ]] && kderdepend+=" ${kdehandbookrdepend}"
+		;;
+	optional)
+		IUSE+=" +handbook"
+		kdedepend+=" handbook? ( ${kdehandbookdepend} )"
+		[[ ${PN} != kdelibs ]] && kderdepend+=" handbook? ( ${kdehandbookrdepend} )"
+		;;
+	*) ;;
+esac
+unset kdehandbookdepend kdehandbookrdepend
+
 case ${KDE_REQUIRED} in
 	always)
 		IUSE+=" aqua"
-		COMMONDEPEND+=" ${kdecommondepend}"
-		DEPEND+=" ${kdedepend}"
+		[[ -n ${kdecommondepend} ]] && COMMONDEPEND+=" ${kdecommondepend}"
+		[[ -n ${kdedepend} ]] && DEPEND+=" ${kdedepend}"
+		[[ -n ${kderdepend} ]] && RDEPEND+=" ${kderdepend}"
 		;;
 	optional)
 		IUSE+=" aqua kde"
-		COMMONDEPEND+=" kde? ( ${kdecommondepend} )"
-		DEPEND+=" kde? ( ${kdedepend} )"
+		[[ -n ${kdecommondepend} ]] && COMMONDEPEND+=" kde? ( ${kdecommondepend} )"
+		[[ -n ${kdedepend} ]] && DEPEND+=" kde? ( ${kdedepend} )"
+		[[ -n ${kderdepend} ]] && RDEPEND+=" kde? ( ${kderdepend} )"
 		;;
 	*) ;;
 esac
 
-unset kdecommondepend kdedepend
+unset kdecommondepend kdedepend kderdepend
 
 debug-print "${LINENO} ${ECLASS} ${FUNCNAME}: COMMONDEPEND is ${COMMONDEPEND}"
 debug-print "${LINENO} ${ECLASS} ${FUNCNAME}: DEPEND (only) is ${DEPEND}"
@@ -453,15 +475,18 @@ case ${BUILD_TYPE} in
 			case ${KDEBASE} in
 				kde-base)
 					case ${PV} in
-						4.[45].8[05] | 4.[45].9[02568])
-							# Normally packed unstable releases
-							SRC_URI="mirror://kde/unstable/${PV}/src/${_kmname_pv}.tar.bz2" ;;
-						4.[45].[6-9]*)
-							# Repacked tarballs: need to depend on xz-utils to ensure that they can be unpacked
-							SRC_URI="http://dev.gentooexperimental.org/~alexxy/kde/${PV}/src/${_kmname_pv}.tar.xz"
-							DEPEND+=" app-arch/xz-utils"
+						4.[456].8[05] | 4.[456].9[023568])
+							# Unstable KDE SC releases
+							SRC_URI="mirror://kde/unstable/${PV}/src/${_kmname_pv}.tar.bz2"
 							;;
-						*)	SRC_URI="mirror://kde/stable/${PV}/src/${_kmname_pv}.tar.bz2" ;;
+						4.4.6)
+							# Only kdepim here
+							SRC_URI="mirror://kde/stable/kdepim-${PV}/src/${_kmname_pv}.tar.bz2"
+							;;
+						*)
+							# Stable KDE SC releases
+							SRC_URI="mirror://kde/stable/${PV}/src/${_kmname_pv}.tar.bz2"
+							;;
 					esac
 					;;
 				koffice)

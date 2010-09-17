@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/gnome-base/gnome-settings-daemon/gnome-settings-daemon-2.30.2-r1.ebuild,v 1.2 2010/07/20 01:51:31 jer Exp $
+# $Header: /var/cvsroot/gentoo-x86/gnome-base/gnome-settings-daemon/gnome-settings-daemon-2.30.2-r1.ebuild,v 1.6 2010/09/11 18:47:06 josejx Exp $
 
 EAPI="2"
 
@@ -13,7 +13,7 @@ SRC_URI="${SRC_URI}
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~x86-solaris"
+KEYWORDS="~alpha amd64 ~arm ~ia64 ppc ~ppc64 ~sh ~sparc x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~x86-solaris"
 IUSE="debug libnotify pulseaudio"
 
 RDEPEND=">=dev-libs/dbus-glib-0.74
@@ -25,7 +25,6 @@ RDEPEND=">=dev-libs/dbus-glib-0.74
 
 	x11-libs/libX11
 	x11-libs/libXi
-	x11-libs/libXrandr
 	x11-libs/libXext
 	x11-libs/libXxf86misc
 	>=x11-libs/libxklavier-5.0

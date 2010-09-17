@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-base/nouveau-drm/nouveau-drm-20100520.ebuild,v 1.1 2010/05/21 12:15:49 chithanh Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-base/nouveau-drm/nouveau-drm-20100520.ebuild,v 1.3 2010/09/17 13:39:01 chithanh Exp $
 
 EAPI=2
 
@@ -16,12 +16,12 @@ KEYWORDS="~amd64 ~x86"
 
 IUSE=""
 
-DEPEND="virtual/linux-sources"
+DEPEND=""
 RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/master
 
-CONFIG_CHECK="~BACKLIGHT_CLASS_DEVICE ~DEBUG_FS !DRM ~FB_CFB_FILLRECT ~FB_CFB_COPYAREA ~FB_CFB_IMAGEBLIT ~FRAMEBUFFER_CONSOLE ~!FB_NVIDIA ~!FB_RIVA ~!FB_UVESA ~!FB_VGA16 ~I2C_ALGOBIT ~VGA_ARB"
+CONFIG_CHECK="~ACPI_VIDEO ~BACKLIGHT_CLASS_DEVICE ~DEBUG_FS !DRM ~FB_CFB_FILLRECT ~FB_CFB_COPYAREA ~FB_CFB_IMAGEBLIT ~FRAMEBUFFER_CONSOLE ~!FB_NVIDIA ~!FB_RIVA ~!FB_UVESA ~!FB_VGA16 ~I2C_ALGOBIT ~VGA_ARB"
 
 pkg_setup() {
 	linux-mod_pkg_setup
