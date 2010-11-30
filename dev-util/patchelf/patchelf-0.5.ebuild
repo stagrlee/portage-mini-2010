@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-admin/patchelf/patchelf-0.5.ebuild,v 1.1 2010/11/14 12:53:31 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-util/patchelf/patchelf-0.5.ebuild,v 1.1 2010/11/30 17:22:26 jlec Exp $
 
 EAPI="3"
 
