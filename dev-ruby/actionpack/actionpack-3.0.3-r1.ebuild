@@ -1,6 +1,6 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-ruby/actionpack/actionpack-3.0.3.ebuild,v 1.3 2011/01/10 19:10:38 graaff Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-ruby/actionpack/actionpack-3.0.3-r1.ebuild,v 1.1 2011/01/10 19:11:41 graaff Exp $
 
 EAPI=2
 
