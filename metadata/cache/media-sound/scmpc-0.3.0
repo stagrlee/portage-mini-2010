@@ -1,9 +1,9 @@
 
 dev-libs/glib:2 dev-libs/confuse net-misc/curl
 0
-http://ngls.zakx.de/scmpc/scmpc-0.14.0_pre20080316.tar.bz2
+mirror://berlios/scmpc/scmpc-0.3.0.tar.bz2
 
-http://ngls.zakx.de/scmpc/
+http://scmpc.berlios.de/
 GPL-2
 a client for MPD which submits your tracks to last.fm
 ~amd64 ~x86
@@ -12,9 +12,9 @@ a client for MPD which submits your tracks to last.fm
 
 
 
-1
+4
 
-install postinst
+install postinst setup
 
 
 
