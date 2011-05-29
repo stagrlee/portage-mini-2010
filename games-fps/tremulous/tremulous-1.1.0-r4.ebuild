@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-fps/tremulous/tremulous-1.1.0-r4.ebuild,v 1.4 2010/09/09 09:44:15 tupone Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-fps/tremulous/tremulous-1.1.0-r4.ebuild,v 1.7 2011/05/18 19:30:04 mr_bones_ Exp $
 
 EAPI=2
 
@@ -16,11 +16,11 @@ SRC_URI="http://dl.trem-servers.com/${PN}-gentoopatches-${PV}-r5.zip
 
 LICENSE="GPL-2 CCPL-Attribution-ShareAlike-2.5"
 SLOT="0"
-KEYWORDS="amd64 ~ppc x86"
+KEYWORDS="amd64 ppc x86"
 IUSE="dedicated openal +opengl +vorbis"
 
 UIDEPEND="
-	media-libs/jpeg:0
+	virtual/jpeg
 	media-libs/libsdl[opengl?]
 	vorbis? ( media-libs/libogg media-libs/libvorbis )
 	openal? ( media-libs/openal )
@@ -102,8 +102,7 @@ src_install() {
 pkg_postinst() {
 	games_pkg_postinst
 
-	elog "If you want to add extra maps, download"
-	elog "http://tremulous.bricosoft.com/base/all-maps.tgz"
-	elog "and unpack it into ~/.tremulous/base for your user"
+	elog "If you want to add extra maps, you can download them"
+	elog "and unpack them into ~/.tremulous/base for your user"
 	elog "or into ${GAMES_DATADIR}/${PN}/base for all users."
 }

@@ -1,7 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-libs/libgksu/libgksu-2.0.12-r1.ebuild,v 1.5 2010/09/11 18:20:19 phajdan.jr Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-libs/libgksu/libgksu-2.0.12-r1.ebuild,v 1.10 2011/04/10 17:03:49 ssuominen Exp $
 
+EAPI="3"
 GCONF_DEBUG="no"
 
 inherit autotools eutils gnome2
@@ -12,10 +13,10 @@ SRC_URI="http://people.debian.org/~kov/gksu/${P}.tar.gz"
 
 LICENSE="LGPL-2"
 SLOT="2"
-KEYWORDS="~alpha amd64 ~arm ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc x86 ~x86-fbsd"
-IUSE="nls doc"
+KEYWORDS="alpha amd64 arm ia64 ~mips ppc ppc64 sh sparc x86 ~x86-fbsd"
+IUSE="nls doc static-libs"
 
-BOTH=">=x11-libs/gtk+-2.12
+BOTH=">=x11-libs/gtk+-2.12:2
 	>=gnome-base/gconf-2
 	>=gnome-base/gnome-keyring-0.4.4
 	x11-libs/startup-notification
@@ -31,14 +32,13 @@ DEPEND="${BOTH}
 RDEPEND="${BOTH}
 	app-admin/sudo"
 
-DOCS="AUTHORS ChangeLog"
-
 pkg_setup() {
-	G2CONF="${G2CONF} $(use_enable nls)"
+	DOCS="AUTHORS ChangeLog"
+	G2CONF="${G2CONF} $(use_enable nls) $(use_enable static-libs static)"
 }
 
-src_unpack() {
-	gnome2_src_unpack
+src_prepare() {
+	gnome2_src_prepare
 
 	# Fix compilation on bsd
 	epatch "${FILESDIR}"/${PN}-2.0.0-fbsd.patch
@@ -57,4 +57,10 @@ src_unpack() {
 
 	intltoolize --force --copy --automake || die "intltoolize failed"
 	eautoreconf
+}
+
+src_install() {
+	gnome2_src_install
+
+	find "${ED}" -name '*.la' -exec rm -f {} +
 }

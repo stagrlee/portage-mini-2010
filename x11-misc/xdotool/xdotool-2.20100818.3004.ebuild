@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-misc/xdotool/xdotool-2.20100818.3004.ebuild,v 1.1 2010/09/12 11:12:04 joker Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-misc/xdotool/xdotool-2.20100818.3004.ebuild,v 1.3 2010/10/29 21:52:42 joker Exp $
 
 EAPI=2
 
@@ -26,9 +26,13 @@ RDEPEND="${DEPEND}"
 # and add a full blown gnome just to run the tests.
 RESTRICT="test"
 
+src_prepare() {
+	sed -e "s/installheader post-install$/installheader/" \
+	    -i Makefile || die "sed failed"
+}
+
 src_compile() {
 	tc-export CC LD
-	export LDFLAGS="$(raw-ldflags)"
 	default
 }
 

@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-puzzle/ensemblist/ensemblist-040126.ebuild,v 1.8 2010/09/16 16:55:26 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-puzzle/ensemblist/ensemblist-040126.ebuild,v 1.10 2010/10/18 16:39:30 mr_bones_ Exp $
 
 EAPI=2
 inherit eutils games
@@ -24,7 +24,9 @@ DEPEND="x11-libs/libXmu
 PATCHES=( "${FILESDIR}"/${P}-build.patch )
 
 src_compile() {
-	emake DATADIR="\"${GAMES_DATADIR}\"/${PN}/datas" || die "emake failed"
+	emake DATADIR="\"${GAMES_DATADIR}\"/${PN}/datas" \
+		CFLAGSLD="${LDFLAGS}" \
+		|| die "emake failed"
 }
 
 src_install() {

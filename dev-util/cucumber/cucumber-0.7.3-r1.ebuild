@@ -1,8 +1,8 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-util/cucumber/cucumber-0.7.3-r1.ebuild,v 1.1 2010/09/12 12:25:11 graaff Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-util/cucumber/cucumber-0.7.3-r1.ebuild,v 1.5 2010/12/28 08:45:45 grobian Exp $
 
-EAPI=2
+EAPI=3
 USE_RUBY="ruby18 ree18"
 
 # Documentation task depends on sdoc which we currently don't have.
@@ -16,7 +16,7 @@ DESCRIPTION="Executable feature scenarios"
 HOMEPAGE="http://github.com/aslakhellesoy/cucumber/wikis"
 LICENSE="Ruby"
 
-KEYWORDS="~amd64 ~ppc ~ppc64 ~sparc ~x86"
+KEYWORDS="~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~x64-solaris ~x86-solaris"
 SLOT="0"
 IUSE="examples"
 
@@ -26,6 +26,7 @@ ruby_add_rdepend "
 	>=dev-ruby/builder-2.1.2
 	>=dev-ruby/diff-lcs-1.1.2
 	>=dev-ruby/gherkin-1.0.27
+	<dev-ruby/gherkin-2.0.0
 	>=dev-ruby/json-1.2.4
 	>=dev-ruby/term-ansicolor-1.0.4
 "
@@ -50,7 +51,7 @@ all_ruby_install() {
 	all_fakegem_install
 
 	if use examples; then
-		cp -pPR examples "${D}/usr/share/doc/${PF}" || die "Failed installing example files."
+		cp -pPR examples "${ED}/usr/share/doc/${PF}" || die "Failed installing example files."
 	fi
 }
 

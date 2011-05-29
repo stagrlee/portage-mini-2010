@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-sound/xmms2/xmms2-0.7-r2.ebuild,v 1.1 2010/07/01 08:22:28 slyfox Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-sound/xmms2/xmms2-0.7-r2.ebuild,v 1.12 2011/04/03 21:12:49 scarabeus Exp $
 
 EAPI=3
 
@@ -14,7 +14,7 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
 LICENSE="GPL-2 LGPL-2.1"
 
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="alpha amd64 ppc x86"
 
 IUSE="aac airplay +alsa ao asf avahi cdda curl cxx ffmpeg flac gvfs ices
 jack mac mlib-update mms +mad modplug mp3 musepack ofa oss
@@ -28,11 +28,12 @@ RDEPEND="server? (
 		airplay? ( dev-libs/openssl )
 		alsa? ( media-libs/alsa-lib )
 		ao? ( media-libs/libao )
-		avahi? ( net-dns/avahi )
-		cdda? ( >=media-libs/libdiscid-0.1.1
+		avahi? ( net-dns/avahi[mdnsresponder-compat] )
+		cdda? ( dev-libs/libcdio
+			>=media-libs/libdiscid-0.1.1
 			>=media-sound/cdparanoia-3.9.8 )
 		curl? ( >=net-misc/curl-7.15.1 )
-		ffmpeg? ( media-video/ffmpeg )
+		ffmpeg? ( virtual/ffmpeg )
 		flac? ( media-libs/flac )
 		gvfs? ( gnome-base/gnome-vfs )
 		ices? ( media-libs/libogg
@@ -40,7 +41,7 @@ RDEPEND="server? (
 			media-libs/libvorbis )
 		jack? ( >=media-sound/jack-audio-connection-kit-0.101.1 )
 		mac? ( media-sound/mac )
-		mms? ( media-video/ffmpeg
+		mms? ( virtual/ffmpeg
 			>=media-libs/libmms-0.3 )
 		modplug? ( media-libs/libmodplug )
 		mad? ( media-sound/madplay )
@@ -61,18 +62,19 @@ RDEPEND="server? (
 
 	>=dev-libs/glib-2.12.9
 	cxx? ( >=dev-libs/boost-1.32 )
-	mlib-update? ( app-admin/gamin )
 	perl? ( >=dev-lang/perl-5.8.8 )
 	python? ( =dev-lang/python-2* )
 	ruby? ( >=dev-lang/ruby-1.8.5 ) "
 
 DEPEND="${RDEPEND}
 	=dev-lang/python-2*
-	python? ( dev-python/pyrex )"
+	python? ( dev-python/pyrex )
+	dev-util/pkgconfig"
 
 S="${WORKDIR}/${MY_P}"
 
-PATCHES=("${FILESDIR}/xmms2-0.7DrNo-windres-build-fix.patch")
+PATCHES=("${FILESDIR}/xmms2-0.7DrNo-windres-build-fix.patch"
+	"${FILESDIR}/xmms2-0.7DrNo-missing-protos.patch")
 
 # use_enable() is taken as proto
 # $1 - useflag

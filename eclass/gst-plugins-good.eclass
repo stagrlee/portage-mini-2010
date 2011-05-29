@@ -1,6 +1,6 @@
 # Copyright 1999-2004 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/gst-plugins-good.eclass,v 1.21 2010/07/30 11:08:44 leio Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/gst-plugins-good.eclass,v 1.24 2011/05/04 03:19:27 leio Exp $
 
 # Author : foser <foser@gentoo.org>, zaheerm <zaheerm@gentoo.org>
 
@@ -30,19 +30,18 @@ MY_P=${MY_PN}-${PV}
 # sys/ plugins; rest is split plugin options in order of ./configure --help output.
 # Good ways of validation are seeing diff of old and new configure.ac, and ./configure --help
 #
-# This list is current to gst-plugins-good-0.10.23:
+# This list is current to gst-plugins-good-0.10.28:
 my_gst_plugins_good="gconftool zlib bz2
-directsound oss sunaudio osx_audio osx_video gst_v4l2 x xshm xvideo
+directsound oss oss4 sunaudio osx_audio osx_video gst_v4l2 x xshm xvideo
 aalib aalibtest annodex cairo esd esdtest flac gconf gdk_pixbuf hal jpeg
 libcaca libdv libpng pulse dv1394 shout2 shout2test soup speex taglib wavpack"
 
 # When adding conditionals like below, be careful about having leading spaces in concat
 
-# sys/oss4 moved here since 0.10.23
-if version_is_at_least "0.10.23"; then
-	my_gst_plugins_good+=" oss4"
+# ext/jack moved here since 0.10.27
+if version_is_at_least "0.10.27"; then
+	my_gst_plugins_good+=" jack"
 fi
-
 
 #SRC_URI="mirror://gnome/sources/gst-plugins/${PV_MAJ_MIN}/${MY_P}.tar.bz2"
 SRC_URI="http://gstreamer.freedesktop.org/src/gst-plugins-good/${MY_P}.tar.bz2"
@@ -55,6 +54,15 @@ RDEPEND="=media-libs/gst-plugins-base-0.10*"
 DEPEND="${RDEPEND}
 	>=sys-apps/sed-4
 	dev-util/pkgconfig"
+
+# -good-0.10.24 uses orc optionally instead of liboil unconditionally.
+# While <0.10.24 configure always checks for liboil, it is linked to only by non-split
+# plugins in gst/, so we only builddep for all old packages, and have a RDEPEND in old
+# versions of media-libs/gst-plugins-good
+if ! version_is_at_least "0.10.24"; then
+DEPEND="${DEPEND} >=dev-libs/liboil-0.3.8"
+fi
+
 RESTRICT=test
 fi
 

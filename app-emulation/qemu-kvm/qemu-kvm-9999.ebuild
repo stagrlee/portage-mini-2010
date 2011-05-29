@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/qemu-kvm/qemu-kvm-9999.ebuild,v 1.12 2010/09/06 11:07:09 jmbsvicetto Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/qemu-kvm/qemu-kvm-9999.ebuild,v 1.16 2011/03/28 03:31:46 flameeyes Exp $
 
 EAPI="2"
 
@@ -9,7 +9,7 @@ if [[ ${PV} = *9999* ]]; then
 	GIT_ECLASS="git"
 fi
 
-inherit eutils flag-o-matic ${GIT_ECLASS} linux-info toolchain-funcs
+inherit eutils flag-o-matic ${GIT_ECLASS} linux-info toolchain-funcs multilib
 
 if [[ ${PV} = *9999* ]]; then
 	SRC_URI=""
@@ -27,7 +27,7 @@ LICENSE="GPL-2"
 SLOT="0"
 # xen is disabled until the deps are fixed
 IUSE="+aio alsa bluetooth brltty curl esd fdt hardened jpeg ncurses \
-png pulseaudio qemu-ifup sasl sdl ssl static vde xen"
+png pulseaudio qemu-ifup rbd sasl sdl ssl spice static vde vhost-net xen"
 
 # Updated targets to use the only supported upstream target - x86_64-softmmu
 COMMON_TARGETS=""
@@ -63,13 +63,15 @@ RDEPEND="
 	curl? ( net-misc/curl )
 	esd? ( media-sound/esound )
 	fdt? ( sys-apps/dtc )
-	jpeg? ( media-libs/jpeg )
+	jpeg? ( virtual/jpeg )
 	ncurses? ( sys-libs/ncurses )
 	png? ( media-libs/libpng )
 	pulseaudio? ( media-sound/pulseaudio )
 	qemu-ifup? ( sys-apps/iproute2 net-misc/bridge-utils )
+	rbd? ( sys-cluster/ceph )
 	sasl? ( dev-libs/cyrus-sasl )
 	sdl? ( >=media-libs/libsdl-1.2.11[X] )
+	spice? ( app-emulation/spice )
 	ssl? ( net-libs/gnutls )
 	vde? ( net-misc/vde )
 	xen? ( app-emulation/xen )
@@ -77,7 +79,7 @@ RDEPEND="
 
 DEPEND="${RDEPEND}
 	app-text/texi2html
-	>=sys-kernel/linux-headers-2.6.29
+	>=sys-kernel/linux-headers-2.6.35
 	ssl? ( dev-util/pkgconfig )
 "
 
@@ -90,8 +92,8 @@ kvm_kern_warn() {
 }
 
 pkg_setup() {
-
 	local counter="0" check
+
 	use qemu_softmmu_targets_x86_64 || ewarn "You disabled default target QEMU_SOFTMMU_TARGETS=x86_64"
 	for check in ${IUSE_SOFTMMU_TARGETS} ; do
 		use "qemu_softmmu_targets_${check}" && counter="1"
@@ -108,6 +110,9 @@ pkg_setup() {
 			kvm_kern_warn
 		elif ! linux_chkconfig_present KVM; then
 			kvm_kern_warn
+		fi
+		if use vhost-net && ! linux_chkconfig_present VHOST_NET ; then
+			ewarn "You have to enable CONFIG_VHOST_NET in the kernel to get vhost-net support."
 		fi
 	fi
 
@@ -172,10 +177,13 @@ src_configure() {
 	conf_opts="${conf_opts} $(use_enable jpeg vnc-jpeg)"
 	conf_opts="${conf_opts} $(use_enable ncurses curses)"
 	conf_opts="${conf_opts} $(use_enable png vnc-png)"
+	conf_opts="${conf_opts} $(use_enable rbd)"
 	conf_opts="${conf_opts} $(use_enable sasl vnc-sasl)"
 	conf_opts="${conf_opts} $(use_enable sdl)"
 	conf_opts="${conf_opts} $(use_enable ssl vnc-tls)"
+	conf_opts="${conf_opts} $(use_enable spice)"
 	conf_opts="${conf_opts} $(use_enable vde)"
+	conf_opts="${conf_opts} $(use_enable vhost-net)"
 	conf_opts="${conf_opts} $(use_enable xen)"
 #	conf_opts="${conf_opts} --disable-xen"
 	conf_opts="${conf_opts} --disable-darwin-user --disable-bsd-user"
@@ -188,6 +196,7 @@ src_configure() {
 	use sdl && audio_opts="sdl ${audio_opts}"
 	./configure --prefix=/usr \
 		--disable-strip \
+		--disable-werror \
 		--enable-kvm \
 		--enable-nptl \
 		--enable-uuid \
@@ -208,7 +217,7 @@ src_configure() {
 src_install() {
 	emake DESTDIR="${D}" install || die "make install failed"
 
-	insinto /etc/udev/rules.d/
+	insinto /$(get_libdir)/udev/rules.d/
 	doins kvm/scripts/65-kvm.rules || die
 
 	if use qemu-ifup; then
@@ -217,10 +226,6 @@ src_install() {
 		doins kvm/scripts/qemu-ifup || die
 	fi
 
-	dodoc Changelog MAINTAINERS TODO pci-ids.txt || die
-	newdoc pc-bios/README README.pc-bios || die
-	dohtml qemu-doc.html qemu-tech.html || die
-
 	if use qemu_softmmu_targets_x86_64 ; then
 		dobin "${FILESDIR}"/qemu-kvm
 		dosym /usr/bin/qemu-kvm /usr/bin/kvm
@@ -228,6 +233,10 @@ src_install() {
 		elog "You disabled QEMU_SOFTMMU_TARGETS=x86_64, this disables install"
 		elog "of /usr/bin/qemu-kvm and /usr/bin/kvm"
 	fi
+
+	dodoc Changelog MAINTAINERS TODO pci-ids.txt || die
+	newdoc pc-bios/README README.pc-bios || die
+	dohtml qemu-doc.html qemu-tech.html || die
 }
 
 pkg_postinst() {

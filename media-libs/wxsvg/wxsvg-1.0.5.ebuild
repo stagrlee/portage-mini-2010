@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/wxsvg/wxsvg-1.0.5.ebuild,v 1.1 2010/08/14 03:01:05 dirtyepic Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/wxsvg/wxsvg-1.0.5.ebuild,v 1.4 2011/04/03 21:37:27 scarabeus Exp $
 
 EAPI=2
 WX_GTK_VER="2.8"
@@ -13,7 +13,7 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
 LICENSE="wxWinLL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86"
+KEYWORDS="amd64 ~ppc x86"
 IUSE=""
 
 RDEPEND="x11-libs/wxGTK:2.8[X]
@@ -23,7 +23,7 @@ RDEPEND="x11-libs/wxGTK:2.8[X]
 	>=media-libs/fontconfig-2.4
 	>=media-libs/freetype-2.2.0
 	>=media-libs/libart_lgpl-2.3.17
-	>=media-video/ffmpeg-0.4.9_p20080326
+	virtual/ffmpeg
 	>=x11-libs/pango-1.14.9"
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig"

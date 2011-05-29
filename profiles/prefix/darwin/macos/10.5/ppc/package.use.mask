@@ -1,14 +1,14 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/prefix/darwin/macos/10.5/ppc/package.use.mask,v 1.4 2010/06/16 06:48:51 grobian Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/prefix/darwin/macos/10.5/ppc/package.use.mask,v 1.7 2011/05/01 15:32:07 grobian Exp $
 
-# Elias Pipping <pipping@gentoo.org> (21 Nov 2007)
-# generating documentation fails for hugs98 because of too many errors
-dev-lang/hugs98 doc
+# Joseph Jezak <JoseJX@gentoo.org> (25 Jan 2011)
+# x11-libs/qt-webkit doesn't have a working JIT yet on PowerPC
+x11-libs/qt-webkit jit
 
-# Elias Pipping <pipping@gentoo.org> (10 Nov 2007)
-# ruby fails to compile with USE=threads
-dev-lang/ruby threads
+# Tomas Touceda <chiiph@gentoo.org> (21 Nov 2010)
+# JIT isn't implemented on ppc: bug #346167
+x11-libs/qt-script jit
 
 # Elias Pipping <pipping@gentoo.org> (13 Sep 2007)
 # mc fails to compile with USE=slang (unicode implies slang)

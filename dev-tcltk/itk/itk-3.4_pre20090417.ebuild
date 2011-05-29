@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-tcltk/itk/itk-3.4_pre20090417.ebuild,v 1.4 2010/06/18 17:33:07 bicatali Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-tcltk/itk/itk-3.4_pre20090417.ebuild,v 1.9 2011/05/28 11:39:20 ranger Exp $
 
 EAPI="3"
 inherit multilib versionator
@@ -14,15 +14,17 @@ SRC_URI="mirror://gentoo/${MY_P}.tar.gz"
 IUSE=""
 SLOT="0"
 LICENSE="BSD"
-KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~alpha amd64 ~ia64 ppc ~sparc x86 ~amd64-linux ~x86-linux"
 
-DEPEND="dev-lang/tk
+DEPEND="
+	dev-lang/tk
 	~dev-tcltk/itcl-3.4_beta1"
+RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${MY_PN}/${PN}"
 
 src_compile() {
-	econf || die "econf failed"
+	sed 's:-pipe::g' -i Makefile || die
 	emake CFLAGS_DEFAULT="${CFLAGS}" || die "emake failed"
 }
 

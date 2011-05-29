@@ -1,37 +1,38 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-libs/lapack-reference/lapack-reference-3.2.1-r1.ebuild,v 1.1 2010/03/07 19:31:08 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-libs/lapack-reference/lapack-reference-3.2.1-r1.ebuild,v 1.7 2011/05/28 11:14:37 jlec Exp $
 
-EAPI="3"
+EAPI=3
 
-inherit eutils autotools flag-o-matic fortran multilib
+inherit autotools eutils flag-o-matic multilib toolchain-funcs
 
 MyPN="${PN/-reference/}"
 PATCH_V="3.2.1"
 
 DESCRIPTION="FORTRAN reference implementation of LAPACK Linear Algebra PACKage"
 HOMEPAGE="http://www.netlib.org/lapack/index.html"
-SRC_URI="mirror://gentoo/${MyPN}-${PV}.tgz
+SRC_URI="
+	mirror://gentoo/${MyPN}-${PV}.tgz
 	mirror://gentoo/${PN}-${PATCH_V}-autotools.patch.bz2"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~s390 ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos"
+KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~s390 ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos"
 IUSE="doc"
 
-DEPEND="virtual/blas
-	dev-util/pkgconfig
-	app-admin/eselect-lapack"
-RDEPEND="virtual/blas
+RDEPEND="
 	app-admin/eselect-lapack
+	virtual/blas
+	virtual/fortran"
+DEPEND="
+	${RDEPEND}
+	dev-util/pkgconfig
 	doc? ( app-doc/lapack-docs )"
 
 S="${WORKDIR}/${MyPN}-${PV}"
 
 pkg_setup() {
-	FORTRAN="g77 gfortran ifc"
-	fortran_pkg_setup
-	if  [[ ${FORTRANC} == if* ]]; then
+	if  [[ $(tc-getFC) =~ if ]]; then
 		ewarn "Using Intel Fortran at your own risk"
 		export LDFLAGS="$(raw-ldflags)"
 		export NOOPT_FFLAGS=-O
@@ -45,7 +46,7 @@ src_prepare() {
 	eautoreconf
 
 	# set up the testing routines
-	sed -e "s:g77:${FORTRANC}:" \
+	sed -e "s:g77:$(tc-getFC):" \
 		-e "s:-funroll-all-loops -O3:${FFLAGS} $(pkg-config --cflags blas):" \
 		-e "s:LOADOPTS =:LOADOPTS = ${LDFLAGS} $(pkg-config --cflags blas):" \
 		-e "s:../../blas\$(PLAT).a:$(pkg-config --libs blas):" \
@@ -64,8 +65,7 @@ src_prepare() {
 src_configure() {
 	econf \
 		--libdir="${EPREFIX}/usr/$(get_libdir)/lapack/reference" \
-		--with-blas="$(pkg-config --libs blas)" \
-		|| die "econf failed"
+		--with-blas="$(pkg-config --libs blas)"
 }
 
 src_install() {

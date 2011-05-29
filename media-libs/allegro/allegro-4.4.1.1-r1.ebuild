@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/allegro/allegro-4.4.1.1-r1.ebuild,v 1.7 2010/06/26 13:47:01 nixnut Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/allegro/allegro-4.4.1.1-r1.ebuild,v 1.11 2011/04/02 11:52:01 armin76 Exp $
 
 EAPI=2
 CMAKE_IN_SOURCE_BUILD=1
@@ -12,13 +12,13 @@ SRC_URI="mirror://sourceforge/alleg/${P}.tar.gz"
 
 LICENSE="Allegro as-is GPL-2 ZLIB"
 SLOT="0"
-KEYWORDS="alpha amd64 ia64 ppc ppc64 sparc x86"
+KEYWORDS="alpha amd64 ppc ppc64 sparc x86"
 IUSE="alsa fbcon jack jpeg opengl oss png svga test vga vorbis X"
 
 RDEPEND="alsa? ( media-libs/alsa-lib )
 	jack? ( media-sound/jack-audio-connection-kit )
-	jpeg? ( >=media-libs/jpeg-6b )
-	png? ( >=media-libs/libpng-1.2 )
+	jpeg? ( virtual/jpeg )
+	png? ( >=media-libs/libpng-1.4 )
 	svga? ( media-libs/svgalib )
 	vorbis? ( media-libs/libvorbis )
 	X? (
@@ -73,6 +73,7 @@ src_configure() {
 		$(cmake-utils_use_want vorbis LOGG)
 		$(cmake-utils_use_want oss)
 		$(cmake-utils_use_want test TESTS)
+		$(cmake-utils_use_want X TOOLS)
 		$(cmake-utils_use_want X X11)
 		)
 
@@ -102,4 +103,7 @@ src_install() {
 		newicon misc/icon.png ${PN}.png
 		make_desktop_entry ${PN}-setup "Allegro Setup" ${PN} "Settings"
 	fi
+
+	rm -f "${D}"/usr/share/man/man3/init_dialog.3* #176020
+	newman docs/man/init_dialog.3 allegro_init_dialog.3
 }

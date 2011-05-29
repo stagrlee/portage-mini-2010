@@ -1,9 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-action/powermanga/powermanga-0.90.ebuild,v 1.7 2010/03/19 20:35:17 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-action/powermanga/powermanga-0.90.ebuild,v 1.9 2011/05/19 06:02:58 tupone Exp $
 
 EAPI=2
-inherit eutils games
+inherit eutils autotools games
 
 DESCRIPTION="An arcade 2D shoot-em-up game"
 HOMEPAGE="http://linux.tlk.fr/"
@@ -14,7 +14,7 @@ SLOT="0"
 KEYWORDS="amd64 ppc x86"
 IUSE=""
 
-DEPEND=">=media-libs/libsdl-0.11.0
+DEPEND=">=media-libs/libsdl-0.11.0[audio,joystick,video]
 	media-libs/libpng
 	x11-libs/libXext
 	x11-libs/libXxf86dga
@@ -32,6 +32,8 @@ src_prepare() {
 		#endif
 		EOF
 	done
+	epatch "${FILESDIR}"/${P}-underlink.patch
+	eautoreconf
 }
 
 src_configure() {
@@ -46,7 +48,7 @@ src_install() {
 	insinto "${GAMES_DATADIR}/powermanga"
 	doins -r data sounds graphics texts || die "doins failed"
 
-	find "${D}${GAMES_DATADIR}/powermanga/" -name "Makefil*" -exec rm -f \{\} \;
+	find "${D}${GAMES_DATADIR}/powermanga/" -name "Makefil*" -exec rm -f \{\} +
 
 	insinto /var/games
 	local f

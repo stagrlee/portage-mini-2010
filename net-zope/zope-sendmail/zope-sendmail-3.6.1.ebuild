@@ -1,11 +1,11 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-zope/zope-sendmail/zope-sendmail-3.6.1.ebuild,v 1.5 2010/06/05 21:16:10 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-zope/zope-sendmail/zope-sendmail-3.6.1.ebuild,v 1.7 2010/12/05 19:02:16 arfrever Exp $
 
 EAPI="3"
 PYTHON_DEPEND="2"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
 
 inherit distutils
 
@@ -14,7 +14,7 @@ MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Zope sendmail"
 HOMEPAGE="http://pypi.python.org/pypi/zope.sendmail"
-SRC_URI="http://pypi.python.org/packages/source/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
+SRC_URI="mirror://pypi/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
 
 LICENSE="ZPL"
 SLOT="0"

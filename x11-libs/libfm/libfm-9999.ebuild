@@ -1,45 +1,86 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-libs/libfm/libfm-9999.ebuild,v 1.2 2010/07/08 09:50:19 hwoarang Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-libs/libfm/libfm-9999.ebuild,v 1.14 2011/04/11 10:51:47 hwoarang Exp $
 
-EAPI="2"
+EAPI=2
 
-inherit autotools eutils git
+if [[ ${PV} == 9999 ]]; then
+	EGIT_REPO_URI="git://pcmanfm.git.sourceforge.net/gitroot/pcmanfm/${PN}"
+	inherit autotools git
+	SRC_URI=""
+else
+	inherit autotools
+	SRC_URI="http://dev.gentoo.org/~hwoarang/distfiles/${P}.tar.gz"
+	KEYWORDS="~amd64 ~arm ~ppc ~x86"
+	S="${WORKDIR}"
+fi
 
-DESCRIPTION="Library for file management"
+inherit fdo-mime
+
+DESCRIPTION="A library for file management"
 HOMEPAGE="http://pcmanfm.sourceforge.net/"
-EGIT_REPO_URI="git://pcmanfm.git.sourceforge.net/gitroot/pcmanfm/${PN}"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS=""
-IUSE="debug demo"
+IUSE="debug doc examples udev"
 
-RDEPEND="dev-libs/glib:2
-	x11-libs/gtk+:2
+COMMON_DEPEND=">=dev-libs/glib-2.18:2
+	>=x11-libs/gtk+-2.16:2
+	udev? ( dev-libs/dbus-glib )
 	>=lxde-base/menu-cache-0.3.2"
-DEPEND="${RDEPEND}
+RDEPEND="${COMMON_DEPEND}
+	x11-misc/shared-mime-info
+	udev? ( sys-fs/udisks )"
+DEPEND="${COMMON_DEPEND}
+	doc? (
+		dev-util/gtk-doc
+		dev-util/gtk-doc-am
+	)
 	>=dev-util/intltool-0.40
 	dev-util/pkgconfig
 	sys-devel/gettext"
 
 src_prepare() {
-	for file in app-chooser.ui ask-rename.ui file-prop.ui preferred-apps.ui \
-		progress.ui;do
-			echo "data/ui/${file}" >> po/POTFILES.in
-	done
-	echo "src/udisks/g-udisks-device.c" >> po/POTFILES.in
-	eautoreconf
-	einfo "Running intltoolize ..."
+	if ! use doc; then
+		sed -ie '/SUBDIRS=/s#docs##' "${S}"/Makefile.am || die "sed failed"
+		sed -ie '/^[[:space:]]*docs/d' configure.ac || die "sed failed"
+	else
+		gtkdocize --copy || die
+	fi
 	intltoolize --force --copy --automake || die
-	strip-linguas -i "${S}/po"
+	#disable unused translations. Bug #356029
+	for trans in app-chooser ask-rename exec-file file-prop preferred-apps \
+		progress;do
+		echo "data/ui/"${trans}.ui >> po/POTFILES.in
+	done
+	eautoreconf
 }
 
 src_configure() {
-	econf --sysconfdir=/etc $(use_enable debug) $(use_enable demo)
+	econf \
+		--sysconfdir=/etc \
+		--disable-dependency-tracking \
+		--disable-static \
+		$(use_enable udev udisks) \
+		$(use_enable examples demo) \
+		$(use_enable debug) \
+		# Documentation fails to build at the moment
+		# $(use_enable doc gtk-doc) \
+		# $(use_enable doc gtk-doc-html) \
+		--with-html-dir=/usr/share/doc/${PF}/html
 }
 
 src_install() {
 	emake DESTDIR="${D}" install || die
-	dodoc AUTHORS TODO || die
+	dodoc AUTHORS TODO
+
+	find "${D}" -name '*.la' -exec rm -f '{}' +
+}
+
+pkg_postinst() {
+	fdo-mime_mime_database_update
+}
+
+pkg_postrm() {
+	fdo-mime_mime_database_update
 }

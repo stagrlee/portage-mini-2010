@@ -1,13 +1,10 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/cyana/cyana-2.1.ebuild,v 1.1 2010/03/07 10:07:09 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/cyana/cyana-2.1.ebuild,v 1.7 2011/04/06 13:46:51 jlec Exp $
 
 EAPI="3"
 
-inherit eutils fortran toolchain-funcs
-
-# we need libg2c for gfortran # 136988
-FORTRAN="ifc"
+inherit eutils toolchain-funcs
 
 DESCRIPTION="Combined assignment and dynamics algorithm for NMR applications"
 HOMEPAGE="http://www.las.jp/english/products/s08_cyana/index.html"
@@ -20,6 +17,10 @@ IUSE="examples"
 
 RESTRICT="fetch"
 
+# we need libg2c for gfortran # 136988
+DEPEND="dev-lang/ifc"
+RDEPEND="${DEPEND}"
+
 pkg_nofetch() {
 	elog "Please visit"
 	elog "http://www.las.jp/english/products/s08_cyana/licenses.html"
@@ -28,22 +29,27 @@ pkg_nofetch() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PV}-typo.patch
-	epatch "${FILESDIR}"/${PV}-exec.patch
+	epatch \
+		"${FILESDIR}"/${PV}-typo.patch \
+		"${FILESDIR}"/${PV}-exec.patch \
+		"${FILESDIR}"/${PV}-expire.patch \
+		"${FILESDIR}"/${PV}-xiar.patch
 
 	cat >> etc/config <<- EOF
 	VERSION=${PV}
 	SHELL=${EPREFIX}/bin/sh
-	FC=${FORTRANC}
-	FFLAGS=${FFLAGS}
-	FFLAGS2=${FFLAGS}
+	FC=ifort
+	FFLAGS=${FFLAGS} -openmp -threads
+	FFLAGS2=${FFLAGS} -openmp -threads
 	CC=$(tc-getCC)
+	AR=xiar
+	RANLIB=ranlib
 	FORK=g77fork.o
-	LDFLAGS=${LDFLAGS}
-	LIBS=-pthread -lpthread -liomp5
+	LDFLAGS=${LDFLAGS} -reentrancy threaded -openmp
+	LIBS=
 	EOF
 
-	if [[ ${FORTRANC} == gfortran ]]; then
+	if [[ $(tc-getFC) =~ gfortran ]]; then
 		cat >> etc/config <<- EOF
 		DEFS=-Dgfortran
 		SYSTEM=gfortran
@@ -63,9 +69,8 @@ src_compile() {
 }
 
 src_install() {
-	source etc/config
 	dobin cyana{job,table,filter,clean} || die
-	newbin src/${PN}/${PN}exe.${SYSTEM} ${PN} || die
+	newbin src/${PN}/${PN}exe.* ${PN} || die
 	insinto /usr/share/${PN}
 	doins -r lib macro help || die
 	use examples && doins -r demo

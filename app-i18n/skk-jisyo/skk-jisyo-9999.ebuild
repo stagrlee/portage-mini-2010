@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-i18n/skk-jisyo/skk-jisyo-9999.ebuild,v 1.2 2009/09/14 12:21:04 flameeyes Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-i18n/skk-jisyo/skk-jisyo-9999.ebuild,v 1.4 2011/02/13 19:13:25 armin76 Exp $
 
 ECVS_SERVER="openlab.jp:/circus/cvsroot"
 ECVS_USER="guest"
@@ -15,11 +15,13 @@ SRC_URI=""
 
 LICENSE="GPL-2 public-domain freedist"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~ppc ~sparc ~x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 IUSE="cdb"
 
-DEPEND="sys-apps/gawk
-	cdb? ( dev-db/cdb )
+COMMON_DEPEND="cdb? ( dev-db/cdb )"
+DEPEND="${COMMON_DEPEND}
+	sys-apps/gawk"
+RDEPEND="${COMMON_DEPEND}
 	!app-i18n/skk-jisyo-extra
 	!app-i18n/skk-jisyo-cdb"
 

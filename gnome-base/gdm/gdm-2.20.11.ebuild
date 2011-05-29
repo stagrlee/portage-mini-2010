@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/gnome-base/gdm/gdm-2.20.11.ebuild,v 1.5 2010/09/11 18:47:25 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/gnome-base/gdm/gdm-2.20.11.ebuild,v 1.11 2011/03/16 10:25:58 nirbheek Exp $
 
 EAPI="2"
 
@@ -11,7 +11,7 @@ HOMEPAGE="http://www.gnome.org/projects/gdm/"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~ia64 ppc ~ppc64 ~sh ~sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm ia64 ppc ppc64 sh sparc x86 ~x86-fbsd"
 
 IUSE_LIBC="elibc_glibc"
 IUSE="accessibility afs branding +consolekit dmx ipv6 gnome-keyring pam remote selinux tcpd xinerama $IUSE_LIBC"
@@ -23,13 +23,13 @@ SRC_URI="${SRC_URI}
 	mirror://gentoo/${GDM_EXTRA}.tar.bz2
 	branding? ( mirror://gentoo/gentoo-gdm-theme-r3.tar.bz2 )"
 
-RDEPEND=">=dev-libs/glib-2.12
-	>=x11-libs/gtk+-2.6
+RDEPEND=">=dev-libs/glib-2.12:2
+	>=x11-libs/gtk+-2.6:2
 	>=x11-libs/pango-1.3
-	>=gnome-base/libglade-2
+	>=gnome-base/libglade-2:2.0
 	>=gnome-base/libgnomecanvas-2
-	>=gnome-base/librsvg-1.1.1
-	>=dev-libs/libxml2-2.4.12
+	>=gnome-base/librsvg-1.1.1:2
+	>=dev-libs/libxml2-2.4.12:2
 	>=media-libs/libart_lgpl-2.3.11
 	x11-libs/gksu
 	x11-libs/libXi
@@ -62,7 +62,6 @@ DEPEND="${RDEPEND}
 	>=dev-util/pkgconfig-0.19
 	>=app-text/scrollkeeper-0.1.4
 	>=app-text/gnome-doc-utils-0.3.2"
-PDEPEND="pam? ( >=sys-auth/pambase-20090430[consolekit=,gnome-keyring=] )"
 
 DOCS="AUTHORS ChangeLog NEWS README TODO"
 
@@ -74,9 +73,9 @@ pkg_setup() {
 		--with-xdmcp=yes
 		--with-pam-prefix=/etc
 		SOUND_PROGRAM=/usr/bin/gdmplay
-		$(use_enable accessibility xevie)
 		$(use_enable ipv6)
 		$(use_enable remote secureremote)
+		$(use_with accessibility xevie)
 		$(use_with consolekit console-kit)
 		$(use_with dmx)
 		$(use_with selinux)

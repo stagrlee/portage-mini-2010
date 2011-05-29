@@ -1,6 +1,10 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-p2p/bittorrent/bittorrent-4.4.0-r1.ebuild,v 1.2 2008/01/17 14:15:30 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-p2p/bittorrent/bittorrent-4.4.0-r1.ebuild,v 1.5 2011/04/05 21:08:34 arfrever Exp $
+
+EAPI=3
+
+PYTHON_DEPEND="2"
 
 inherit distutils fdo-mime eutils
 
@@ -17,9 +21,8 @@ SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ppc ppc64 s390 sh sparc x86"
 IUSE="gtk"
 
-RDEPEND=">=dev-lang/python-2.3
-	gtk? (
-		>=x11-libs/gtk+-2.6
+RDEPEND="gtk? (
+		>=x11-libs/gtk+-2.6:2
 		>=dev-python/pygtk-2.6
 	)
 	>=dev-python/pycrypto-2.0"
@@ -31,9 +34,7 @@ DEPEND="${RDEPEND}
 DOCS="TRACKERLESS.txt public.key credits.txt"
 PYTHON_MODNAME="BitTorrent"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
+src_prepare() {
 	# path for documentation is in lowercase #109743
 	sed -i -r "s:(dp.*appdir):\1.lower():" BitTorrent/platform.py
 }

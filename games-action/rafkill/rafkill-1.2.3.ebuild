@@ -1,9 +1,9 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-action/rafkill/rafkill-1.2.3.ebuild,v 1.4 2009/11/23 01:40:57 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-action/rafkill/rafkill-1.2.3.ebuild,v 1.8 2011/04/02 11:44:05 armin76 Exp $
 
 EAPI=2
-inherit eutils toolchain-funcs games
+inherit eutils scons-utils games
 
 DESCRIPTION="space shoot-em-up game"
 HOMEPAGE="http://raptorv2.sourceforge.net/"
@@ -11,19 +11,18 @@ SRC_URI="mirror://sourceforge/raptorv2/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 ia64 ppc x86"
+KEYWORDS="alpha amd64 ppc x86"
 IUSE=""
 
-RDEPEND="media-libs/allegro
+DEPEND="<media-libs/allegro-5
 	media-libs/aldumb"
-DEPEND="${RDEPEND}
-	dev-util/scons"
 
 src_prepare() {
 	rm -f {data,music}/.sconsign
 	epatch \
 		"${FILESDIR}"/${P}-build.patch \
-		"${FILESDIR}"/${P}-gcc43.patch
+		"${FILESDIR}"/${P}-gcc43.patch \
+		"${FILESDIR}"/${P}-ldflags.patch
 	sed -i \
 		-e "/^#define INSTALL_DIR/s:\.:${GAMES_DATADIR}:" \
 		src/defs.cpp \
@@ -31,9 +30,7 @@ src_prepare() {
 }
 
 src_compile() {
-	local sconsopts=$(echo "${MAKEOPTS}" | sed -ne "/-j/ { s/.*\(-j[[:space:]]*[0-9]\+\).*/\1/; p }")
-
-	scons ${sconsopts} || die "scons failed"
+	escons || die
 }
 
 src_install() {

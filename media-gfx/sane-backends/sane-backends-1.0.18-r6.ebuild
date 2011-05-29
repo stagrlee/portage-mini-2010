@@ -1,17 +1,17 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-gfx/sane-backends/sane-backends-1.0.18-r6.ebuild,v 1.13 2009/06/18 20:07:03 phosphan Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/sane-backends/sane-backends-1.0.18-r6.ebuild,v 1.15 2011/01/21 20:52:27 phosphan Exp $
 
 EAPI="1"
 
-inherit eutils flag-o-matic
+inherit eutils flag-o-matic multilib
 
 IUSE="usb gphoto2 ipv6 v4l doc"
 
 DESCRIPTION="Scanner Access Now Easy - Backends"
 HOMEPAGE="http://www.sane-project.org/"
 
-RDEPEND=">=media-libs/jpeg-6b
+RDEPEND="virtual/jpeg
 	amd64? ( sys-libs/libieee1284 )
 	x86? ( sys-libs/libieee1284 )
 	usb? ( dev-libs/libusb:0 )
@@ -140,8 +140,8 @@ src_install () {
 		cd ../..
 	fi
 	cd tools/udev
-	dodir /etc/udev/rules.d
-	insinto /etc/udev/rules.d
+	dodir /$(get_libdir)/udev/rules.d
+	insinto /$(get_libdir)/udev/rules.d
 	newins libsane.rules 70-libsane.rules
 	cd ../..
 	dodoc NEWS AUTHORS ChangeLog* README README.linux

@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/molmol/molmol-2k_p2-r2.ebuild,v 1.2 2010/04/23 14:19:41 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/molmol/molmol-2k_p2-r2.ebuild,v 1.4 2010/11/08 17:14:25 xarthisius Exp $
 
 EAPI="3"
 
@@ -19,12 +19,12 @@ KEYWORDS="~amd64 ~ppc ~x86 ~amd64-linux ~x86-linux"
 IUSE=""
 DEPEND="
 	media-libs/mesa[motif]
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/tiff
 	media-libs/libpng
 	sys-libs/zlib
 	x11-apps/xdpyinfo
-	x11-libs/openmotif
+	>=x11-libs/openmotif-2.3:0
 	x11-libs/libXpm"
 # Run-time dependencies, same as DEPEND if RDEPEND isn't defined:
 #RDEPEND=""

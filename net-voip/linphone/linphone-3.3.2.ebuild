@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-voip/linphone/linphone-3.3.2.ebuild,v 1.1 2010/07/23 09:37:03 pva Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-voip/linphone/linphone-3.3.2.ebuild,v 1.5 2011/04/09 05:40:28 pva Exp $
 
 EAPI="3"
 
@@ -12,10 +12,10 @@ SRC_URI="http://download.savannah.nongnu.org/releases-noredirect/${PN}/$(get_ver
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86 ~ppc-macos ~x86-macos"
+KEYWORDS="amd64 ~ppc x86 ~ppc-macos ~x86-macos"
 IUSE="doc gtk ipv6 ncurses nls video"
 
-RDEPEND=">=media-libs/mediastreamer-2.4.0[video?]
+RDEPEND=">=media-libs/mediastreamer-2.6.0[video?]
 	>=net-libs/libeXosip-3.0.2
 	>=net-libs/libosip-3.0.0
 	>=net-libs/ortp-0.16.2
@@ -66,6 +66,10 @@ src_prepare() {
 	# and references in Makefile.am
 	sed -i -e "s:oRTP::;s:mediastreamer2::" Makefile.am \
 		|| die "patching Makefile.am failed"
+
+	# don't know why, but exosip macro references a non-existing framework
+	sed -i -e "s/-framework CFNetwork//" m4/exosip.m4 \
+		|| die "patching m4/exosip.m4 failed"
 
 	# make sure to use host libtool version
 	rm -f m4/libtool.m4 m4/lt*.m4 #282268

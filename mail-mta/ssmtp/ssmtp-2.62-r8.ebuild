@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-mta/ssmtp/ssmtp-2.62-r8.ebuild,v 1.2 2010/06/27 09:18:44 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/mail-mta/ssmtp/ssmtp-2.62-r8.ebuild,v 1.10 2011/03/28 09:21:44 eras Exp $
 
 EAPI="3"
 
@@ -12,15 +12,24 @@ SRC_URI="mirror://debian/pool/main/s/ssmtp/${P/-/_}.orig.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris ~x86-solaris"
 IUSE="ssl ipv6 md5sum maxsysuid"
 
 DEPEND="ssl? ( dev-libs/openssl )"
 RDEPEND="${DEPEND}
 	net-mail/mailbase
 	!net-mail/mailwrapper
-	!virtual/mta"
-PROVIDE="virtual/mta"
+	!mail-mta/courier
+	!mail-mta/esmtp
+	!mail-mta/exim
+	!mail-mta/mini-qmail
+	!mail-mta/msmtp
+	!mail-mta/nbsmtp
+	!mail-mta/netqmail
+	!mail-mta/nullmailer
+	!mail-mta/postfix
+	!mail-mta/qmail-ldap
+	!mail-mta/sendmail"
 
 S="${WORKDIR}/${PN}"
 

@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-simulation/flightgear/flightgear-2.0.0.ebuild,v 1.5 2010/06/22 18:52:59 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-simulation/flightgear/flightgear-2.0.0.ebuild,v 1.7 2011/02/26 13:30:27 armin76 Exp $
 
 EAPI=2
 inherit autotools eutils games
@@ -14,16 +14,15 @@ SRC_URI="mirror://flightgear/Source/${MY_P}.tar.gz
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 IUSE="sdl"
 
-RDEPEND=">=media-libs/freeglut-2.6.0
+DEPEND=">=media-libs/freeglut-2.6.0
 	~dev-games/simgear-2.0.0
 	dev-games/openscenegraph[png]
 	x11-libs/libXmu
 	x11-libs/libXi
 	dev-vcs/subversion"
-DEPEND="${RDEPEND}"
 
 S=${WORKDIR}/${MY_P}
 
@@ -35,8 +34,7 @@ src_prepare() {
 src_configure() {
 	egamesconf \
 		--disable-dependency-tracking \
-		$(use_enable sdl) \
-		|| die "configure failed"
+		$(use_enable sdl)
 }
 
 src_install() {

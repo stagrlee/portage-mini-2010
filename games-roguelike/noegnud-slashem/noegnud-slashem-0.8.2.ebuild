@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-roguelike/noegnud-slashem/noegnud-slashem-0.8.2.ebuild,v 1.10 2009/11/30 16:30:27 flameeyes Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-roguelike/noegnud-slashem/noegnud-slashem-0.8.2.ebuild,v 1.12 2011/02/24 14:46:03 tupone Exp $
 
 inherit eutils games
 
@@ -36,6 +36,11 @@ src_unpack() {
 	epatch "${DISTDIR}"/noegnud-${PV}_noegnud-${PV}.${VAR_SNAME}${VAR_VER/e/E}.diff.gz
 	ln -s "${DISTDIR}"/${VAR_TAR} variants/tarballs/${VAR_TAR}
 	epatch "${FILESDIR}/${P}"-gcc41.patch
+	cd variants
+	make noegnud-0.8.0-${VAR_NAME}-${VAR_DVER}
+	epatch "${FILESDIR}"/${P}-ldflags.patch
+	sed -i -e 's:$(LFLAGS):$(LDFLAGS) $(LFLAGS):' \
+		slashem-0.0.7E3/sys/unix/Makefile.utl || die "sed failed"
 }
 
 src_compile() {

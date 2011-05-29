@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-dotnet/webkit-sharp/webkit-sharp-0.3.ebuild,v 1.3 2010/09/12 12:58:03 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-dotnet/webkit-sharp/webkit-sharp-0.3.ebuild,v 1.6 2011/04/12 07:27:40 pacho Exp $
 
 EAPI=2
 
@@ -12,12 +12,12 @@ SRC_URI="http://mono.ximian.com/monobuild/preview/sources/webkit-sharp/${P}.tar.
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ppc x86"
+KEYWORDS="amd64 ppc x86"
 IUSE=""
 
 DEPEND=">=dev-lang/mono-2
-	net-libs/webkit-gtk
-	>=dev-dotnet/gtk-sharp-2"
+	=net-libs/webkit-gtk-1.2*:2
+	dev-dotnet/gtk-sharp:2"
 
 RDEPEND="${DEPEND}"
 

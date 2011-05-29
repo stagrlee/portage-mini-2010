@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-tcltk/itcl/itcl-3.4_beta1.ebuild,v 1.2 2010/06/07 15:05:23 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-tcltk/itcl/itcl-3.4_beta1.ebuild,v 1.7 2011/05/28 11:30:41 ranger Exp $
 
 EAPI="3"
 
@@ -15,12 +15,16 @@ SRC_URI="mirror://sourceforge/incrtcl/%5BIncr%20Tcl_Tk%5D-source/$(get_version_c
 IUSE=""
 SLOT="0"
 LICENSE="BSD"
-KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86 ~amd64-linux ~x86-linux ~x86-macos"
+KEYWORDS="~alpha amd64 ~ia64 ppc ~sparc x86 ~amd64-linux ~x86-linux ~x86-macos"
 
 RDEPEND="dev-lang/tcl"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${PN}$(get_version_component_range 1-2)"
+
+src_prepare() {
+	epatch "${FILESDIR}"/${PV}-test.patch
+}
 
 src_compile() {
 	# adjust install_name on darwin
@@ -29,6 +33,8 @@ src_compile() {
 			-e 's:^\(SHLIB_LD\W.*\)$:\1 -install_name ${pkglibdir}/$@:' \
 			"${S}"/Makefile || die 'sed failed'
 	fi
+
+	sed 's:-pipe::g' -i Makefile || die
 
 	emake CFLAGS_DEFAULT="${CFLAGS}" || die "emake failed"
 }

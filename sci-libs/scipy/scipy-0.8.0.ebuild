@@ -1,28 +1,29 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-libs/scipy/scipy-0.8.0.ebuild,v 1.2 2010/08/03 13:40:45 xarthisius Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-libs/scipy/scipy-0.8.0.ebuild,v 1.7 2011/03/26 17:10:43 jlec Exp $
 
 EAPI="2"
+
 PYTHON_DEPEND="2"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
 
 inherit eutils distutils flag-o-matic toolchain-funcs versionator
 
 SP="${PN}-$(get_version_component_range 1-2)"
 
+DESCRIPTION="Scientific algorithms library for Python"
+HOMEPAGE="http://www.scipy.org/ http://pypi.python.org/pypi/scipy/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz
 	doc? (
 		http://docs.scipy.org/doc/${SP}.x/${PN}-html.zip -> ${SP}-html.zip
 		http://docs.scipy.org/doc/${SP}.x/${PN}-ref.pdf -> ${SP}-ref.pdf
 	)"
-DESCRIPTION="Scientific algorithms library for Python"
-HOMEPAGE="http://www.scipy.org/ http://pypi.python.org/pypi/scipy"
 
 LICENSE="BSD"
 SLOT="0"
 IUSE="doc umfpack"
-KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
+KEYWORDS="amd64 ~ppc ~ppc64 x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
 
 CDEPEND="
 	>=dev-python/numpy-1.4.1
@@ -58,6 +59,7 @@ pkg_setup() {
 	[[ -z ${F77} ]] && export F77="$(tc-getFC)"
 	export F90="${FC}"
 	export SCIPY_FCONFIG="config_fc --noopt --noarch"
+	append-fflags -fPIC
 }
 
 src_unpack() {
@@ -68,7 +70,8 @@ src_unpack() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-0.6.0-stsci.patch \
+	epatch \
+		"${FILESDIR}"/${PN}-0.6.0-stsci.patch \
 		"${FILESDIR}"/${P}-python2.7.patch
 	local libdir="${EPREFIX}"/usr/$(get_libdir)
 	cat > site.cfg <<-EOF
@@ -100,7 +103,6 @@ src_prepare() {
 }
 
 src_compile() {
-	[[ -n ${FFLAGS} ]] && FFLAGS="${FFLAGS} -fPIC"
 	distutils_src_compile ${SCIPY_FCONFIG}
 }
 

@@ -1,0 +1,22 @@
+dev-python/setuptools test? ( dev-python/mox ) >=app-admin/eselect-python-20091230 =dev-lang/python-2* test? ( dev-python/nose ) >=dev-vcs/git-1.6
+dev-python/simplejson dev-python/httplib2 >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+
+
+https://github.com/LegNeato/remoteobjects
+BSD
+subclassable Python objects for working with JSON REST APIs
+
+distutils eutils git multilib portability python toolchain-funcs
+test
+
+
+
+3
+
+compile install postinst postrm prepare test unpack
+
+
+
+
+

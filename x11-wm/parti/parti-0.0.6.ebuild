@@ -1,12 +1,12 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-wm/parti/parti-0.0.6.ebuild,v 1.1 2010/08/31 09:04:56 xmw Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-wm/parti/parti-0.0.6.ebuild,v 1.5 2011/04/28 21:32:11 xmw Exp $
 
-EAPI=2
+EAPI=3
 
 PYTHON_DEPEND=2
 
-inherit distutils eutils python
+inherit distutils eutils
 
 DESCRIPTION="X Persistent Remote Apps (xpra) and Partitioning WM (parti) based on wimpiggy"
 HOMEPAGE="http://partiwm.googlecode.com/"
@@ -15,19 +15,19 @@ SRC_URI="http://${PN}wm.googlecode.com/files/${MY_P}.tar.gz"
 
 LICENSE="GPL-2 LGPL-2.1"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE=""
 
-COMMON_DEPEND="dev-python/pygtk
+COMMON_DEPEND="dev-python/pygtk:2
 	x11-libs/libX11
 	x11-libs/libXcomposite
 	x11-libs/libXdamage
 	x11-libs/libXtst"
 
-RDEPEND="${COMMON_RDEPEND}
+RDEPEND="${COMMON_DEPEND}
 	dev-python/ipython
 	x11-apps/xmodmap"
-DEPEND="${COMMON_RDEPEND}
+DEPEND="${COMMON_DEPEND}
 	dev-python/pyrex
 	dev-util/pkgconfig"
 
@@ -35,6 +35,7 @@ S=${WORKDIR}/${MY_P}
 
 pkg_setup() {
 	python_set_active_version 2
+	python_pkg_setup
 }
 
 src_prepare() {

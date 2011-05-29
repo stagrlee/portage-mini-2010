@@ -1,0 +1,22 @@
+>=app-admin/eselect-python-20091230 =dev-lang/python-2* =dev-lang/python-2*[xml]
+>=app-admin/eselect-python-20091230 =dev-lang/python-2* =dev-lang/python-2*[xml]
+0
+mirror://sourceforge/s3tools/s3cmd-1.0.0.tar.gz
+
+http://s3tools.org/s3cmd
+GPL-2
+Command line client for Amazon S3
+~amd64 ~x86
+distutils multilib python toolchain-funcs
+
+
+
+
+3
+
+compile install postinst postrm prepare setup
+
+
+
+
+

@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-text/zathura/zathura-0.0.8.1.ebuild,v 1.1 2010/08/06 12:25:11 wired Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-text/zathura/zathura-0.0.8.1.ebuild,v 1.4 2010/12/30 12:10:51 wired Exp $
 
 EAPI=2
 inherit savedconfig toolchain-funcs
@@ -11,12 +11,13 @@ SRC_URI="http://zathura.pwmt.org/attachments/download/10/${P}.tar.gz"
 
 LICENSE="ZLIB"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE=""
 
 RDEPEND=">=x11-libs/cairo-1.8.8
 	>=dev-libs/glib-2.22.4:2
 	>=x11-libs/gtk+-2.18.6:2
+	<app-text/poppler-0.16[cairo]
 	>=app-text/poppler-0.12.3[cairo]"
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig"

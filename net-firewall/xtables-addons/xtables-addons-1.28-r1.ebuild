@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-firewall/xtables-addons/xtables-addons-1.28-r1.ebuild,v 1.1 2010/08/13 06:53:16 pva Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-firewall/xtables-addons/xtables-addons-1.28-r1.ebuild,v 1.6 2011/04/28 18:54:21 ulm Exp $
 
 EAPI="3"
 
@@ -12,7 +12,7 @@ SRC_URI="mirror://sourceforge/xtables-addons/${P}.tar.xz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="modules"
 
 MODULES="quota2 psd pknock lscan length2 ipv4options ipset ipp2p iface geoip fuzzy condition tee tarpit sysrq steal rawnat logmark ipmark echo dhcpmac delude checksum chaos account"
@@ -21,14 +21,15 @@ for mod in ${MODULES}; do
 	IUSE="${IUSE} xtables_addons_${mod}"
 done
 
-DEPEND="virtual/modutils
-	>=net-firewall/iptables-1.4.3
-	>virtual/linux-sources-2.6.22
-	xtables_addons_ipset? ( !net-firewall/ipset )"
+DEPEND=">=net-firewall/iptables-1.4.3"
 
 RDEPEND="${DEPEND}
+	xtables_addons_ipset? ( !net-firewall/ipset )
 	xtables_addons_geoip? ( virtual/perl-Getopt-Long
 		dev-perl/Text-CSV_XS )"
+
+DEPEND="${DEPEND}
+	virtual/linux-sources"
 
 pkg_setup()	{
 	if use modules; then

@@ -1,8 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-libs/libdrm/libdrm-2.4.20-r1.ebuild,v 1.6 2010/09/12 19:09:23 klausman Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-libs/libdrm/libdrm-2.4.20-r1.ebuild,v 1.11 2011/02/18 12:21:41 chithanh Exp $
 
-inherit x-modular
+EAPI=3
+inherit xorg-2
 
 EGIT_REPO_URI="git://anongit.freedesktop.org/git/mesa/drm"
 
@@ -14,7 +15,7 @@ else
 	SRC_URI="http://dri.freedesktop.org/${PN}/${P}.tar.bz2"
 fi
 
-KEYWORDS="alpha amd64 arm hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86 ~x86-fbsd"
 IUSE="kernel_linux"
 RESTRICT="test" # see bug #236845
 

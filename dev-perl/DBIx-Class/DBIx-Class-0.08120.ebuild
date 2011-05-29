@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-perl/DBIx-Class/DBIx-Class-0.08120.ebuild,v 1.1 2010/03/05 08:11:58 tove Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-perl/DBIx-Class/DBIx-Class-0.08120.ebuild,v 1.6 2011/04/24 15:59:25 grobian Exp $
 
 EAPI=2
 
@@ -10,13 +10,13 @@ inherit perl-module
 DESCRIPTION="Extensible and flexible object <-> relational mapper"
 
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~x86 ~x86-solaris"
 IUSE="test"
 
 RDEPEND="
 	>=dev-perl/Carp-Clan-6.00
 	>=dev-perl/Class-Accessor-Grouped-0.09002
-	>=dev-perl/Class-C3-Componentised-1.0005
+	>=dev-perl/Class-C3-Componentised-1.0.500
 	>=dev-perl/Class-Inspector-1.24
 	dev-perl/Context-Preserve
 	>=dev-perl/Data-Page-2.01
@@ -35,7 +35,7 @@ RDEPEND="
 	>=dev-perl/Date-Simple-3.03
 	dev-perl/DateTime-Format-SQLite
 	>=dev-perl/Hash-Merge-0.11
-	>=dev-perl/SQL-Translator-0.11002
+	>=dev-perl/SQL-Translator-0.110.20
 	dev-perl/Time-Piece-MySQL
 	>=dev-perl/Data-Dumper-Concise-1.000
 "

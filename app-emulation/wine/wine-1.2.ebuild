@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.2.ebuild,v 1.3 2010/08/30 05:19:11 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.2.ebuild,v 1.9 2011/04/30 06:26:23 vapier Exp $
 
 EAPI="2"
 
@@ -29,7 +29,7 @@ SRC_URI="${SRC_URI}
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="alsa capi cups custom-cflags dbus esd fontconfig +gecko gnutls gphoto2 gsm hal jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png pulseaudio samba scanner ssl test +threads +truetype win64 +X xcomposite xinerama xml"
+IUSE="alsa capi cups custom-cflags dbus esd fontconfig +gecko gnutls gphoto2 gsm hal jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png pulseaudio samba scanner ssl test +threads +truetype v4l win64 +X xcomposite xinerama xml"
 RESTRICT="test" #72375
 
 RDEPEND="truetype? ( >=media-libs/freetype-2.0.0 media-fonts/corefonts )
@@ -57,9 +57,9 @@ RDEPEND="truetype? ( >=media-libs/freetype-2.0.0 media-fonts/corefonts )
 	nas? ( media-libs/nas )
 	cups? ( net-print/cups )
 	opengl? ( virtual/opengl )
-	pulseaudio? ( media-sound/pulseaudio ${AUTOTOOLS_DEPEND} )
+	pulseaudio? ( media-sound/pulseaudio )
 	gsm? ( media-sound/gsm )
-	jpeg? ( media-libs/jpeg )
+	jpeg? ( virtual/jpeg )
 	ldap? ( net-nds/openldap )
 	lcms? ( =media-libs/lcms-1* )
 	mp3? ( >=media-sound/mpg123-1.5.0 )
@@ -68,11 +68,12 @@ RDEPEND="truetype? ( >=media-libs/freetype-2.0.0 media-fonts/corefonts )
 	scanner? ( media-gfx/sane-backends )
 	ssl? ( dev-libs/openssl )
 	png? ( media-libs/libpng )
+	v4l? ( media-libs/libv4l )
 	!win64? ( amd64? (
 		truetype? ( >=app-emulation/emul-linux-x86-xlibs-2.1 )
 		X? (
 			>=app-emulation/emul-linux-x86-xlibs-2.1
-			>=app-emulation/emul-linux-x86-soundlibs-2.1
+			>=app-emulation/emul-linux-x86-soundlibs-2.1[pulseaudio?]
 		)
 		openal? ( app-emulation/emul-linux-x86-sdl )
 		opengl? ( app-emulation/emul-linux-x86-opengl )
@@ -81,6 +82,7 @@ RDEPEND="truetype? ( >=media-libs/freetype-2.0.0 media-fonts/corefonts )
 	) )
 	xcomposite? ( x11-libs/libXcomposite ) "
 DEPEND="${RDEPEND}
+	pulseaudio? ( ${AUTOTOOLS_DEPEND} )
 	X? (
 		x11-proto/inputproto
 		x11-proto/xextproto
@@ -147,6 +149,7 @@ src_configure() {
 		$(use_with scanner sane) \
 		$(use_enable test tests) \
 		$(use_with truetype freetype) \
+		$(use_with v4l) \
 		$(use_enable win64) \
 		$(use_with X x) \
 		$(use_with xcomposite) \

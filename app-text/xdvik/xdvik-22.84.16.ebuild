@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-text/xdvik/xdvik-22.84.16.ebuild,v 1.9 2010/07/10 13:29:24 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-text/xdvik/xdvik-22.84.16.ebuild,v 1.13 2010/11/11 15:54:15 aballier Exp $
 
 EAPI=3
 inherit eutils flag-o-matic elisp-common toolchain-funcs
@@ -9,7 +9,7 @@ DESCRIPTION="DVI previewer for X Window System"
 HOMEPAGE="http://xdvi.sourceforge.net/"
 SRC_URI="mirror://sourceforge/xdvi/${P}.tar.gz"
 
-KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sh sparc x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~ppc-macos ~sparc-solaris ~x64-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sh sparc x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~sparc-solaris ~x64-solaris ~x86-solaris"
 SLOT="0"
 LICENSE="GPL-2"
 IUSE="motif neXt Xaw3d emacs"
@@ -18,7 +18,7 @@ RDEPEND=">=media-libs/t1lib-5.0.2
 	x11-libs/libXmu
 	x11-libs/libXp
 	x11-libs/libXpm
-	motif? ( x11-libs/openmotif )
+	motif? ( >=x11-libs/openmotif-2.3:0 )
 	!motif? ( neXt? ( x11-libs/neXtaw )
 		!neXt? ( Xaw3d? ( x11-libs/Xaw3d ) ) )
 	virtual/latex-base
@@ -31,6 +31,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/${P}-open-mode.patch \
 		"${FILESDIR}"/${P}-cvararg.patch \
 		"${FILESDIR}"/${P}-parallel_make.patch
+	has_version '>=app-text/texlive-core-2009' && epatch "${FILESDIR}"/${P}-kpathsea_version.patch
 	# Make sure system kpathsea headers are used
 	cd "${WORKDIR}/${P}/texk/kpathsea"
 	for i in *.h ; do echo "#include_next \"$i\"" > $i; done

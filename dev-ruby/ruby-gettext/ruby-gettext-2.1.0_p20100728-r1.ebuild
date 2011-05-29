@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-ruby/ruby-gettext/ruby-gettext-2.1.0_p20100728-r1.ebuild,v 1.1 2010/07/28 15:41:10 a3li Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-ruby/ruby-gettext/ruby-gettext-2.1.0_p20100728-r1.ebuild,v 1.3 2011/01/10 18:08:43 graaff Exp $
 
 EAPI=2
 
@@ -23,7 +23,7 @@ DESCRIPTION="Ruby GetText Package is Native Language Support Library and Tools m
 HOMEPAGE="http://www.yotabanana.com/hiki/ruby-gettext.html"
 SRC_URI="http://dev.a3li.li/gentoo/distfiles/${P}.tar.bz2"
 
-KEYWORDS="~amd64 ~ia64 ~ppc ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~amd64 ~ia64 ~ppc ~sparc ~x86 ~x86-fbsd ~x86-macos"
 IUSE=""
 SLOT="0"
 LICENSE="Ruby"
@@ -36,6 +36,11 @@ DEPEND="${DEPEND}
 	sys-devel/gettext"
 
 ruby_add_bdepend "test? ( || ( virtual/ruby-test-unit dev-ruby/test-unit:2 ) )"
+
+all_ruby_prepare() {
+	# Allison 2.0.3 produces illegal HTML which markaby doesn't like.
+	sed -i '/allison/d' Rakefile || die
+}
 
 each_ruby_test() {
 	# Upstream tries to daisy-chain rake calls but they fail badly

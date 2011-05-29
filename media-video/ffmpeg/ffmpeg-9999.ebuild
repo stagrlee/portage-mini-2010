@@ -1,13 +1,13 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/ffmpeg/ffmpeg-9999.ebuild,v 1.19 2010/08/10 09:57:39 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-video/ffmpeg/ffmpeg-9999.ebuild,v 1.42 2011/04/20 14:25:17 aballier Exp $
 
 EAPI="2"
 
 SCM=""
 if [ "${PV#9999}" != "${PV}" ] ; then
-	SCM="subversion"
-	ESVN_REPO_URI="svn://svn.ffmpeg.org/ffmpeg/trunk"
+	SCM="git"
+	EGIT_REPO_URI="git://git.videolan.org/ffmpeg.git"
 fi
 
 inherit eutils flag-o-matic multilib toolchain-funcs ${SCM}
@@ -19,18 +19,22 @@ if [ "${PV#9999}" != "${PV}" ] ; then
 elif [ "${PV%_p*}" != "${PV}" ] ; then # Snapshot
 	SRC_URI="mirror://gentoo/${P}.tar.bz2"
 else # Release
-	SRC_URI="http://ffmpeg.org/releases/${P}.tar.bz2"
+	SRC_URI="http://ffmpeg.org/releases/${P/_/-}.tar.bz2"
 fi
 FFMPEG_REVISION="${PV#*_p}"
 
-LICENSE="GPL-3"
+LICENSE="GPL-2 amr? ( GPL-3 ) encode? ( aac? ( GPL-3 ) )"
 SLOT="0"
-if [ "${PV#9999}" != "${PV}" ] ; then
-	KEYWORDS=""
-else
+if [ "${PV#9999}" = "${PV}" ] ; then
 	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
 fi
-IUSE="+3dnow +3dnowext alsa altivec amr bindist +bzip2 cpudetection custom-cflags debug dirac doc +encode faac gsm +hardcoded-tables ieee1394 jack jpeg2k +mmx +mmxext mp3 network oss pic qt-faststart rtmp schroedinger sdl speex +ssse3 static-libs test theora threads v4l v4l2 vaapi vdpau vorbis vpx X x264 xvid +zlib"
+IUSE="
+	+3dnow +3dnowext aac alsa altivec amr avx bindist +bzip2 celt cpudetection
+	custom-cflags debug dirac doc +encode faac frei0r gsm +hardcoded-tables
+	ieee1394 jack jpeg2k +mmx +mmxext mp3 network oss pic qt-faststart rtmp
+	schroedinger sdl speex +ssse3 static-libs test theora threads truetype v4l
+	v4l2 vaapi vdpau vorbis vpx X x264 xvid +zlib
+	"
 
 VIDEO_CARDS="nvidia"
 
@@ -42,26 +46,31 @@ RDEPEND="
 	alsa? ( media-libs/alsa-lib )
 	amr? ( media-libs/opencore-amr )
 	bzip2? ( app-arch/bzip2 )
+	celt? ( >=media-libs/celt-0.11.1 )
 	dirac? ( media-video/dirac )
 	encode? (
+		aac? ( media-libs/vo-aacenc )
+		amr? ( media-libs/vo-amrwbenc )
 		faac? ( media-libs/faac )
-		mp3? ( media-sound/lame )
+		mp3? ( >=media-sound/lame-3.98.3 )
 		theora? ( >=media-libs/libtheora-1.1.1[encode] media-libs/libogg )
 		vorbis? ( media-libs/libvorbis media-libs/libogg )
-		x264? ( >=media-libs/x264-0.0.20100605 )
+		x264? ( >=media-libs/x264-0.0.20101029 )
 		xvid? ( >=media-libs/xvid-1.1.0 )
 	)
+	frei0r? ( media-plugins/frei0r-plugins )
 	gsm? ( >=media-sound/gsm-1.0.12-r1 )
 	ieee1394? ( media-libs/libdc1394 sys-libs/libraw1394 )
 	jack? ( media-sound/jack-audio-connection-kit )
 	jpeg2k? ( >=media-libs/openjpeg-1.3-r2 )
-	rtmp? ( media-video/rtmpdump )
+	rtmp? ( >=media-video/rtmpdump-2.2f )
 	sdl? ( >=media-libs/libsdl-1.2.13-r1[audio,video] )
 	schroedinger? ( media-libs/schroedinger )
 	speex? ( >=media-libs/speex-1.2_beta3 )
-	vaapi? ( x11-libs/libva )
+	truetype? ( media-libs/freetype:2 )
+	vaapi? ( >=x11-libs/libva-0.32 )
 	video_cards_nvidia? ( vdpau? ( x11-libs/libvdpau ) )
-	vpx? ( media-libs/libvpx )
+	vpx? ( >=media-libs/libvpx-0.9.6 )
 	X? ( x11-libs/libX11 x11-libs/libXext )
 	zlib? ( sys-libs/zlib )
 	!media-video/qt-faststart
@@ -79,18 +88,18 @@ DEPEND="${RDEPEND}
 	v4l2? ( sys-kernel/linux-headers )
 "
 
+S=${WORKDIR}/${P/_/-}
+
 src_prepare() {
-	if [ "${PV#9999}" != "${PV}" ] ; then
-		# Set SVN version manually
-		subversion_wc_info
-		sed -i -e "s/UNKNOWN/SVN-r${ESVN_WC_REVISION}/" "${S}/version.sh" || die
-	elif [ "${PV%_p*}" != "${PV}" ] ; then # Snapshot
-		sed -i -e "s/UNKNOWN/SVN-r${FFMPEG_REVISION}/" "${S}/version.sh" || die
+	if [ "${PV%_p*}" != "${PV}" ] ; then # Snapshot
+		export revision=git-N-${FFMPEG_REVISION}
 	fi
 }
 
 src_configure() {
 	local myconf="${EXTRA_FFMPEG_CONF}"
+	# Set to --enable-version3 if (L)GPL-3 is required
+	local version3=""
 
 	# enabled by default
 	for i in debug doc network vaapi zlib; do
@@ -98,7 +107,6 @@ src_configure() {
 	done
 	use bzip2 || myconf="${myconf} --disable-bzlib"
 	use sdl || myconf="${myconf} --disable-ffplay"
-	use static-libs || myconf="${myconf} --disable-static"
 
 	use custom-cflags && myconf="${myconf} --disable-optimizations"
 	use cpudetection && myconf="${myconf} --enable-runtime-cpudetect"
@@ -113,6 +121,8 @@ src_configure() {
 	if use encode
 	then
 		use mp3 && myconf="${myconf} --enable-libmp3lame"
+		use aac && { myconf="${myconf} --enable-libvo-aacenc" ; version3=" --enable-version3" ; }
+		use amr && { myconf="${myconf} --enable-libvo-amrwbenc" ; version3=" --enable-version3" ; }
 		for i in theora vorbis x264 xvid; do
 			use ${i} && myconf="${myconf} --enable-lib${i}"
 		done
@@ -138,27 +148,30 @@ src_configure() {
 	for i in alsa oss ; do
 		use ${i} || myconf="${myconf} --disable-outdev=${i}"
 	done
+	# libavfilter options
+	use frei0r && myconf="${myconf} --enable-frei0r"
+	use truetype && myconf="${myconf} --enable-libfreetype"
 
 	# Threads; we only support pthread for now but ffmpeg supports more
 	use threads && myconf="${myconf} --enable-pthreads"
 
 	# Decoders
-	use amr && myconf="${myconf} --enable-libopencore-amrwb --enable-libopencore-amrnb"
-	for i in gsm dirac rtmp schroedinger speex vpx; do
+	use amr && { myconf="${myconf} --enable-libopencore-amrwb --enable-libopencore-amrnb" ; version3=" --enable-version3" ; }
+	for i in celt gsm dirac rtmp schroedinger speex vpx; do
 		use ${i} && myconf="${myconf} --enable-lib${i}"
 	done
 	use jpeg2k && myconf="${myconf} --enable-libopenjpeg"
 
 	# CPU features
-	for i in mmx ssse3 altivec ; do
+	for i in mmx ssse3 altivec avx ; do
 		use ${i} || myconf="${myconf} --disable-${i}"
 	done
 	use mmxext || myconf="${myconf} --disable-mmx2"
 	use 3dnow || myconf="${myconf} --disable-amd3dnow"
 	use 3dnowext || myconf="${myconf} --disable-amd3dnowext"
 	# disable mmx accelerated code if PIC is required
-	# as the provided asm decidedly is not PIC.
-	if gcc-specs-pie ; then
+	# as the provided asm decidedly is not PIC for x86.
+	if use pic && use x86 ; then
 		myconf="${myconf} --disable-mmx --disable-mmx2"
 	fi
 
@@ -180,7 +193,7 @@ src_configure() {
 	# Mandatory configuration
 	myconf="
 		--enable-gpl
-		--enable-version3
+		${version3}
 		--enable-postproc
 		--enable-avfilter
 		--disable-stripping
@@ -226,8 +239,9 @@ src_configure() {
 		--libdir=/usr/$(get_libdir) \
 		--shlibdir=/usr/$(get_libdir) \
 		--mandir=/usr/share/man \
-		--enable-static --enable-shared \
+		--enable-shared \
 		--cc="$(tc-getCC)" \
+		$(use_enable static-libs static) \
 		${myconf} || die
 }
 
@@ -254,10 +268,8 @@ src_install() {
 
 src_test() {
 	if use encode ; then
-		for t in codectest lavftest seektest ; do
-			LD_LIBRARY_PATH="${S}/libpostproc:${S}/libswscale:${S}/libavcodec:${S}/libavdevice:${S}/libavfilter:${S}/libavformat:${S}/libavutil" \
-				emake ${t} || die "Some tests in ${t} failed"
-		done
+		LD_LIBRARY_PATH="${S}/libpostproc:${S}/libswscale:${S}/libavcodec:${S}/libavdevice:${S}/libavfilter:${S}/libavformat:${S}/libavutil" \
+			emake test || die "Some tests failed"
 	else
 		ewarn "Tests fail without USE=encode, skipping"
 	fi

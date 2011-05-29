@@ -1,13 +1,13 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-libs/qt-qt3support/qt-qt3support-4.6.3.ebuild,v 1.1 2010/06/08 12:20:03 hwoarang Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-libs/qt-qt3support/qt-qt3support-4.6.3.ebuild,v 1.9 2011/03/26 16:51:45 dilfridge Exp $
 
 EAPI="2"
 inherit qt4-build
 
 DESCRIPTION="The Qt3 support module for the Qt toolkit"
 SLOT="4"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x64-solaris ~x86-solaris"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 sparc x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~x64-solaris ~x86-solaris"
 IUSE="+accessibility kde phonon"
 
 DEPEND="~x11-libs/qt-core-${PV}[aqua=,debug=,qt3support]
@@ -15,8 +15,8 @@ DEPEND="~x11-libs/qt-core-${PV}[aqua=,debug=,qt3support]
 	~x11-libs/qt-sql-${PV}[aqua=,debug=,qt3support]
 	phonon? (
 		!kde? ( || ( ~x11-libs/qt-phonon-${PV}[aqua=,debug=]
-			media-sound/phonon[aqua=,gstreamer] ) )
-		kde? ( media-sound/phonon[aqua=,gstreamer] ) )"
+			media-libs/phonon[aqua=,gstreamer] ) )
+		kde? ( media-libs/phonon[aqua=,gstreamer] ) )"
 
 RDEPEND="${DEPEND}"
 

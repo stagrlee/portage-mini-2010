@@ -1,6 +1,8 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-accessibility/espeakup/espeakup-0.71.ebuild,v 1.6 2009/11/01 18:50:30 eva Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-accessibility/espeakup/espeakup-0.71.ebuild,v 1.9 2011/05/16 23:25:49 flameeyes Exp $
+
+inherit linux-info
 
 DESCRIPTION="espeakup is a small lightweight connector for espeak and speakup"
 HOMEPAGE="http://www.linux-speakup.org"
@@ -12,8 +14,22 @@ KEYWORDS="amd64 x86"
 IUSE=""
 
 DEPEND="app-accessibility/espeak"
-RDEPEND="${DEPEND}
-	app-accessibility/speakup"
+RDEPEND="${DEPEND}"
+
+CONFIG_CHECK="~SPEAKUP ~SPEAKUP_SYNTH_SOFT"
+ERROR_SPEAKUP="CONFIG_SPEAKUP is not enabled in this kernel!"
+ERROR_SPEAKUP_SYNTH_SOFT="CONFIG_SPEAKUP_SYNTH_SOFT is not enabled in this kernel!"
+
+pkg_setup() {
+	if kernel_is -ge 2 6 37; then
+		check_extra_config
+	elif ! has_version app-accessibility/speakup; then
+		ewarn "Cannot find speakup on your system."
+		ewarn "Please upgrade your kernel to 2.6.37 or later and enable the"
+		ewarn "CONFIG_SPEAKUP and CONFIG_SPEAKUP_SYNTH_SOFT options"
+		ewarn "or install app-accessibility/speakup."
+	fi
+}
 
 src_compile() {
 	emake || die "Compile failed."

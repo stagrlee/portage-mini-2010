@@ -1,8 +1,10 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/makedev/makedev-3.23.1.ebuild,v 1.4 2007/08/07 14:51:37 uberlord Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/makedev/makedev-3.23.1.ebuild,v 1.6 2011/05/28 20:42:26 xarthisius Exp $
 
-inherit toolchain-funcs
+EAPI="2"
+
+inherit eutils toolchain-funcs
 
 MY_PN="MAKEDEV"
 MY_VER=${PV%.*}
@@ -14,13 +16,17 @@ SRC_URI="http://people.redhat.com/nalin/MAKEDEV/${MY_P}-${MY_REL}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh ~sparc ~x86"
 IUSE="build selinux"
 
 RDEPEND="!<sys-apps/baselayout-2.0.0_rc"
 DEPEND=""
 
 S=${WORKDIR}/${MY_P}
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-headers.patch #339674
+}
 
 src_compile() {
 	use selinux && export SELINUX=1

@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-im/amsn/amsn-0.98.3.ebuild,v 1.5 2010/09/14 19:42:19 klausman Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-im/amsn/amsn-0.98.3.ebuild,v 1.8 2011/04/04 14:46:21 scarabeus Exp $
 
 EAPI=2
 
@@ -18,12 +18,12 @@ RESTRICT="test"
 
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="alpha amd64 hppa ~ppc -sparc x86"
+KEYWORDS="alpha amd64 hppa ppc -sparc x86"
 IUSE="debug"
 
 DEPEND=">=dev-lang/tcl-8.4
 	>=dev-lang/tk-8.4
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/libpng
 	>=dev-tcltk/snack-2.2.10
 	>=net-libs/gupnp-igd-0.1.3
@@ -34,7 +34,7 @@ DEPEND=">=dev-lang/tcl-8.4
 
 RDEPEND="${DEPEND}
 	>=dev-tcltk/tls-1.5
-	media-video/ffmpeg[encode]"
+	virtual/ffmpeg[encode]"
 #	>=media-libs/gst-plugins-good-0.10.15
 #	>=media-libs/gst-plugins-bad-0.10.13
 #	>=media-plugins/gst-plugins-ffmpeg-0.10.7

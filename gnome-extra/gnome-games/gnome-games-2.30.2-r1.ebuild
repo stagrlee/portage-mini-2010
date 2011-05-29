@@ -1,10 +1,11 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/gnome-extra/gnome-games/gnome-games-2.30.2-r1.ebuild,v 1.6 2010/09/11 18:57:45 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/gnome-extra/gnome-games/gnome-games-2.30.2-r1.ebuild,v 1.14 2011/04/25 21:17:50 arfrever Exp $
 
-EAPI="2"
+EAPI="3"
 GCONF_DEBUG="no"
 WANT_AUTOMAKE="1.11"
+PYTHON_DEPEND="2"
 
 # make sure games is inherited first so that the gnome2
 # functions will be called if they are not overridden
@@ -15,8 +16,10 @@ HOMEPAGE="http://live.gnome.org/GnomeGames/"
 
 LICENSE="GPL-2 FDL-1.1"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~ia64 ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd"
-IUSE="artworkextra +clutter guile opengl +sound test"
+
+# 2.30.x versions are not ready to go to stable, please confirm before changing KEYWORDS
+KEYWORDS="alpha ~amd64 ~arm ia64 ppc ppc64 sh sparc ~x86 ~x86-fbsd"
+IUSE="artworkextra +clutter guile opengl test"
 
 # USE=clutter also enables introspection because gnome-games is the only known
 # consumer of introspection on libgames-support etc. If something else pops up,
@@ -26,35 +29,35 @@ COMMON_DEPEND="
 	>=dev-games/libggz-0.0.14
 	>=dev-games/ggz-client-libs-0.0.14
 	>=dev-libs/dbus-glib-0.75
-	>=dev-libs/glib-2.6.3
-	>=dev-libs/libxml2-2.4.0
+	>=dev-libs/glib-2.6.3:2
+	>=dev-libs/libxml2-2.4.0:2
 	>=dev-python/gconf-python-2.17.3
-	>=dev-python/pygobject-2
-	>=dev-python/pygtk-2.14
+	>=dev-python/pygobject-2:2
+	>=dev-python/pygtk-2.14:2
 	>=dev-python/pycairo-1
-	>=gnome-base/gconf-2
-	>=gnome-base/librsvg-2.14
+	>=gnome-base/gconf-2:2
+	>=gnome-base/librsvg-2.14:2
+	media-libs/libcanberra[gtk]
 	>=x11-libs/cairo-1
-	>=x11-libs/gtk+-2.16
+	>=x11-libs/gtk+-2.16:2
 	x11-libs/libSM
 
 	artworkextra? ( gnome-extra/gnome-games-extra-data )
 	clutter? (
 		>=dev-libs/gobject-introspection-0.6.3
 		>=media-libs/clutter-1.0.0:1.0
-		>=media-libs/clutter-gtk-0.10.2:1.0 )
+		>=media-libs/clutter-gtk-0.10.2:0.10 )
 	guile? ( >=dev-scheme/guile-1.6.5[deprecated,regex] )
 	opengl? (
 		dev-python/pygtkglext
 		>=dev-python/pyopengl-3 )
-	sound? ( media-libs/libcanberra[gtk] )
 	!games-board/glchess"
 RDEPEND="${COMMON_DEPEND}
 	clutter? (
 		dev-libs/seed
-		x11-libs/gtk+[introspection]
+		x11-libs/gtk+:2[introspection]
 		>=media-libs/clutter-1.0.0:1.0[introspection]
-		>=media-libs/clutter-gtk-0.10.2:1.0[introspection] )"
+		>=media-libs/clutter-gtk-0.10.2:0.10[introspection] )"
 DEPEND="${COMMON_DEPEND}
 	>=sys-devel/autoconf-2.53
 	>=dev-util/pkgconfig-0.15
@@ -77,14 +80,17 @@ _omitgame() {
 }
 
 pkg_setup() {
+	python_set_active_version 2
+	python_pkg_setup
+
 	# create the games user / group
 	games_pkg_setup
 
 	G2CONF="${G2CONF}
 		$(use_enable clutter introspection)
-		$(use_enable sound)
-		--disable-card-themes-installer
 		--disable-aisleriot-clutter
+		--disable-card-themes-installer
+		--enable-sound
 		--with-scores-group=${GAMES_GROUP}
 		--with-platform=gnome
 		--with-card-theme-formats=all
@@ -153,15 +159,17 @@ pkg_postinst() {
 	games-ggz_update_modules
 	gnome2_pkg_postinst
 	python_need_rebuild
-	python_mod_optimize $(python_get_sitedir)/gnome_sudoku
+	python_mod_optimize gnome_sudoku
 	if use opengl; then
-		python_mod_optimize $(python_get_sitedir)/glchess
+		python_mod_optimize glchess
 	fi
 }
 
 pkg_postrm() {
 	games-ggz_update_modules
 	gnome2_pkg_postrm
-	python_mod_cleanup /usr/$(get_libdir)/python*/site-packages/{gnome_sudoku,glchess}
-	python_mod_cleanup /usr/$(get_libdir)/python*/site-packages/glchess
+	python_mod_cleanup gnome_sudoku
+	if use opengl; then
+		python_mod_cleanup glchess
+	fi
 }

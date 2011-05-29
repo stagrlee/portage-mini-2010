@@ -1,0 +1,22 @@
+dev-python/pygtk:2 x11-libs/libX11 x11-libs/libXcomposite x11-libs/libXdamage x11-libs/libXtst dev-python/pyrex dev-util/pkgconfig >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+dev-python/pygtk:2 x11-libs/libX11 x11-libs/libXcomposite x11-libs/libXdamage x11-libs/libXtst dev-python/ipython x11-apps/xmodmap >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+mirror://gentoo/parti-0.0.6_p456.tar.bz2
+
+http://partiwm.googlecode.com/
+GPL-2 LGPL-2.1
+X Persistent Remote Apps (xpra) and Partitioning WM (parti) based on wimpiggy
+~amd64 ~x86
+distutils eutils multilib portability python toolchain-funcs
+
+
+
+
+3
+
+compile install postinst postrm prepare setup
+
+
+
+
+

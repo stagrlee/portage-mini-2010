@@ -1,37 +1,37 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/util-linux/util-linux-9999.ebuild,v 1.15 2010/07/06 03:53:27 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/util-linux/util-linux-9999.ebuild,v 1.19 2011/04/07 05:18:20 vapier Exp $
 
 EAPI="2"
 
-EGIT_REPO_URI="git://git.kernel.org/pub/scm/utils/util-linux-ng/util-linux-ng.git"
+EGIT_REPO_URI="git://git.kernel.org/pub/scm/utils/util-linux/util-linux.git"
 inherit eutils toolchain-funcs libtool flag-o-matic
 [[ ${PV} == "9999" ]] && inherit git autotools
 
 MY_PV=${PV/_/-}
-MY_P=${PN}-ng-${MY_PV}
+MY_P=${PN}-${MY_PV}
 S=${WORKDIR}/${MY_P}
 
 DESCRIPTION="Various useful Linux utilities"
-HOMEPAGE="http://www.kernel.org/pub/linux/utils/util-linux-ng/"
+HOMEPAGE="http://www.kernel.org/pub/linux/utils/util-linux/"
 if [[ ${PV} == "9999" ]] ; then
 	SRC_URI=""
 	#KEYWORDS=""
 else
-	SRC_URI="mirror://kernel/linux/utils/util-linux-ng/v${PV:0:4}/${MY_P}.tar.bz2
-		loop-aes? ( http://loop-aes.sourceforge.net/updates/util-linux-ng-2.17.1-20100308.diff.bz2 )"
+	SRC_URI="mirror://kernel/linux/utils/util-linux/v${PV:0:4}/${MY_P}.tar.bz2"
 	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
 fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="crypt loop-aes nls old-linux perl selinux slang uclibc unicode"
+IUSE="+cramfs crypt ncurses nls old-linux perl selinux slang uclibc unicode"
 
 RDEPEND="!sys-process/schedutils
 	!sys-apps/setarch
-	>=sys-libs/ncurses-5.2-r2
 	!<sys-libs/e2fsprogs-libs-1.41.8
 	!<sys-fs/e2fsprogs-1.41.8
+	cramfs? ( sys-libs/zlib )
+	ncurses? ( >=sys-libs/ncurses-5.2-r2 )
 	perl? ( dev-lang/perl )
 	selinux? ( sys-libs/libselinux )
 	slang? ( sys-libs/slang )"
@@ -43,8 +43,6 @@ src_prepare() {
 	if [[ ${PV} == "9999" ]] ; then
 		autopoint --force
 		eautoreconf
-	else
-		use loop-aes && epatch "${WORKDIR}"/util-linux-ng-*.diff
 	fi
 	use uclibc && sed -i -e s/versionsort/alphasort/g -e s/strverscmp.h/dirent.h/g mount/lomount.c
 	elibtoolize
@@ -63,14 +61,16 @@ lfs_fallocate_test() {
 	rm -f "${T}"/fallocate.c
 }
 
+usex() { use $1 && echo ${2:-yes} || echo ${3:-no} ; }
 src_configure() {
 	lfs_fallocate_test
 	econf \
 		--enable-fs-paths-extra=/usr/sbin \
 		$(use_enable nls) \
 		--enable-agetty \
-		--enable-cramfs \
+		$(use_enable cramfs) \
 		$(use_enable old-linux elvtune) \
+		--with-ncurses=$(usex ncurses $(usex unicode auto yes) no) \
 		--disable-init \
 		--disable-kill \
 		--disable-last \
@@ -84,7 +84,6 @@ src_configure() {
 		--disable-wall \
 		--enable-write \
 		--without-pam \
-		$(use unicode || echo --with-ncurses) \
 		$(use_with selinux) \
 		$(use_with slang) \
 		$(tc-has-tls || echo --disable-tls)

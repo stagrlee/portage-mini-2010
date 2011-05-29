@@ -1,9 +1,13 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-libs/libxslt/libxslt-1.1.26.ebuild,v 1.12 2010/01/25 19:29:16 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/libxslt/libxslt-1.1.26.ebuild,v 1.17 2011/02/26 17:32:39 arfrever Exp $
 
-EAPI=2
-inherit autotools eutils toolchain-funcs
+EAPI="2"
+PYTHON_DEPEND="python? 2"
+SUPPORT_PYTHON_ABIS="1"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
+
+inherit autotools eutils python toolchain-funcs
 
 DESCRIPTION="XSLT libraries and tools"
 HOMEPAGE="http://www.xmlsoft.org/"
@@ -15,13 +19,24 @@ KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~spar
 IUSE="crypt debug python"
 
 DEPEND=">=dev-libs/libxml2-2.6.27
-	crypt?  ( >=dev-libs/libgcrypt-1.1.42 )
-	python? ( >=dev-lang/python-2.5 )"
+	crypt?  ( >=dev-libs/libgcrypt-1.1.42 )"
+RDEPEND="${DEPEND}"
+
+pkg_setup() {
+	if use python; then
+		python_pkg_setup
+	fi
+}
 
 src_prepare() {
 	epatch "${FILESDIR}"/libxslt.m4-${P}.patch \
 		"${FILESDIR}"/${PN}-1.1.23-parallel-install.patch \
-		"${FILESDIR}"/${P}-undefined.patch
+		"${FILESDIR}"/${P}-undefined.patch \
+		"${FILESDIR}"/${P}-disable_static_modules.patch
+
+	# Python bindings are built/tested/installed manually.
+	sed -e "s/@PYTHON_SUBDIR@//" -i Makefile.am || die "sed failed"
+
 	eautoreconf
 	epunt_cxx
 }
@@ -43,9 +58,58 @@ src_configure() {
 		$(use_with debug mem-debug)
 }
 
+src_compile() {
+	default
+
+	if use python; then
+		python_copy_sources python
+		building() {
+			emake PYTHON_INCLUDES="$(python_get_includedir)" \
+				PYTHON_SITE_PACKAGES="$(python_get_sitedir)" \
+				PYTHON_VERSION="$(python_get_version)"
+		}
+		python_execute_function -s --source-dir python building
+	fi
+}
+
+src_test() {
+	default
+
+	if use python; then
+		testing() {
+			emake test
+		}
+		python_execute_function -s --source-dir python testing
+	fi
+}
+
 src_install() {
 	emake DESTDIR="${D}" install || die
+
+	if use python; then
+		installation() {
+			emake DESTDIR="${D}" \
+				PYTHON_SITE_PACKAGES="$(python_get_sitedir)" \
+				install
+		}
+		python_execute_function -s --source-dir python installation
+
+		python_clean_installation_image
+	fi
+
 	mv -vf "${D}"/usr/share/doc/${PN}-python-${PV} \
 		"${D}"/usr/share/doc/${PF}/python
 	dodoc AUTHORS ChangeLog FEATURES NEWS README TODO || die
+}
+
+pkg_postinst() {
+	if use python; then
+		python_mod_optimize libxslt.py
+	fi
+}
+
+pkg_postrm() {
+	if use python; then
+		python_mod_cleanup libxslt.py
+	fi
 }

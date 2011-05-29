@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/tightvnc/tightvnc-1.3.10-r1.ebuild,v 1.8 2009/11/04 19:12:32 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-misc/tightvnc/tightvnc-1.3.10-r1.ebuild,v 1.10 2011/02/09 14:18:34 anarchy Exp $
 
 inherit eutils toolchain-funcs java-pkg-opt-2
 
@@ -17,7 +17,7 @@ LICENSE="GPL-2"
 SLOT="0"
 
 CDEPEND="media-fonts/font-misc-misc
-	media-libs/jpeg
+	virtual/jpeg
 	server? (
 		media-fonts/font-cursor-misc
 		x11-apps/rgb
@@ -44,7 +44,7 @@ DEPEND="${CDEPEND}
 	>=x11-misc/imake-1
 	x11-misc/gccmakedep
 	x11-misc/makedepend
-	!net-misc/vnc"
+	!net-misc/tigervnc"
 
 src_unpack() {
 

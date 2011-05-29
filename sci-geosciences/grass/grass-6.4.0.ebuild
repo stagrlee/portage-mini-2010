@@ -1,25 +1,25 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-geosciences/grass/grass-6.4.0.ebuild,v 1.1 2010/09/04 02:29:11 nerdboy Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-geosciences/grass/grass-6.4.0.ebuild,v 1.9 2011/04/05 06:38:52 jlec Exp $
 
 EAPI="3"
 
 PYTHON_DEPEND="python? 2"
+
 inherit eutils gnome2 multilib python versionator wxwidgets base
 
 MY_PM=${PN}$(get_version_component_range 1-2 ${PV})
 MY_PM=${MY_PM/.}
 MY_P=${P/_rc/RC}
 
-DESCRIPTION="A free GIS with raster and vector functionality, as well as 3D vizualization."
-HOMEPAGE="http://grass.osgeo.org//"
+DESCRIPTION="A free GIS with raster and vector functionality, as well as 3D vizualization"
+HOMEPAGE="http://grass.osgeo.org/"
 SRC_URI="http://grass.osgeo.org/${MY_PM}/source/${MY_P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="6"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~sparc ~x86"
-
-IUSE="X cairo cxx ffmpeg fftw gmath jpeg largefile motif mysql nls odbc opengl png postgres python readline sqlite tiff truetype wxwidgets"
+KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+IUSE="X cairo cxx ffmpeg fftw gmath jpeg motif mysql nls odbc opengl png postgres python readline sqlite tiff truetype wxwidgets"
 
 TCL_DEPS="
 	>=dev-lang/tcl-8.5
@@ -33,14 +33,14 @@ RDEPEND="
 	sys-libs/ncurses
 	sys-libs/zlib
 	cairo? ( x11-libs/cairo[X?,opengl?] )
-	ffmpeg? ( media-video/ffmpeg )
+	ffmpeg? ( virtual/ffmpeg )
 	fftw? ( sci-libs/fftw:3.0 )
 	gmath? (
 		virtual/blas
 		virtual/lapack
 	)
-	jpeg? ( media-libs/jpeg )
-	mysql? ( dev-db/mysql )
+	jpeg? ( virtual/jpeg )
+	mysql? ( virtual/mysql )
 	odbc? ( dev-db/unixODBC )
 	png? ( media-libs/libpng )
 	postgres? (
@@ -51,9 +51,7 @@ RDEPEND="
 	)
 	readline? ( sys-libs/readline )
 	sqlite? ( dev-db/sqlite:3 )
-	tiff? ( media-libs/tiff
-		largefile? ( >=media-libs/tiff-4 )
-	)
+	tiff? ( >=media-libs/tiff-4 )
 	truetype? ( media-libs/freetype:2 )
 	X? (
 		x11-libs/libICE
@@ -66,7 +64,7 @@ RDEPEND="
 		x11-libs/libXpm
 		x11-libs/libXt
 		motif? (
-			x11-libs/openmotif
+			>=x11-libs/openmotif-2.3:0
 			opengl? ( media-libs/mesa[motif] )
 		)
 		opengl? (
@@ -126,18 +124,6 @@ pkg_setup() {
 		# only py2 is supported
 		python_set_active_version 2
 	fi
-
-	if use wxwidgets; then
-		# only 2.8 is supported or the wx-gui barfs at runtime...
-		local success=0
-		ewarn "Attempting to select a compatible wxwidgets"
-		eselect wxwidgets set gtk2-unicode-release-2.8
-		success=1
-	fi
-	if [ $success != 1 ]; then
-		 eerror "Unable to select a compatible wxwidgets!"
-		 die "Please set wxwidgets to at least 2.8 (see \`eselect wxwidgets --help\`)."
-	fi
 }
 
 src_prepare() {
@@ -163,7 +149,7 @@ src_configure() {
 		if use python && use wxwidgets; then
 			WX_BUILD=yes
 			WX_GTK_VER=2.8
-			need-wxwidgets base
+			need-wxwidgets unicode
 			myconf+="
 				--without-tcltk
 				--with-wxwidgets=${WX_CONFIG}
@@ -203,14 +189,10 @@ src_configure() {
 		$(use_with cxx) \
 		$(use_with fftw) \
 		$(use_with ffmpeg) \
-		--with-ffmpeg-includes="/usr/include/libavcodec \
-			/usr/include/libavdevice /usr/include/libavfilter \
-			/usr/include/libavformat /usr/include/libavutil \
-			/usr/include/libpostproc /usr/include/libswscale" \
+		--with-ffmpeg-includes="/usr/include/libavcodec /usr/include/libavdevice /usr/include/libavfilter /usr/include/libavformat /usr/include/libavutil /usr/include/libpostproc /usr/include/libswscale" \
 		$(use_with gmath blas) \
 		$(use_with gmath lapack) \
 		$(use_with jpeg) \
-		$(use_enable largefile) \
 		$(use_with mysql) \
 		--with-mysql-includes=/usr/include/mysql \
 		--with-mysql-libs=/usr/$(get_libdir)/mysql \
@@ -224,6 +206,7 @@ src_configure() {
 		$(use_with tiff) \
 		$(use_with truetype freetype) \
 		--with-freetype-includes="/usr/include/freetype2/" \
+		--enable-largefile \
 		${myconf}
 }
 

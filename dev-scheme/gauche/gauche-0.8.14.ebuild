@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-scheme/gauche/gauche-0.8.14.ebuild,v 1.2 2009/12/25 13:20:42 hattya Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-scheme/gauche/gauche-0.8.14.ebuild,v 1.4 2011/05/23 08:58:51 hattya Exp $
 
 inherit autotools eutils flag-o-matic
 
@@ -13,45 +13,37 @@ HOMEPAGE="http://gauche.sf.net/"
 SRC_URI="mirror://sourceforge/gauche/${MY_P}.tgz"
 
 LICENSE="BSD"
-KEYWORDS="~amd64 ~ia64 ~ppc ~sparc x86"
+KEYWORDS="~amd64 ia64 ~ppc ~sparc x86"
 SLOT="0"
 S="${WORKDIR}/${MY_P}"
 
 DEPEND=">=sys-libs/gdbm-1.8.0"
+RDEPEND="${DEPEND}"
 
 src_unpack() {
-
 	unpack ${A}
 	cd "${S}"
 
 	epatch "${FILESDIR}"/${PN}-gauche.m4.diff
 	epatch "${FILESDIR}"/${PN}-runpath.diff
 	eautoconf
-
 }
 
 src_compile() {
-
 	strip-flags
 
 	econf \
 		`use_enable ipv6` \
 		--enable-multibyte=utf8 \
-		--with-slib=/usr/share/slib \
-		|| die
+		--with-slib=/usr/share/slib
 	emake -j1 || die
-
 }
 
 src_test() {
-
 	emake -j1 -s check || die
-
 }
 
 src_install() {
-
 	emake DESTDIR="${D}" install-pkg install-doc || die
-	dodoc AUTHORS ChangeLog HACKING README
-
+	dodoc AUTHORS ChangeLog HACKING README || die
 }

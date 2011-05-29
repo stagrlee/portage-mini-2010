@@ -1,12 +1,10 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/distutils.eclass,v 1.76 2010/07/17 23:03:29 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/distutils.eclass,v 1.80 2011/04/12 18:49:03 arfrever Exp $
 
 # @ECLASS: distutils.eclass
 # @MAINTAINER:
 # Gentoo Python Project <python@gentoo.org>
-#
-# Original author: Jon Nelson <jnelson@gentoo.org>
 # @BLURB: Eclass for packages with build systems using Distutils
 # @DESCRIPTION:
 # The distutils eclass defines phase functions for packages with build systems using Distutils.
@@ -27,6 +25,22 @@ if [[ -z "$(declare -p PYTHON_DEPEND 2> /dev/null)" ]]; then
 	RDEPEND="${DEPEND}"
 fi
 
+	if has "${EAPI:-0}" 0 1 && [[ -n "${SUPPORT_PYTHON_ABIS}" ]]; then
+		ewarn
+		ewarn "\"${EBUILD}\":"
+		ewarn "Deprecation Warning: Usage of distutils.eclass in packages supporting installation"
+		ewarn "for multiple Python ABIs in EAPI <=1 is deprecated and will be banned on 2011-06-01."
+		ewarn "The ebuild needs to be fixed. Please report a bug, if it has not been already reported."
+		ewarn
+	elif has "${EAPI:-0}" 0 1 2 && [[ -z "${SUPPORT_PYTHON_ABIS}" ]]; then
+		ewarn
+		ewarn "\"${EBUILD}\":"
+		ewarn "Deprecation Warning: Usage of distutils.eclass in packages not supporting installation"
+		ewarn "for multiple Python ABIs in EAPI <=2 is deprecated and will be banned on 2011-06-01."
+		ewarn "The ebuild needs to be fixed. Please report a bug, if it has not been already reported."
+		ewarn
+	fi
+
 # 'python' variable is deprecated. Use PYTHON() instead.
 if has "${EAPI:-0}" 0 1 2 && [[ -z "${SUPPORT_PYTHON_ABIS}" ]]; then
 	python="python"
@@ -40,11 +54,17 @@ fi
 
 # @ECLASS-VARIABLE: DISTUTILS_SETUP_FILES
 # @DESCRIPTION:
-# Paths to setup files.
+# Array of paths to setup files.
+# Syntax:
+#   [current_working_directory|]path_to_setup_file
 
 # @ECLASS-VARIABLE: DISTUTILS_GLOBAL_OPTIONS
 # @DESCRIPTION:
-# Global options passed to setup files.
+# Array of global options passed to setup files.
+# Syntax in EAPI <4:
+#   global_option
+# Syntax in EAPI >=4:
+#   Python_ABI_pattern global_option
 
 # @ECLASS-VARIABLE: DISTUTILS_SRC_TEST
 # @DESCRIPTION:
@@ -70,7 +90,7 @@ if [[ -z "${DISTUTILS_DISABLE_TEST_DEPENDENCY}" ]]; then
 		DEPEND+="${DEPEND:+ }test? ( dev-python/nose )"
 	elif [[ "${DISTUTILS_SRC_TEST}" == "py.test" ]]; then
 		IUSE="test"
-		DEPEND+="${DEPEND:+ }test? ( dev-python/py )"
+		DEPEND+="${DEPEND:+ }test? ( dev-python/pytest )"
 	# trial requires an argument, which is usually equal to "${PN}".
 	elif [[ "${DISTUTILS_SRC_TEST}" =~ ^trial(\ .*)?$ ]]; then
 		IUSE="test"
@@ -82,22 +102,18 @@ if [[ -n "${DISTUTILS_SRC_TEST}" ]]; then
 	EXPORT_FUNCTIONS src_test
 fi
 
-# @ECLASS-VARIABLE: DISTUTILS_DISABLE_VERSIONING_OF_PYTHON_SCRIPTS
-# @DESCRIPTION:
-# Set this to disable renaming of Python scripts containing versioned shebangs
-# and generation of wrapper scripts.
-
-# @ECLASS-VARIABLE: DISTUTILS_NONVERSIONED_PYTHON_SCRIPTS
-# @DESCRIPTION:
-# List of paths to Python scripts, relative to ${ED}, which are excluded from
-# renaming and generation of wrapper scripts.
+# Scheduled for deletion on 2011-06-01.
+if [[ -n "${DISTUTILS_DISABLE_VERSIONING_OF_PYTHON_SCRIPTS}" ]]; then
+	eerror "Use PYTHON_NONVERSIONED_EXECUTABLES=(\".*\") instead of DISTUTILS_DISABLE_VERSIONING_OF_PYTHON_SCRIPTS variable."
+	die "DISTUTILS_DISABLE_VERSIONING_OF_PYTHON_SCRIPTS variable is banned"
+fi
 
 # @ECLASS-VARIABLE: DOCS
 # @DESCRIPTION:
 # Additional documentation files installed by distutils_src_install().
 
 _distutils_get_build_dir() {
-	if [[ -n "${SUPPORT_PYTHON_ABIS}" && -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]]; then
+	if _python_package_supporting_installation_for_multiple_python_abis && [[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]]; then
 		echo "build-${PYTHON_ABI}"
 	else
 		echo "build"
@@ -105,7 +121,7 @@ _distutils_get_build_dir() {
 }
 
 _distutils_get_PYTHONPATH() {
-	if [[ -n "${SUPPORT_PYTHON_ABIS}" && -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]]; then
+	if _python_package_supporting_installation_for_multiple_python_abis && [[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]]; then
 		ls -d build-${PYTHON_ABI}/lib* 2> /dev/null
 	else
 		ls -d build/lib* 2> /dev/null
@@ -118,6 +134,48 @@ _distutils_hook() {
 	fi
 	if [[ "$(type -t "distutils_src_${EBUILD_PHASE}_$1_hook")" == "function" ]]; then
 		"distutils_src_${EBUILD_PHASE}_$1_hook"
+	fi
+}
+
+_distutils_prepare_global_options() {
+	local element option pattern
+
+	if [[ -n "$(declare -p DISTUTILS_GLOBAL_OPTIONS 2> /dev/null)" && "$(declare -p DISTUTILS_GLOBAL_OPTIONS)" != "declare -a DISTUTILS_GLOBAL_OPTIONS="* ]]; then
+		die "DISTUTILS_GLOBAL_OPTIONS should be indexed array"
+	fi
+
+	if has "${EAPI:-0}" 0 1 2 3; then
+		_DISTUTILS_GLOBAL_OPTIONS=("${DISTUTILS_GLOBAL_OPTIONS[@]}")
+	else
+		_DISTUTILS_GLOBAL_OPTIONS=()
+
+		for element in "${DISTUTILS_GLOBAL_OPTIONS[@]}"; do
+			if [[ ! "${element}" =~ ^[^[:space:]]+\ . ]]; then
+				die "Element '${element}' of DISTUTILS_GLOBAL_OPTIONS array has invalid syntax"
+			fi
+			pattern="${element%% *}"
+			option="${element#* }"
+			if _python_check_python_abi_matching "${PYTHON_ABI}" "${pattern}"; then
+				_DISTUTILS_GLOBAL_OPTIONS+=("${option}")
+			fi
+		done
+	fi
+}
+
+_distutils_prepare_current_working_directory() {
+	if [[ "$1" == *"|"*"|"* ]]; then
+		die "Element '$1' of DISTUTILS_SETUP_FILES array has invalid syntax"
+	fi
+
+	if [[ "$1" == *"|"* ]]; then
+		echo "${_BOLD}[${1%|*}]${_NORMAL}"
+		pushd "${1%|*}" > /dev/null || die "Entering directory '${1%|*}' failed"
+	fi
+}
+
+_distutils_restore_current_working_directory() {
+	if [[ "$1" == *"|"* ]]; then
+		popd > /dev/null || die "Leaving directory '${1%|*}' failed"
 	fi
 }
 
@@ -147,8 +205,15 @@ distutils_src_prepare() {
 		die "${FUNCNAME}() can be used only in src_prepare() phase"
 	fi
 
+	_python_check_python_pkg_setup_execution
+
+	local distribute_setup_existence="0" ez_setup_existence="0"
+
+	if [[ "$#" -ne 0 ]]; then
+		die "${FUNCNAME}() does not accept arguments"
+	fi
+
 	# Delete ez_setup files to prevent packages from installing Setuptools on their own.
-	local ez_setup_existence="0"
 	[[ -d ez_setup || -f ez_setup.py ]] && ez_setup_existence="1"
 	rm -fr ez_setup*
 	if [[ "${ez_setup_existence}" == "1" ]]; then
@@ -156,7 +221,6 @@ distutils_src_prepare() {
 	fi
 
 	# Delete distribute_setup files to prevent packages from installing Distribute on their own.
-	local distribute_setup_existence="0"
 	[[ -d distribute_setup || -f distribute_setup.py ]] && distribute_setup_existence="1"
 	rm -fr distribute_setup*
 	if [[ "${distribute_setup_existence}" == "1" ]]; then
@@ -178,26 +242,40 @@ distutils_src_compile() {
 		die "${FUNCNAME}() can be used only in src_compile() phase"
 	fi
 
+	_python_check_python_pkg_setup_execution
 	_python_set_color_variables
 
-	if [[ -n "${SUPPORT_PYTHON_ABIS}" ]]; then
+	local setup_file
+
+	if _python_package_supporting_installation_for_multiple_python_abis; then
 		distutils_building() {
 			_distutils_hook pre
 
-			local setup_file
+			_distutils_prepare_global_options
+
 			for setup_file in "${DISTUTILS_SETUP_FILES[@]-setup.py}"; do
-				echo ${_BOLD}"$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" build -b "$(_distutils_get_build_dir)" "$@"${_NORMAL}
-				"$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" build -b "$(_distutils_get_build_dir)" "$@" || return "$?"
+				_distutils_prepare_current_working_directory "${setup_file}"
+
+				echo ${_BOLD}"$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" build -b "$(_distutils_get_build_dir)" "$@"${_NORMAL}
+				"$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" build -b "$(_distutils_get_build_dir)" "$@" || return "$?"
+
+				_distutils_restore_current_working_directory "${setup_file}"
 			done
 
 			_distutils_hook post
 		}
 		python_execute_function ${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES:+-s} distutils_building "$@"
+		unset -f distutils_building
 	else
-		local setup_file
+		_distutils_prepare_global_options
+
 		for setup_file in "${DISTUTILS_SETUP_FILES[@]-setup.py}"; do
-			echo ${_BOLD}"$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" build "$@"${_NORMAL}
-			"$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" build "$@" || die "Building failed"
+			_distutils_prepare_current_working_directory "${setup_file}"
+
+			echo ${_BOLD}"$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" build "$@"${_NORMAL}
+			"$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" build "$@" || die "Building failed"
+
+			_distutils_restore_current_working_directory "${setup_file}"
 		done
 	fi
 }
@@ -207,7 +285,7 @@ _distutils_src_test_hook() {
 		die "${FUNCNAME}() requires 1 arguments"
 	fi
 
-	if [[ -z "${SUPPORT_PYTHON_ABIS}" ]]; then
+	if ! _python_package_supporting_installation_for_multiple_python_abis; then
 		return
 	fi
 
@@ -234,27 +312,41 @@ distutils_src_test() {
 		die "${FUNCNAME}() can be used only in src_test() phase"
 	fi
 
+	_python_check_python_pkg_setup_execution
 	_python_set_color_variables
 
+	local arguments setup_file
+
 	if [[ "${DISTUTILS_SRC_TEST}" == "setup.py" ]]; then
-		if [[ -n "${SUPPORT_PYTHON_ABIS}" ]]; then
+		if _python_package_supporting_installation_for_multiple_python_abis; then
 			distutils_testing() {
 				_distutils_hook pre
 
-				local setup_file
+				_distutils_prepare_global_options
+
 				for setup_file in "${DISTUTILS_SETUP_FILES[@]-setup.py}"; do
-					echo ${_BOLD}PYTHONPATH="$(_distutils_get_PYTHONPATH)" "$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" $([[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]] && echo build -b "$(_distutils_get_build_dir)") test "$@"${_NORMAL}
-					PYTHONPATH="$(_distutils_get_PYTHONPATH)" "$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" $([[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]] && echo build -b "$(_distutils_get_build_dir)") test "$@" || return "$?"
+					_distutils_prepare_current_working_directory "${setup_file}"
+
+					echo ${_BOLD}PYTHONPATH="$(_distutils_get_PYTHONPATH)" "$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" $([[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]] && echo build -b "$(_distutils_get_build_dir)") test "$@"${_NORMAL}
+					PYTHONPATH="$(_distutils_get_PYTHONPATH)" "$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" $([[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]] && echo build -b "$(_distutils_get_build_dir)") test "$@" || return "$?"
+
+					_distutils_restore_current_working_directory "${setup_file}"
 				done
 
 				_distutils_hook post
 			}
 			python_execute_function ${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES:+-s} distutils_testing "$@"
+			unset -f distutils_testing
 		else
-			local setup_file
+			_distutils_prepare_global_options
+
 			for setup_file in "${DISTUTILS_SETUP_FILES[@]-setup.py}"; do
-				echo ${_BOLD}PYTHONPATH="$(_distutils_get_PYTHONPATH)" "$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" test "$@"${_NORMAL}
-				PYTHONPATH="$(_distutils_get_PYTHONPATH)" "$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" test "$@" || die "Testing failed"
+				_distutils_prepare_current_working_directory "${setup_file}"
+
+				echo ${_BOLD}PYTHONPATH="$(_distutils_get_PYTHONPATH)" "$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" test "$@"${_NORMAL}
+				PYTHONPATH="$(_distutils_get_PYTHONPATH)" "$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" test "$@" || die "Testing failed"
+
+				_distutils_restore_current_working_directory "${setup_file}"
 			done
 		fi
 	elif [[ "${DISTUTILS_SRC_TEST}" == "nosetests" ]]; then
@@ -267,16 +359,15 @@ distutils_src_test() {
 		python_execute_py.test -P '$(_distutils_get_PYTHONPATH)' ${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES:+-s} -- "$@"
 	# trial requires an argument, which is usually equal to "${PN}".
 	elif [[ "${DISTUTILS_SRC_TEST}" =~ ^trial(\ .*)?$ ]]; then
-		local trial_arguments
 		if [[ "${DISTUTILS_SRC_TEST}" == "trial "* ]]; then
-			trial_arguments="${DISTUTILS_SRC_TEST#trial }"
+			arguments="${DISTUTILS_SRC_TEST#trial }"
 		else
-			trial_arguments="${PN}"
+			arguments="${PN}"
 		fi
 
 		_distutils_src_test_hook trial
 
-		python_execute_trial -P '$(_distutils_get_PYTHONPATH)' ${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES:+-s} -- ${trial_arguments} "$@"
+		python_execute_trial -P '$(_distutils_get_PYTHONPATH)' ${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES:+-s} -- ${arguments} "$@"
 	else
 		die "'DISTUTILS_SRC_TEST' variable has unsupported value '${DISTUTILS_SRC_TEST}'"
 	fi
@@ -288,84 +379,95 @@ distutils_src_test() {
 # In ebuilds of packages supporting installation for multiple versions of Python, this function
 # calls distutils_src_install_pre_hook() and distutils_src_install_post_hook(), if they are defined.
 # It also installs some standard documentation files (AUTHORS, Change*, CHANGELOG, CONTRIBUTORS,
-# KNOWN_BUGS, MAINTAINERS, MANIFEST*, NEWS, PKG-INFO, README*, TODO).
+# KNOWN_BUGS, MAINTAINERS, NEWS, README*, TODO).
 distutils_src_install() {
 	if [[ "${EBUILD_PHASE}" != "install" ]]; then
 		die "${FUNCNAME}() can be used only in src_install() phase"
 	fi
 
+	_python_check_python_pkg_setup_execution
 	_python_initialize_prefix_variables
 	_python_set_color_variables
 
-	if [[ -n "${SUPPORT_PYTHON_ABIS}" ]]; then
-		if [[ -z "${DISTUTILS_DISABLE_VERSIONING_OF_PYTHON_SCRIPTS}" && "${BASH_VERSINFO[0]}" -ge 4 ]]; then
-			declare -A wrapper_scripts=()
+	local default_docs doc line nspkg_pth_file nspkg_pth_files=() setup_file
 
-			rename_scripts_with_versioned_shebangs() {
-				if [[ -d "${ED}usr/bin" ]]; then
-					cd "${ED}usr/bin"
-
-					local nonversioned_file file
-					for file in *; do
-						if [[ -f "${file}" && ! "${file}" =~ [[:digit:]]+\.[[:digit:]](-jython)?+$ && "$(head -n1 "${file}")" =~ ^'#!'.*(python|jython-)[[:digit:]]+\.[[:digit:]]+ ]]; then
-							for nonversioned_file in "${DISTUTILS_NONVERSIONED_PYTHON_SCRIPTS[@]}"; do
-								[[ "${nonversioned_file}" == "/usr/bin/${file}" ]] && continue 2
-							done
-							mv "${file}" "${file}-${PYTHON_ABI}" || die "Renaming of '${file}' failed"
-							wrapper_scripts+=(["${ED}usr/bin/${file}"]=)
-						fi
-					done
-				fi
-			}
-		fi
-
+	if _python_package_supporting_installation_for_multiple_python_abis; then
 		distutils_installation() {
 			_distutils_hook pre
 
-			local setup_file
-			for setup_file in "${DISTUTILS_SETUP_FILES[@]-setup.py}"; do
-				echo ${_BOLD}"$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" $([[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]] && echo build -b "$(_distutils_get_build_dir)") install --root="${D}" --no-compile "$@"${_NORMAL}
-				"$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" $([[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]] && echo build -b "$(_distutils_get_build_dir)") install --root="${D}" --no-compile "$@" || return "$?"
-			done
+			_distutils_prepare_global_options
 
-			if [[ -z "${DISTUTILS_DISABLE_VERSIONING_OF_PYTHON_SCRIPTS}" && "${BASH_VERSINFO[0]}" -ge 4 ]]; then
-				rename_scripts_with_versioned_shebangs
-			fi
+			for setup_file in "${DISTUTILS_SETUP_FILES[@]-setup.py}"; do
+				_distutils_prepare_current_working_directory "${setup_file}"
+
+				echo ${_BOLD}"$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" $([[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]] && echo build -b "$(_distutils_get_build_dir)") install --no-compile --root="${T}/images/${PYTHON_ABI}" "$@"${_NORMAL}
+				"$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" $([[ -z "${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES}" ]] && echo build -b "$(_distutils_get_build_dir)") install --no-compile --root="${T}/images/${PYTHON_ABI}" "$@" || return "$?"
+
+				_distutils_restore_current_working_directory "${setup_file}"
+			done
 
 			_distutils_hook post
 		}
 		python_execute_function ${DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES:+-s} distutils_installation "$@"
+		unset -f distutils_installation
 
-		if [[ -z "${DISTUTILS_DISABLE_VERSIONING_OF_PYTHON_SCRIPTS}" && "${#wrapper_scripts[@]}" -ne 0 && "${BASH_VERSINFO[0]}" -ge 4 ]]; then
-			python_generate_wrapper_scripts "${!wrapper_scripts[@]}"
-		fi
-		unset wrapper_scripts
+		python_merge_intermediate_installation_images "${T}/images"
 	else
 		# Mark the package to be rebuilt after a Python upgrade.
 		python_need_rebuild
 
-		local setup_file
+		_distutils_prepare_global_options
+
 		for setup_file in "${DISTUTILS_SETUP_FILES[@]-setup.py}"; do
-			echo ${_BOLD}"$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" install --root="${D}" --no-compile "$@"${_NORMAL}
-			"$(PYTHON)" "${setup_file}" "${DISTUTILS_GLOBAL_OPTIONS[@]}" install --root="${D}" --no-compile "$@" || die "Installation failed"
+			_distutils_prepare_current_working_directory "${setup_file}"
+
+			echo ${_BOLD}"$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" install --root="${D}" --no-compile "$@"${_NORMAL}
+			"$(PYTHON)" "${setup_file#*|}" "${_DISTUTILS_GLOBAL_OPTIONS[@]}" install --root="${D}" --no-compile "$@" || die "Installation failed"
+
+			_distutils_restore_current_working_directory "${setup_file}"
 		done
+	fi
+
+	while read -d $'\0' -r nspkg_pth_file; do
+		nspkg_pth_files+=("${nspkg_pth_file}")
+	done < <(find "${ED}" -name "*-nspkg.pth" -type f -print0)
+
+	if [[ "${#nspkg_pth_files[@]}" -gt 0 ]]; then
+		einfo
+		einfo "Python namespaces:"
+		for nspkg_pth_file in "${nspkg_pth_files[@]}"; do
+			einfo "    '${nspkg_pth_file#${ED%/}}':"
+			while read -r line; do
+				einfo "        $(echo "${line}" | sed -e "s/.*types\.ModuleType('\([^']\+\)').*/\1/")"
+			done < "${nspkg_pth_file}"
+			if ! has "${EAPI:-0}" 0 1 2 3; then
+				rm -f "${nspkg_pth_file}" || die "Deletion of '${nspkg_pth_file}' failed"
+			fi
+		done
+		einfo
 	fi
 
 	if [[ -e "${ED}usr/local" ]]; then
 		die "Illegal installation into /usr/local"
 	fi
 
-	local default_docs
-	default_docs="AUTHORS Change* CHANGELOG CONTRIBUTORS KNOWN_BUGS MAINTAINERS MANIFEST* NEWS PKG-INFO README* TODO"
+	default_docs="AUTHORS Change* CHANGELOG CONTRIBUTORS KNOWN_BUGS MAINTAINERS NEWS README* TODO"
 
-	local doc
 	for doc in ${default_docs}; do
 		[[ -s "${doc}" ]] && dodoc "${doc}"
 	done
 
-	if [[ -n "${DOCS}" ]]; then
-		dodoc ${DOCS} || die "dodoc failed"
+	if has "${EAPI:-0}" 0 1 2 3; then
+		if [[ -n "${DOCS}" ]]; then
+			dodoc ${DOCS} || die "dodoc failed"
+		fi
+	else
+		if [[ -n "${DOCS}" ]]; then
+			dodoc -r ${DOCS} || die "dodoc failed"
+		fi
 	fi
+
+	DISTUTILS_SRC_INSTALL_EXECUTED="1"
 }
 
 # @FUNCTION: distutils_pkg_postinst
@@ -379,11 +481,21 @@ distutils_pkg_postinst() {
 		die "${FUNCNAME}() can be used only in pkg_postinst() phase"
 	fi
 
+	_python_check_python_pkg_setup_execution
 	_python_initialize_prefix_variables
 
+	if [[ -z "${DISTUTILS_SRC_INSTALL_EXECUTED}" ]]; then
+		die "${FUNCNAME}() called illegally"
+	fi
+
 	local pylibdir pymod
+
+	if [[ "$#" -ne 0 ]]; then
+		die "${FUNCNAME}() does not accept arguments"
+	fi
+
 	if [[ -z "$(declare -p PYTHON_MODNAME 2> /dev/null)" ]]; then
-		for pylibdir in "${EROOT}"usr/$(get_libdir)/python* "${EROOT}"/usr/share/jython-*/Lib; do
+		for pylibdir in "${EROOT}"usr/$(get_libdir)/python* "${EROOT}"usr/share/jython-*/Lib; do
 			if [[ -d "${pylibdir}/site-packages/${PN}" ]]; then
 				PYTHON_MODNAME="${PN}"
 			fi
@@ -391,7 +503,7 @@ distutils_pkg_postinst() {
 	fi
 
 	if [[ -n "${PYTHON_MODNAME}" ]]; then
-		if ! has "${EAPI:-0}" 0 1 2 || [[ -n "${SUPPORT_PYTHON_ABIS}" ]]; then
+		if ! has "${EAPI:-0}" 0 1 2 || _python_package_supporting_installation_for_multiple_python_abis; then
 			python_mod_optimize ${PYTHON_MODNAME}
 		else
 			for pymod in ${PYTHON_MODNAME}; do
@@ -412,11 +524,21 @@ distutils_pkg_postrm() {
 		die "${FUNCNAME}() can be used only in pkg_postrm() phase"
 	fi
 
+	_python_check_python_pkg_setup_execution
 	_python_initialize_prefix_variables
 
+	if [[ -z "${DISTUTILS_SRC_INSTALL_EXECUTED}" ]]; then
+		die "${FUNCNAME}() called illegally"
+	fi
+
 	local pylibdir pymod
+
+	if [[ "$#" -ne 0 ]]; then
+		die "${FUNCNAME}() does not accept arguments"
+	fi
+
 	if [[ -z "$(declare -p PYTHON_MODNAME 2> /dev/null)" ]]; then
-		for pylibdir in "${EROOT}"usr/$(get_libdir)/python* "${EROOT}"/usr/share/jython-*/Lib; do
+		for pylibdir in "${EROOT}"usr/$(get_libdir)/python* "${EROOT}"usr/share/jython-*/Lib; do
 			if [[ -d "${pylibdir}/site-packages/${PN}" ]]; then
 				PYTHON_MODNAME="${PN}"
 			fi
@@ -424,7 +546,7 @@ distutils_pkg_postrm() {
 	fi
 
 	if [[ -n "${PYTHON_MODNAME}" ]]; then
-		if ! has "${EAPI:-0}" 0 1 2 || [[ -n "${SUPPORT_PYTHON_ABIS}" ]]; then
+		if ! has "${EAPI:-0}" 0 1 2 || _python_package_supporting_installation_for_multiple_python_abis; then
 			python_mod_cleanup ${PYTHON_MODNAME}
 		else
 			for pymod in ${PYTHON_MODNAME}; do
@@ -438,14 +560,29 @@ distutils_pkg_postrm() {
 	fi
 }
 
-# Scheduled for deletion on 2011-01-01.
-distutils_python_version() {
-	eerror "Use PYTHON() instead of python variable. Use python_get_*() instead of PYVER* variables."
-	die "${FUNCNAME}() is banned"
-}
+# @FUNCTION: distutils_get_intermediate_installation_image
+# @DESCRIPTION:
+# Print path to intermediate installation image.
+#
+# This function can be used only in distutils_src_install_pre_hook() and distutils_src_install_post_hook().
+distutils_get_intermediate_installation_image() {
+	if [[ "${EBUILD_PHASE}" != "install" ]]; then
+		die "${FUNCNAME}() can be used only in src_install() phase"
+	fi
 
-# Scheduled for deletion on 2011-01-01.
-distutils_python_tkinter() {
-	eerror "Use PYTHON_USE_WITH=\"xml\" and python_pkg_setup() instead of ${FUNCNAME}()."
-	die "${FUNCNAME}() is banned"
+	if ! _python_package_supporting_installation_for_multiple_python_abis; then
+		die "${FUNCNAME}() cannot be used in ebuilds of packages not supporting installation for multiple Python ABIs"
+	fi
+
+	_python_check_python_pkg_setup_execution
+
+	if [[ ! "${FUNCNAME[1]}" =~ ^distutils_src_install_(pre|post)_hook$ ]]; then
+		die "${FUNCNAME}() can be used only in distutils_src_install_pre_hook() and distutils_src_install_post_hook()"
+	fi
+
+	if [[ "$#" -ne 0 ]]; then
+		die "${FUNCNAME}() does not accept arguments"
+	fi
+
+	echo "${T}/images/${PYTHON_ABI}"
 }

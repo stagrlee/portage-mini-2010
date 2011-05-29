@@ -1,6 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-misc/ignuit/ignuit-0.0.16.ebuild,v 1.4 2010/05/24 14:16:08 nixnut Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-misc/ignuit/ignuit-0.0.16.ebuild,v 1.6 2011/03/27 12:02:49 nirbheek Exp $
+
+EAPI="2"
 
 DESCRIPTION="memorization aid based on the Leitner flashcard system"
 HOMEPAGE="http://homepages.ihug.co.nz/~trmusson/programs.html#ignuit"
@@ -8,17 +10,17 @@ SRC_URI="http://homepages.ihug.co.nz/~trmusson/stuff/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="amd64 ppc ~ppc64 x86"
+KEYWORDS="amd64 ppc ppc64 x86"
 IUSE="examples"
 
 RDEPEND=">=gnome-base/libgnomeui-2.22.1
-	gnome-base/gconf
-	gnome-base/libglade
-	>=dev-libs/glib-2
-	>=x11-libs/gtk+-2
-	>=media-libs/gstreamer-0.10.20
+	gnome-base/gconf:2
+	gnome-base/libglade:2.0
+	dev-libs/glib:2
+	x11-libs/gtk+:2
+	>=media-libs/gstreamer-0.10.20:0.10
 	dev-libs/libxslt
-	dev-libs/libxml2
+	dev-libs/libxml2:2
 	x11-libs/pango
 	app-text/dvipng
 	virtual/latex-base

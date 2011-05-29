@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-board/eboard/eboard-1.1.1-r1.ebuild,v 1.4 2010/05/31 18:18:11 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-board/eboard/eboard-1.1.1-r1.ebuild,v 1.7 2010/11/07 21:56:52 mr_bones_ Exp $
 
 EAPI=2
 inherit eutils games
@@ -17,22 +17,21 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~ppc x86"
+KEYWORDS="amd64 ppc x86"
 IUSE="nls"
 
 RDEPEND="x11-libs/gtk+:2
-	media-libs/libpng
-	dev-lang/perl
-	nls? ( virtual/libintl )"
+	media-libs/libpng"
 DEPEND="${RDEPEND}
-	dev-util/pkgconfig
-	nls? ( sys-devel/gettext )"
+	dev-lang/perl
+	dev-util/pkgconfig"
 
 src_prepare() {
 	epatch \
 		"${WORKDIR}"/${PN}_${DEB_V}.diff \
 		"${FILESDIR}"/${P}-as-needed.patch \
-		"${FILESDIR}"/${P}-gcc44.patch
+		"${FILESDIR}"/${P}-gcc44.patch \
+		"${FILESDIR}"/${P}-ovflfix.patch
 	sed -i \
 		-e "s:(\"-O6\"):split(' ', \"${CXXFLAGS}\"):" \
 		configure \
@@ -40,13 +39,12 @@ src_prepare() {
 }
 
 src_configure() {
-	# not an autoconf script
 	./configure \
 		--compiler="${CXX}" \
 		--prefix="${GAMES_PREFIX}" \
 		--data-prefix="${GAMES_DATADIR}" \
 		--man-prefix="/usr/share/man" \
-		$(use_enable nls) || die
+		$(use_enable nls) || die # not an autoconf script
 }
 
 src_install() {

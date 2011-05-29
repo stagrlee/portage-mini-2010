@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/molmol/molmol-2k_p2.ebuild,v 1.13 2009/09/18 15:01:49 betelgeuse Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/molmol/molmol-2k_p2.ebuild,v 1.15 2010/11/08 17:14:25 xarthisius Exp $
 
 EAPI="2"
 
@@ -17,10 +17,10 @@ LICENSE="molmol"
 SLOT="0"
 KEYWORDS="~amd64 ppc x86"
 IUSE=""
-DEPEND="x11-libs/openmotif
+DEPEND=">=x11-libs/openmotif-2.3:0
 	x11-libs/libXpm
 	media-libs/mesa[motif]
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/tiff
 	media-libs/libpng
 	sys-libs/zlib"

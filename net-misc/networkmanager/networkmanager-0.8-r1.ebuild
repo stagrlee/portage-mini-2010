@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/networkmanager/networkmanager-0.8-r1.ebuild,v 1.8 2010/08/23 10:52:31 dagger Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-misc/networkmanager/networkmanager-0.8-r1.ebuild,v 1.11 2011/01/31 15:17:30 ssuominen Exp $
 
 EAPI="2"
 
@@ -16,7 +16,7 @@ SRC_URI="${SRC_URI//${PN}/${MY_PN}}"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~ppc ~ppc64 x86"
+KEYWORDS="amd64 ~arm ppc ppc64 x86"
 IUSE="avahi bluetooth doc nss gnutls dhclient dhcpcd resolvconf connection-sharing"
 
 RDEPEND=">=sys-apps/dbus-1.2
@@ -52,6 +52,12 @@ DEPEND="${RDEPEND}
 	doc? ( >=dev-util/gtk-doc-1.8 )"
 
 S=${WORKDIR}/${MY_P}
+
+pkg_setup() {
+	# FIXME. Required by -confchanges.patch, but the patch is invalid as
+	# ConsoleKit and PolicyKit is enough to get authorization.
+	enewgroup plugdev
+}
 
 src_prepare() {
 	# Fix up the dbus conf file to use plugdev group

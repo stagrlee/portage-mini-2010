@@ -1,7 +1,8 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-simulation/pmars-sdl/pmars-sdl-0.9.2e.ebuild,v 1.11 2008/11/18 20:23:12 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-simulation/pmars-sdl/pmars-sdl-0.9.2e.ebuild,v 1.14 2011/01/12 17:46:58 mr_bones_ Exp $
 
+EAPI=2
 inherit toolchain-funcs games
 
 MY_PN="${PN/-sdl/}"
@@ -15,12 +16,11 @@ SRC_URI="http://www.cs.helsinki.fi/u/jpihlaja/cw/pmars-sdl/${MY_P}.tar.gz"
 LICENSE="BSD GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc x86"
-IUSE="sdl X svga"
+IUSE="sdl X"
 
-DEPEND="sdl? ( x11-libs/libX11 media-libs/libsdl )
+DEPEND="sdl? ( x11-libs/libX11 media-libs/libsdl[video] )
 	X? ( x11-libs/libX11 )
-	svga? ( media-libs/svgalib )
-	!sdl? ( !X? ( !svga? ( sys-libs/ncurses ) ) )"
+	!sdl? ( !X? ( sys-libs/ncurses ) )"
 
 S=${WORKDIR}/${MY_P}
 
@@ -34,9 +34,6 @@ src_compile() {
 	elif use X ; then
 		CFLAGS="${CFLAGS} -DXWINGRAPHX"
 		LIB="-L/usr/X11R6/lib -lX11"
-	elif use svga ; then
-		CFLAGS="${CFLAGS} -DGRAPHX"
-		LIB="-lvgagl -lvga"
 	else
 		CFLAGS="${CFLAGS} -DCURSESGRAPHX"
 		LIB="-lcurses"
@@ -63,7 +60,7 @@ src_compile() {
 
 	echo
 	einfo "linking with LIB: ${LIB}"
-	$(tc-getCC) *.o ${LIB} -o ${MY_PN} || die
+	$(tc-getCC) ${LDFLAGS} *.o ${LIB} -o ${MY_PN} || die
 }
 
 src_install() {

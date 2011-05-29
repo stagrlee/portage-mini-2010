@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-ruby/mysql-ruby/mysql-ruby-2.8.1-r1.ebuild,v 1.7 2010/09/12 17:20:58 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-ruby/mysql-ruby/mysql-ruby-2.8.1-r1.ebuild,v 1.12 2011/01/07 14:57:36 graaff Exp $
 
 EAPI="2"
 USE_RUBY="ruby18"
@@ -18,7 +18,7 @@ SRC_URI="mirror://rubyforge/${PN}/${P}.tar.gz"
 
 LICENSE="Ruby"
 SLOT="0"
-KEYWORDS="alpha amd64 ~hppa ia64 ~mips ~ppc ~ppc64 sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 hppa ia64 ~mips ppc ppc64 sparc x86 ~x86-fbsd"
 IUSE="test"
 
 DEPEND="virtual/mysql"
@@ -27,10 +27,6 @@ RDEPEND="${DEPEND}"
 TEST_DIR="/usr/share/${PN}/test/"
 
 all_ruby_prepare() {
-	if use hppa; then
-		sed -e 's/LONG_LONG/long long/' -i "${S}"/mysql.c.in || die
-	fi
-
 	epatch "${FILESDIR}/${P}-test.patch"
 }
 
@@ -44,7 +40,7 @@ each_ruby_compile() {
 
 each_ruby_install() {
 	emake DESTDIR="${D}" install || die
-	ruby_fakegem_genspec
+	ruby_fakegem_install_gemspec
 }
 
 all_fakegem_install() {

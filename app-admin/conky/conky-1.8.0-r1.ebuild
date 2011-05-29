@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-admin/conky/conky-1.8.0-r1.ebuild,v 1.4 2010/09/14 20:46:07 klausman Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-admin/conky/conky-1.8.0-r1.ebuild,v 1.8 2010/11/06 01:42:29 rafaelmartins Exp $
 
 EAPI="2"
 
@@ -12,14 +12,14 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-3 BSD LGPL-2.1 MIT"
 SLOT="0"
-KEYWORDS="alpha amd64 ~ppc ~ppc64 ~sparc x86"
+KEYWORDS="alpha amd64 ppc ppc64 sparc x86"
 IUSE="apcupsd audacious curl debug eve hddtemp imlib iostats lua lua-cairo lua-imlib math moc mpd nano-syntax ncurses nvidia +portmon rss thinkpad truetype vim-syntax weather-metar weather-xoap wifi X"
 
 DEPEND_COMMON="
 	X? (
 		imlib? ( media-libs/imlib2 )
-		lua-cairo? ( >=dev-lang/toluapp-1.0.93 x11-libs/cairo[X] )
-		lua-imlib? ( >=dev-lang/toluapp-1.0.93 media-libs/imlib2 )
+		lua-cairo? ( >=dev-lua/toluapp-1.0.93 x11-libs/cairo[X] )
+		lua-imlib? ( >=dev-lua/toluapp-1.0.93 media-libs/imlib2 )
 		nvidia? ( media-video/nvidia-settings )
 		truetype? ( x11-libs/libXft >=media-libs/freetype-2 )
 		x11-libs/libX11

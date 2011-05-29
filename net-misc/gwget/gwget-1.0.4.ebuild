@@ -1,16 +1,16 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/gwget/gwget-1.0.4.ebuild,v 1.1 2009/10/22 20:56:05 eva Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-misc/gwget/gwget-1.0.4.ebuild,v 1.6 2011/03/27 12:37:00 nirbheek Exp $
 
 EAPI="2"
 GCONF_DEBUG="no"
 
-inherit gnome2
+inherit eutils gnome2
 
 DESCRIPTION="GTK2 WGet Frontend"
 HOMEPAGE="http://gnome.org/projects/gwget/"
 
-KEYWORDS="~amd64 ~ppc ~x86"
+KEYWORDS="amd64 ppc x86"
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="epiphany libnotify"
@@ -18,9 +18,9 @@ IUSE="epiphany libnotify"
 # FIXME: dbus should be optional
 #        needs patching for linguas/intltool
 RDEPEND="net-misc/wget
-	>=x11-libs/gtk+-2.6
-	>=dev-libs/glib-2.16.0
-	>=gnome-base/gconf-2
+	>=x11-libs/gtk+-2.6:2
+	>=dev-libs/glib-2.16.0:2
+	>=gnome-base/gconf-2:2
 	>=gnome-base/libgnomeui-2
 	>=dev-libs/dbus-glib-0.70
 	epiphany? ( >=www-client/epiphany-1.4 )
@@ -38,6 +38,11 @@ pkg_setup() {
 		$(use_enable libnotify)
 		--disable-static
 		--disable-schemas-install"
+}
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-libnotify-0.7.patch
+	gnome2_src_prepare
 }
 
 src_install() {

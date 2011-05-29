@@ -1,11 +1,12 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-vcs/bzr-svn/bzr-svn-1.0.4.ebuild,v 1.1 2010/09/17 06:48:00 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-vcs/bzr-svn/bzr-svn-1.0.4.ebuild,v 1.4 2011/01/22 16:26:26 phajdan.jr Exp $
 
 EAPI="3"
-PYTHON_DEPEND="2"
+PYTHON_DEPEND="2:2.5"
+PYTHON_USE_WITH="sqlite"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
+RESTRICT_PYTHON_ABIS="2.4 3.*"
 
 inherit distutils
 
@@ -17,7 +18,7 @@ SRC_URI="http://samba.org/~jelmer/bzr/${MY_P}.tar.gz"
 
 LICENSE="|| ( GPL-2 GPL-3 )"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="test"
 # As long as https://bugs.launchpad.net/bzr-svn/+bug/526485 is unfixed
 RESTRICT=test
@@ -27,7 +28,6 @@ RESTRICT=test
 # via `grep subvertpy_minimum_version info.py`.
 
 CDEPEND=">=dev-vcs/bzr-1.16
-	>=dev-lang/python-2.5[sqlite]
 	>=dev-python/subvertpy-0.6.1"
 DEPEND="${CDEPEND}
 	test? ( !dev-vcs/bzr-rebase )"

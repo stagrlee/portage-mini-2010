@@ -1,0 +1,22 @@
+bzip2? ( app-arch/bzip2 ) natspec? ( dev-libs/libnatspec ) app-arch/unzip
+bzip2? ( app-arch/bzip2 ) natspec? ( dev-libs/libnatspec )
+0
+mirror://sourceforge/infozip/zip30.zip
+
+http://www.info-zip.org/
+Info-ZIP
+Info ZIP (encryption support)
+~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86
+eutils flag-o-matic multilib portability toolchain-funcs
+bzip2 crypt natspec unicode
+
+
+
+2
+
+compile install prepare
+
+
+
+
+

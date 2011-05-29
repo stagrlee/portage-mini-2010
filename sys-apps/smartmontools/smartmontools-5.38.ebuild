@@ -1,16 +1,16 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/smartmontools/smartmontools-5.38.ebuild,v 1.7 2009/05/01 13:47:34 robbat2 Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/smartmontools/smartmontools-5.38.ebuild,v 1.9 2010/12/17 15:33:07 flameeyes Exp $
 
 inherit flag-o-matic
 
-DESCRIPTION="control and monitor storage systems using the Self-Monitoring, Analysis and Reporting Technology System (S.M.A.R.T.)"
+DESCRIPTION="Self-Monitoring, Analysis and Reporting Technology System (S.M.A.R.T.) monitoring tools"
 HOMEPAGE="http://smartmontools.sourceforge.net/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 hppa ia64 ppc sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 ~arm hppa ia64 ppc sparc x86 ~x86-fbsd"
 IUSE="static minimal"
 
 RDEPEND=""

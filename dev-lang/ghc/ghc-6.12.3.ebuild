@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-lang/ghc/ghc-6.12.3.ebuild,v 1.12 2010/09/13 18:20:56 slyfox Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-lang/ghc/ghc-6.12.3.ebuild,v 1.21 2011/02/25 12:36:04 xarthisius Exp $
 
 # Brief explanation of the bootstrap logic:
 #
@@ -28,17 +28,17 @@
 # re-emerge ghc (or ghc-bin). People using vanilla gcc can switch between
 # gcc-3.x and 4.x with no problems.
 
-inherit base autotools bash-completion eutils flag-o-matic multilib toolchain-funcs ghc-package versionator
+inherit base autotools bash-completion eutils flag-o-matic multilib toolchain-funcs ghc-package versionator pax-utils
 
 DESCRIPTION="The Glasgow Haskell Compiler"
 HOMEPAGE="http://www.haskell.org/ghc/"
 
 arch_binaries=""
 
-arch_binaries="$arch_binaries alpha? ( http://code.haskell.org/~slyfox/ghc-alpha/ghc-bin-${PV}-alpha.tbz2 )"
+arch_binaries="$arch_binaries alpha? ( http://code.haskell.org/~slyfox/ghc-alpha/ghc-bin-${PV}-alpha-haddock.tbz2 )"
 arch_binaries="$arch_binaries x86?   ( mirror://gentoo/ghc-bin-${PV}-x86.tbz2 )"
 arch_binaries="$arch_binaries amd64? ( mirror://gentoo/ghc-bin-${PV}-amd64.tbz2 )"
-arch_binaries="$arch_binaries ia64?  ( http://code.haskell.org/~slyfox/ghc-ia64/ghc-bin-${PV}-ia64-fixed-fiw.tbz2 )"
+arch_binaries="$arch_binaries ia64?  ( http://code.haskell.org/~slyfox/ghc-ia64/ghc-bin-${PV}-ia64-haddock.tbz2 )"
 arch_binaries="$arch_binaries sparc? ( http://code.haskell.org/~slyfox/ghc-sparc/ghc-bin-${PV}-sparc.tbz2 )"
 arch_binaries="$arch_binaries ppc64? ( mirror://gentoo/ghc-bin-${PV}-ppc64.tbz2 )"
 arch_binaries="$arch_binaries ppc? ( mirror://gentoo/ghc-bin-${PV}-ppc.tbz2 )"
@@ -50,7 +50,7 @@ SRC_URI="!binary? ( http://darcs.haskell.org/download/dist/${PV}/${P}-src.tar.bz
 	!ghcbootstrap? ( $arch_binaries )"
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 ia64 ppc ppc64 sparc x86 ~x86-fbsd"
 IUSE="binary doc ghcbootstrap"
 
 RDEPEND="
@@ -126,6 +126,10 @@ ghc_setup_cflags() {
 	# prevent from failind building unregisterised ghc:
 	# http://www.mail-archive.com/debian-bugs-dist@lists.debian.org/msg171602.html
 	use ppc64 && append-ghc-cflags compile -mminimal-toc
+	# fix the similar issue as ppc64 TOC on ia64. ia64 has limited size of small data
+	# currently ghc fails to build haddock
+	# http://osdir.com/ml/gnu.binutils.bugs/2004-10/msg00050.html
+	use ia64 && append-ghc-cflags compile -G0
 }
 
 pkg_setup() {
@@ -154,6 +158,11 @@ src_unpack() {
 		# See bug #313635.
 		sed -i -e "s|\"\$topdir\"|\"\$topdir\" ${GHC_CFLAGS}|" \
 			"${WORKDIR}/usr/bin/ghc-${PV}"
+
+		# allow hardened users use vanilla biary to bootstrap ghc
+		# ghci uses mmap with rwx protection at it implements dynamic
+		# linking on it's own (bug #299709)
+		pax-mark -m "${WORKDIR}/usr/$(get_libdir)/${P}/ghc"
 	fi
 
 	if use binary; then
@@ -221,6 +230,14 @@ src_unpack() {
 
 		# substitute outdated macros
 		epatch "${FILESDIR}/ghc-6.12.3-autoconf-2.66-4252.patch"
+
+		# export typechecker internals even if ghci is disabled
+		# http://hackage.haskell.org/trac/ghc/ticket/3558
+		epatch "${FILESDIR}/ghc-6.12.3-ghciless-haddock-3558.patch"
+
+		# This patch unbreaks ghci on GRSEC kernels hardened with
+		# TPE (Trusted Path Execution) protection.
+		epatch "${FILESDIR}/ghc-6.12.3-libffi-incorrect-detection-of-selinux.patch"
 
 		# as we have changed the build system
 		eautoreconf
@@ -323,6 +340,11 @@ src_install() {
 		emake -j1 ${insttarget} \
 			DESTDIR="${D}" \
 			|| die "make ${insttarget} failed"
+
+		# ghci uses mmap with rwx protection at it implements dynamic
+		# linking on it's own (bug #299709)
+		# so mark resulting binary
+		pax-mark -m "${D}/usr/$(get_libdir)/${P}/ghc"
 
 		dodoc "${S}/README" "${S}/ANNOUNCE" "${S}/LICENSE" "${S}/VERSION"
 

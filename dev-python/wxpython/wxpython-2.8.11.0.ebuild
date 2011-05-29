@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/wxpython/wxpython-2.8.11.0.ebuild,v 1.2 2010/07/28 13:56:51 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-python/wxpython/wxpython-2.8.11.0.ebuild,v 1.10 2011/05/21 13:50:24 tomka Exp $
 
 EAPI="2"
 PYTHON_DEPEND="2"
@@ -20,17 +20,17 @@ SRC_URI="mirror://sourceforge/wxpython/${MY_P}.tar.bz2
 
 LICENSE="wxWinLL-3"
 SLOT="2.8"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~alpha amd64 arm hppa ~ia64 ~ppc ~ppc64 ~sh ~sparc x86 ~x86-fbsd"
 IUSE="cairo doc examples opengl"
 
 RDEPEND="
 	dev-python/setuptools
 	>=x11-libs/wxGTK-${PV}:2.8[opengl?,tiff,X]
-	>=x11-libs/gtk+-2.4
+	>=x11-libs/gtk+-2.4:2
 	>=x11-libs/pango-1.2
-	>=dev-libs/glib-2.0
+	dev-libs/glib:2
 	media-libs/libpng
-	media-libs/jpeg:0
+	virtual/jpeg
 	media-libs/tiff
 	cairo?	( >=dev-python/pycairo-1.8.4 )
 	opengl?	( >=dev-python/pyopengl-2.0.0.44 )"
@@ -38,7 +38,7 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig"
 
-RESTRICT_PYTHON_ABIS="3.*"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
 
 S="${WORKDIR}/${MY_P}/wxPython"
 DOC_S="${WORKDIR}/wxPython-${PV}"
@@ -129,6 +129,7 @@ src_install() {
 		dodir /usr/share/doc/${PF}/samples
 		cp -R "${DOC_S}"/demo/* "${D}"/usr/share/doc/${PF}/demo/
 		cp -R "${DOC_S}"/samples/* "${D}"/usr/share/doc/${PF}/samples/
+		rm -f "${D}"usr/share/doc/${PF}/samples/embedded/embedded
 	fi
 }
 

@@ -1,15 +1,13 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/mosflm/mosflm-7.0.6-r2.ebuild,v 1.1 2010/06/15 14:14:24 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/mosflm/mosflm-7.0.6-r2.ebuild,v 1.6 2011/01/21 10:11:44 hwoarang Exp $
 
 EAPI="3"
 
-inherit fortran toolchain-funcs versionator eutils
+inherit eutils toolchain-funcs versionator
 
 MY_PV="$(delete_all_version_separators)"
 MY_P="${PN}${MY_PV}"
-
-FORTRAN="g77 gfortran ifc"
 
 DESCRIPTION="A program for integrating single crystal diffraction data from area detectors"
 HOMEPAGE="http://www.mrc-lmb.cam.ac.uk/harry/mosflm/"
@@ -17,12 +15,12 @@ SRC_URI="${HOMEPAGE}ver${MY_PV}/build-it-yourself/${MY_P}.tgz"
 
 LICENSE="ccp4"
 SLOT="0"
-KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ~ppc ~x86 ~amd64-linux ~x86-linux"
 IUSE=""
 
 RDEPEND="
 	app-shells/tcsh
-	media-libs/jpeg
+	virtual/jpeg
 	sci-libs/ccp4-libs
 	sys-libs/ncurses
 	x11-libs/libxdl_view"
@@ -33,7 +31,6 @@ DEPEND="${RDEPEND}"
 S="${WORKDIR}/${MY_P}"
 
 src_prepare() {
-	rm src/dps/peak_search/dps_peaksearch
 # See DEPEND
 #	sed -e "s:../cbf/lib/libcbf.a:${EPREFIX}/usr/$(get_libdir)/libcbf.a:g" \
 	sed -e "s:../jpg/libjpeg.a:-ljpeg:g" \
@@ -41,7 +38,8 @@ src_prepare() {
 
 	epatch \
 		"${FILESDIR}/${PV}"-Makefile.patch \
-		"${FILESDIR}/${PV}"-parallel.patch
+		"${FILESDIR}/${PV}"-parallel.patch \
+		"${FILESDIR}/${PV}"-impl-dec.patch
 	rm test.f || die
 }
 
@@ -49,8 +47,8 @@ src_compile() {
 	emake \
 		MOSHOME="${S}" \
 		DPS="${S}" \
-		FC=${FORTRANC} \
-		FLINK=${FORTRANC} \
+		FC=$(tc-getFC) \
+		FLINK=$(tc-getFC) \
 		CC=$(tc-getCC) \
 		AR_FLAGS=vru \
 		MOSLIBS='-lccp4f -lccp4c -lxdl_view -lcurses -lXt -lmmdb -lccif -lstdc++' \

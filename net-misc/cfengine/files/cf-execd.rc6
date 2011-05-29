@@ -2,16 +2,17 @@
 
 depend() {
 	need net
+	after cf-serverd
 }
 
 start() {
 	ebegin "Starting cf-execd"
-	start-stop-daemon --start --quiet --exec /usr/sbin/cf-execd 
+	start-stop-daemon --start --exec /usr/sbin/cf-execd -- ${EXTRA_OPTS}
 	eend $?
 }
 
 stop() {
 	ebegin "Stopping cf-execd"
-	start-stop-daemon --stop --quiet --exec /usr/sbin/cf-execd
+	start-stop-daemon --stop --pidfile /var/cfengine/cf-execd.pid --exec /usr/sbin/cf-execd
 	eend $?
 }

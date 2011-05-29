@@ -1,6 +1,6 @@
 # Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/php-pear-lib-r1.eclass,v 1.18 2010/07/13 23:48:46 mabi Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/php-pear-lib-r1.eclass,v 1.22 2011/04/16 12:19:00 olemarkus Exp $
 #
 # Author: Luca Longinotti <chtekk@gentoo.org>
 
@@ -15,12 +15,38 @@
 
 inherit depend.php multilib
 
-EXPORT_FUNCTIONS src_install
+EXPORT_FUNCTIONS pkg_setup src_install
 
 DEPEND="dev-lang/php
-	|| ( ( >=dev-php/PEAR-PEAR-1.6.1 <dev-php/PEAR-PEAR-1.8.1 )
-		 >=dev-php/pear-1.8.1 )"
+		 >=dev-php/pear-1.9.0"
 RDEPEND="${DEPEND}"
+
+
+if [[ -n $PHP_PEAR_CHANNEL ]] ; then
+	PHP_PEAR_PV=${PV/_rc/RC}
+	[[ -z ${PHP_PEAR_PN} ]] && die "Missing PHP_PEAR_PN. Please notify the maintainer"
+	PHP_PEAR_P=${PHP_PEAR_PN}-${PHP_PEAR_PV}
+
+	S=${WORKDIR}/${PHP_PEAR_P}
+
+	SRC_URI="http://${PHP_PEAR_CHANNEL}/get/${PHP_PEAR_P}.tgz"
+fi
+
+
+# @FUNCTION: php-pear-lib-r1_pkg_setup
+# @DESCRIPTION
+# Adds required PEAR channel if necessary
+php-pear-lib-r1_pkg_setup() {
+	if [[ -n $PHP_PEAR_CHANNEL ]] ; then
+		if [[ -f $PHP_PEAR_CHANNEL ]]; then
+		 	pear channel-add $PHP_PEAR_CHANNEL
+		else		
+			pear channel-discover $PHP_PEAR_CHANNEL
+			pear channel-update $PHP_PEAR_CHANNEL
+		fi
+	fi
+}
+
 
 # @FUNCTION: php-pear-lib-r1_src_install
 # @DESCRIPTION:
@@ -33,32 +59,22 @@ php-pear-lib-r1_src_install() {
 	addpredict /var/lib/net-snmp/
 	addpredict /session_mm_cli0.sem
 
-	PHP_BIN="/usr/$(get_libdir)/php5/bin/php"
+	PHP_BIN="/usr/bin/php"
 
 	cd "${S}"
 
 	if [[ -f "${WORKDIR}"/package2.xml ]] ; then
 		mv -f "${WORKDIR}/package2.xml" "${S}"
-		if has_version '>=dev-php/PEAR-PEAR-1.7.0' ; then
-			local WWW_DIR="/usr/share/webapps/${PN}/${PVR}/htdocs"
-			peardev -d php_bin="${PHP_BIN}" -d www_dir="${WWW_DIR}" \
-				install --force --loose --nodeps --offline --packagingroot="${D}" \
-				"${S}/package2.xml" || die "Unable to install PEAR package"
-		else
-			peardev -d php_bin="${PHP_BIN}" install --force --loose --nodeps --offline --packagingroot="${D}" \
-				"${S}/package2.xml" || die "Unable to install PEAR package"
-		fi
+		local WWW_DIR="/usr/share/webapps/${PN}/${PVR}/htdocs"
+		peardev -d php_bin="${PHP_BIN}" -d www_dir="${WWW_DIR}" \
+			install --force --loose --nodeps --offline --packagingroot="${D}" \
+			"${S}/package2.xml" || die "Unable to install PEAR package"
 	else
 		mv -f "${WORKDIR}/package.xml" "${S}"
-		if has_version '>=dev-php/PEAR-PEAR-1.7.0' ; then
-			local WWW_DIR="/usr/share/webapps/${PN}/${PVR}/htdocs"
-			peardev -d php_bin="${PHP_BIN}" -d www_dir="${WWW_DIR}" \
-				install --force --loose --nodeps --offline --packagingroot="${D}" \
-					"${S}/package.xml" || die "Unable to install PEAR package"
-		else
-			peardev -d php_bin="${PHP_BIN}" install --force --loose --nodeps --offline --packagingroot="${D}" \
-				"${S}/package.xml" || die "Unable to install PEAR package"
-		fi
+		local WWW_DIR="/usr/share/webapps/${PN}/${PVR}/htdocs"
+		peardev -d php_bin="${PHP_BIN}" -d www_dir="${WWW_DIR}" \
+			install --force --loose --nodeps --offline --packagingroot="${D}" \
+			"${S}/package.xml" || die "Unable to install PEAR package"
 	fi
 
 	rm -Rf "${D}/usr/share/php/.channels" \

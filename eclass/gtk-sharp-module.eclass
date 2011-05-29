@@ -1,6 +1,6 @@
 # Copyright 1999-2008 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/gtk-sharp-module.eclass,v 1.26 2010/01/03 19:10:49 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/gtk-sharp-module.eclass,v 1.30 2011/05/06 04:24:31 loki_val Exp $
 
 # @ECLASS: gtk-sharp-module.eclass
 # @MAINTAINER:
@@ -111,6 +111,9 @@ case ${GTK_SHARP_MODULE} in
 				add_bdepend "=sys-devel/automake-1.10*"
 				add_bdepend ">=sys-devel/autoconf-2.61"
 				;;
+			2.24.2*)
+				add_depend ">=dev-lang/mono-2.7"
+				;;
 		esac
 		;;
 	gnome-desktop|gnome-print|gnome-panel|gtkhtml|gtksourceview|nautilusburn|rsvg|vte|wnck)
@@ -179,7 +182,7 @@ case ${PF} in
 		add_depend "~dev-dotnet/gdk-sharp-${PV}"
 		add_depend "~dev-dotnet/gtk-sharp-${PV}"
 		add_depend "~dev-dotnet/pango-sharp-${PV}"
-		add_depend ">=gnome-base/libglade-2.3.6"
+		add_depend ">=gnome-base/libglade-2.3.6:2.0"
 		;;
 	#gnome-sharp tarball
 	art-sharp-*)
@@ -190,16 +193,16 @@ case ${PF} in
 		add_depend "~dev-dotnet/gnomevfs-sharp-${PV}"
 		add_depend "~dev-dotnet/art-sharp-${PV}"
 		add_depend ">=gnome-base/libgnomecanvas-${GNOMECANVAS_REQUIRED_VERSION}"
-		add_depend ">=x11-libs/gtk+-2.14.0"
+		add_depend ">=x11-libs/gtk+-2.14.0:2"
 		;;
 	gconf-sharp-*)
-		add_depend ">=gnome-base/gconf-${PV_MAJOR}"
+		add_depend ">=gnome-base/gconf-${PV_MAJOR}:2"
 		add_depend "=dev-dotnet/glade-sharp-${GTK_SHARP_REQUIRED_VERSION}*"
 		add_depend "~dev-dotnet/gnome-sharp-${PV}"
 		add_depend "~dev-dotnet/art-sharp-${PV}"
 		;;
 	gnomevfs-sharp-*)
-		add_depend ">=gnome-base/gnome-vfs-${PV_MAJOR}"
+		add_depend ">=gnome-base/gnome-vfs-${PV_MAJOR}:2"
 		;;
 	#gnome-desktop-sharp tarball
 	gnome-desktop-sharp-*)
@@ -207,20 +210,21 @@ case ${PF} in
 		# incompatible changes, requiring .so bumps. gnome-desktop-sharp
 		# is locked to a specific .so.n version, so strict dependencies
 		# may be required in the future (as it has in the past).
-		add_depend ">=gnome-base/gnome-desktop-${PV_MAJOR}"
+		add_depend ">=gnome-base/gnome-desktop-${PV_MAJOR}:2"
 		;;
 	gnome-panel-sharp-*)
 		add_depend ">=gnome-base/gnome-panel-${PV_MAJOR}"
 		;;
 	gnome-print-sharp-*)
-		add_depend ">=gnome-base/libgnomeprint-${API_VERSION}"
+		add_depend "gnome-base/libgnomeprint:2.2"
+		add_depend "gnome-base/libgnomeprintui:2.2"
 		;;
 	gtkhtml-sharp-*)
 		#NOTE: gtkhtml dependency must follow gtkhtml-sharp version.
 		#i.e.   gtkhtml-sharp-2.24.0 >=gtkhtml-3.24
 		#       gtkhtml-sharp-2.16.0 >=gtkhtml-3.16
 		#       See bug 249540 for unpleasant side effects.
-		add_depend ">=gnome-extra/gtkhtml-$(($(get_version_component_range 1) + 1 )).$(get_version_component_range 2)"
+		add_depend ">=gnome-extra/gtkhtml-$(($(get_version_component_range 1) + 1 )).$(get_version_component_range 2):3.14"
 		;;
 	gtksourceview-sharp-*)
 		add_depend ">=x11-libs/gtksourceview-${GTKSOURCEVIEW_REQUIRED_VERSION}:2.0"
@@ -229,13 +233,13 @@ case ${PF} in
 		add_depend ">=gnome-extra/nautilus-cd-burner-2.24.0"
 		;;
 	rsvg-sharp-*)
-		add_depend ">=gnome-base/librsvg-${RSVG_REQUIRED_VERSION}"
+		add_depend ">=gnome-base/librsvg-${RSVG_REQUIRED_VERSION}:2"
 		;;
 	vte-sharp-*)
-		add_depend ">=x11-libs/vte-${VTE_REQUIRED_VERSION}"
+		add_depend ">=x11-libs/vte-${VTE_REQUIRED_VERSION}:0"
 		;;
 	wnck-sharp-*)
-		add_depend ">=x11-libs/libwnck-${PV_MAJOR}"
+		add_depend ">=x11-libs/libwnck-${PV_MAJOR}:1"
 		;;
 esac
 

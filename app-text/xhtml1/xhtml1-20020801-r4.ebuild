@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-text/xhtml1/xhtml1-20020801-r4.ebuild,v 1.5 2010/02/20 18:26:09 abcd Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-text/xhtml1/xhtml1-20020801-r4.ebuild,v 1.9 2011/03/05 20:38:22 josejx Exp $
 
 EAPI=3
 
@@ -12,15 +12,12 @@ SRC_URI="http://www.w3.org/TR/xhtml1/xhtml1.tgz"
 LICENSE="W3C"
 
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86 ~amd64-linux ~x86-linux ~ppc-macos"
+KEYWORDS="amd64 ppc x86 ~amd64-linux ~x86-linux ~ppc-macos"
 IUSE=""
 
 DEPEND="app-text/sgml-common
 	dev-libs/libxml2"
 RDEPEND=""
-
-sgml-catalog_cat_include "/etc/sgml/${PN}.cat" \
-	"/usr/share/sgml/${PN}/xhtml.soc"
 
 xml_catalog_setup() {
 	CATALOG="${EROOT}etc/xml/catalog"
@@ -33,15 +30,18 @@ xml_catalog_setup() {
 }
 
 src_prepare() {
+	sgml-catalog_cat_include "/etc/sgml/${PN}.cat" \
+		"/usr/share/sgml/${PN}/xhtml.soc"
+
 	epatch "${FILESDIR}"/${PN}-catalog.patch
 }
 
 src_install() {
 	insinto /usr/share/sgml/${PN}
-	doins DTD/xhtml.soc DTD/*.dcl DTD/*.dtd DTD/*.ent
+	doins DTD/xhtml.soc DTD/*.dcl DTD/*.dtd DTD/*.ent || die "doins failed"
 	insinto /etc/sgml
-	dodoc *.pdf *.ps
-	dohtml *.html *.png *.css
+	dodoc *.pdf *.ps || die "dodoc failed"
+	dohtml *.html *.png *.css || die "dohtml failed"
 }
 
 pkg_postinst() {

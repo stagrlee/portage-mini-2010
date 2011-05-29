@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-mathematics/coq/coq-8.2_p1-r1.ebuild,v 1.7 2010/04/09 10:34:41 aballier Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-mathematics/coq/coq-8.2_p1-r1.ebuild,v 1.10 2011/02/27 18:12:02 armin76 Exp $
 
 EAPI="2"
 
@@ -15,7 +15,7 @@ SRC_URI="http://coq.inria.fr/distrib/V${MY_PV}/files/${MY_P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="amd64 ppc sparc x86"
+KEYWORDS="amd64 ppc x86"
 IUSE="norealanalysis gtk debug +ocamlopt doc"
 
 RDEPEND=">=dev-lang/ocaml-3.10[ocamlopt?]
@@ -23,12 +23,13 @@ RDEPEND=">=dev-lang/ocaml-3.10[ocamlopt?]
 	gtk? ( >=dev-ml/lablgtk-2.10.1[ocamlopt?] )"
 DEPEND="${RDEPEND}
 	doc? (
-		media-libs/netpbm[png]
+		media-libs/netpbm[png,zlib]
 		virtual/latex-base
 		dev-tex/hevea
 		dev-tex/xcolor
 		|| ( dev-texlive/texlive-pictures app-text/ptex )
 		|| ( dev-texlive/texlive-mathextra app-text/ptex )
+		|| ( dev-texlive/texlive-latexextra app-text/ptex )
 		)"
 
 S="${WORKDIR}/${MY_P}"

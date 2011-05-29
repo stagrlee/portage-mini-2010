@@ -1,8 +1,9 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-puzzle/xpired/xpired-1.22.ebuild,v 1.9 2008/05/15 13:06:03 nyhm Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-puzzle/xpired/xpired-1.22.ebuild,v 1.11 2010/10/13 23:37:47 mr_bones_ Exp $
 
-inherit games
+EAPI=2
+inherit eutils games
 
 DESCRIPTION="A Sokoban-styled puzzle game with lots more action."
 HOMEPAGE="http://xpired.sourceforge.net"
@@ -14,19 +15,27 @@ KEYWORDS="amd64 ~ppc x86"
 IUSE=""
 
 DEPEND="media-libs/sdl-gfx
-	media-libs/sdl-image
-	media-libs/sdl-mixer"
+	media-libs/sdl-image[jpeg]
+	media-libs/sdl-mixer[mikmod]"
 
 S=${WORKDIR}/src
 
+PATCHES=( "${FILESDIR}"/${P}-ldflags.patch )
+
 src_compile() {
-	emake PREFIX=/usr/games SHARE_PREFIX=/usr/share/games/xpired || \
-		die "emake failed"
+	emake \
+		PREFIX=/usr/games \
+		SHARE_PREFIX=/usr/share/games/xpired \
+		|| die
 }
+
 src_install() {
-	make \
+	emake \
 		PREFIX="${D}/usr/games" \
 		SHARE_PREFIX="${D}/usr/share/games/${PN}" \
-		install || die "make install failed"
+		install || die
+	newicon img/icon.bmp ${PN}.bmp
+	make_desktop_entry xpired Xpired /usr/share/pixmaps/${PN}.bmp
+	make_desktop_entry xpiredit "Xpired Level Editor"
 	prepgamesdirs
 }

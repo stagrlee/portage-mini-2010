@@ -1,9 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/libmtp/libmtp-1.0.3-r1.ebuild,v 1.1 2010/07/25 22:02:45 ken69267 Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/libmtp/libmtp-1.0.3-r1.ebuild,v 1.7 2011/01/21 16:39:41 xarthisius Exp $
 
 EAPI=2
-
 inherit eutils
 
 DESCRIPTION="An implementation of Microsoft's Media Transfer Protocol (MTP)."
@@ -12,13 +11,17 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~amd64 ~hppa ~ppc ~ppc64 ~sparc ~x86"
+KEYWORDS="amd64 hppa ppc ppc64 x86"
 IUSE="doc examples static-libs"
 
 RDEPEND="virtual/libusb:0"
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )
 	sys-apps/findutils"
+
+pkg_setup() {
+	enewgroup plugdev
+}
 
 src_prepare() {
 	# Fix device permissions
@@ -32,10 +35,10 @@ src_configure() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" install || die "emake install failed"
+	emake DESTDIR="${D}" install || die
+	find "${D}" -name '*.la' -exec rm -f '{}' +
 
-	rm -f $(find "${D}" -name '*.la')
-	dodoc AUTHORS ChangeLog README TODO || die "dodoc failed"
+	dodoc AUTHORS ChangeLog README TODO || die
 
 	insinto /etc/udev/rules.d
 	newins libmtp.rules 65-mtp.rules

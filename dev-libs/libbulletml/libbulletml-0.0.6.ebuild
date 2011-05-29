@@ -1,7 +1,8 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-libs/libbulletml/libbulletml-0.0.6.ebuild,v 1.6 2008/04/30 23:16:43 nyhm Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/libbulletml/libbulletml-0.0.6.ebuild,v 1.9 2011/05/18 16:08:00 mr_bones_ Exp $
 
+EAPI=2
 inherit eutils
 
 DESCRIPTION="A Library of Bullet Markup Language"
@@ -13,12 +14,14 @@ SLOT="0"
 KEYWORDS="amd64 ppc x86"
 IUSE=""
 
-S="${WORKDIR}/${PN#lib}/src"
+DEPEND="dev-libs/boost"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-	epatch "${FILESDIR}"/${P}-gcc43.patch
+S=${WORKDIR}/${PN#lib}/src
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-gcc43.patch \
+		"${FILESDIR}"/${P}-gcc46.patch
+	rm -r boost || die "remove of local boost failed"
 }
 
 src_compile() {

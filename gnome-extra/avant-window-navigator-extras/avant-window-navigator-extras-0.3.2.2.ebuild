@@ -1,8 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/gnome-extra/avant-window-navigator-extras/avant-window-navigator-extras-0.3.2.2.ebuild,v 1.2 2010/06/23 14:37:59 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/gnome-extra/avant-window-navigator-extras/avant-window-navigator-extras-0.3.2.2.ebuild,v 1.5 2011/04/25 20:48:02 arfrever Exp $
 
-EAPI="2"
+EAPI="3"
+PYTHON_DEPEND="2"
 
 inherit eutils gnome2 python
 
@@ -18,27 +19,27 @@ IUSE="gnome gstreamer webkit"
 
 COMMON_DEPEND="
 	>=dev-libs/dbus-glib-0.70
-	>=dev-python/pygobject-2
-	>=dev-python/pygtk-2
+	>=dev-python/pygobject-2:2
+	>=dev-python/pygtk-2:2
 	>=gnome-extra/avant-window-navigator-0.3.1[gnome=]
 	x11-libs/libnotify
 	x11-libs/libsexy
 	x11-libs/libXcomposite
 	x11-libs/libXrender
-	>=x11-libs/libwnck-2.22
-	x11-libs/vte
+	>=x11-libs/libwnck-2.22:1
+	x11-libs/vte:0
 	gnome? (
 		gnome-base/gnome-menus
-		>=gnome-base/gconf-2
-		>=gnome-base/gnome-vfs-2
+		>=gnome-base/gconf-2:2
+		>=gnome-base/gnome-vfs-2:2
 		>=gnome-base/libgtop-2
-		gnome-base/librsvg
+		gnome-base/librsvg:2
 	)
 	gstreamer? (
-		dev-python/gst-python
-		>=media-libs/gstreamer-0.10.15
+		dev-python/gst-python:0.10
+		>=media-libs/gstreamer-0.10.15:0.10
 	)
-	webkit? ( net-libs/webkit-gtk )
+	webkit? ( net-libs/webkit-gtk:2 )
 "
 DEPEND="${COMMON_DEPEND}
 	>=dev-util/intltool-0.35
@@ -82,9 +83,14 @@ pkg_setup() {
 		$(use_with gnome gconf)
 		$(use_with gnome)
 		$(use_with webkit)"
+
+	python_set_active_version 2
+	python_pkg_setup
 }
 
 src_prepare() {
+	epatch "${FILESDIR}"/${P}-libnotify-0.7.patch
+
 	# Disable pyc compiling.
 	mv py-compile py-compile.orig
 	ln -s $(type -P true) py-compile
@@ -110,14 +116,16 @@ src_install() {
 		mv "${D}/etc/gconf/schemas/places.schemas" \
 			"${D}/etc/gconf/schemas/awn-places.schemas"
 	fi
+
+	find "${D}" -name '*.la' -exec rm -f '{}' +
 }
 
 pkg_postinst() {
 	gnome2_pkg_postinst
-	python_mod_optimize $(python_get_sitedir)/awn/extras
+	python_mod_optimize awn/extras
 }
 
 pkg_postrm() {
 	gnome2_pkg_postrm
-	python_mod_cleanup $(python_get_sitedir)/awn/extras
+	python_mod_cleanup awn/extras
 }

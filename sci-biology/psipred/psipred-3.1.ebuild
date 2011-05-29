@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-biology/psipred/psipred-3.1.ebuild,v 1.1 2010/05/16 11:23:30 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-biology/psipred/psipred-3.1.ebuild,v 1.3 2011/05/24 12:18:04 jlec Exp $
 
-EAPI="3"
+EAPI=3
 
 inherit eutils prefix toolchain-funcs versionator
 
@@ -20,13 +20,16 @@ IUSE=""
 RDEPEND="
 	sci-biology/ncbi-tools
 	sci-biology/ncbi-tools++"
+DEPEND=""
 
 S="${WORKDIR}"
 
 src_prepare() {
 	rm -f bin/*
-	epatch "${FILESDIR}"/${PV}-Makefile.patch
-	epatch "${FILESDIR}"/${PV}-path.patch
+	epatch \
+		"${FILESDIR}"/${PV}-Makefile.patch \
+		"${FILESDIR}"/${PV}-path.patch \
+		"${FILESDIR}"/${PV}-fgets.patch
 	eprefixify runpsipred*
 }
 

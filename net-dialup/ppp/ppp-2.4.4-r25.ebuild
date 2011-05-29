@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-dialup/ppp/ppp-2.4.4-r25.ebuild,v 1.6 2010/09/05 15:59:56 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-dialup/ppp/ppp-2.4.4-r25.ebuild,v 1.11 2011/04/02 12:51:08 ssuominen Exp $
 
 EAPI="2"
 
@@ -14,13 +14,13 @@ SRC_URI="ftp://ftp.samba.org/pub/ppp/${P}.tar.gz
 
 LICENSE="BSD GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ~hppa ia64 ~mips ~ppc ~ppc64 s390 sh sparc x86"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86"
 IUSE="activefilter atm dhcp eap-tls gtk ipv6 mppe-mppc pam radius"
 
-DEPEND="activefilter? ( >=virtual/libpcap-0.9.4 )
+DEPEND="activefilter? ( >=net-libs/libpcap-0.9.4 )
 	atm? ( net-dialup/linux-atm )
 	pam? ( virtual/pam )
-	gtk? ( >=x11-libs/gtk+-2.8 )
+	gtk? ( >=x11-libs/gtk+-2.8:2 )
 	eap-tls? ( net-misc/curl >=dev-libs/openssl-0.9.7 )"
 RDEPEND="${DEPEND}"
 

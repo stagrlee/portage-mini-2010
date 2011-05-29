@@ -1,6 +1,6 @@
-# Copyright 1999-2004 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/gst-plugins-ugly.eclass,v 1.19 2010/07/28 06:24:44 leio Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/gst-plugins-ugly.eclass,v 1.23 2011/05/04 02:23:40 leio Exp $
 
 # Author : foser <foser@gentoo.org>
 
@@ -11,8 +11,7 @@
 #
 # 3rd party applications using gstreamer now should depend on a set of plugins as
 # defined in the source, in case of spider usage obtain recommended plugins to use from
-# Gentoo developers responsible for gstreamer <gnome@gentoo.org>, the application developer
-# or the gstreamer team.
+# Gentoo developers responsible for gstreamer <gstreamer@gentoo.org>.
 
 inherit eutils versionator gst-plugins10
 
@@ -23,14 +22,34 @@ inherit eutils versionator gst-plugins10
 
 MY_PN=gst-plugins-ugly
 MY_P=${MY_PN}-${PV}
+
 # All relevant configure options for gst-plugins-ugly
 # need a better way to extract these.
 my_gst_plugins_ugly="a52dec amrnb amrwb cdio dvdread lame mad mpeg2dec sidplay
 twolame x264"
 
-# dvdnav and id3tag disabled/removed since -ugly-0.10.13
-if ! version_is_at_least "0.10.13"; then
-	my_gst_plugins_bad+=" dvdnav id3tag"
+GST_UGLY_EXPORTED_FUNCTIONS="src_unpack src_compile src_install"
+
+case "${EAPI:-0}" in
+	0)
+		if [[ -n ${GST_ORC} ]]; then
+			die "Usage of IUSE=+orc implying GST_ORC variable without EAPI-1"
+		fi
+		;;
+	1)
+		;;
+	*)
+		die "Unsupported EAPI ${EAPI}"
+		;;
+esac
+
+# exports must be ALWAYS after inherit
+EXPORT_FUNCTIONS ${GST_UGLY_EXPORTED_FUNCTIONS}
+
+# Ensure GST_ORC is set to a default.
+GST_ORC=${GST_ORC:-"no"}
+if [[ ${GST_ORC} == "yes" ]]; then
+	IUSE="+orc"
 fi
 
 #SRC_URI="mirror://gnome/sources/gst-plugins/${PV_MAJ_MIN}/${MY_P}.tar.bz2"
@@ -38,13 +57,20 @@ SRC_URI="http://gstreamer.freedesktop.org/src/gst-plugins-ugly/${MY_P}.tar.bz2"
 
 S=${WORKDIR}/${MY_P}
 
+if [[ ${GST_ORC} == "yes" ]]; then
+	RDEPEND="orc? ( >=dev-lang/orc-0.4.6 )"
+	DEPEND="${RDEPEND}"
+fi
+
 # added to remove circular deps
 # 6/2/2006 - zaheerm
 if [ "${PN}" != "${MY_PN}" ]; then
-RDEPEND="=media-libs/gst-plugins-base-0.10*"
+RDEPEND="${RDEPEND}
+	=media-libs/gst-plugins-base-0.10*"
 DEPEND="${RDEPEND}
 	>=sys-apps/sed-4
 	dev-util/pkgconfig"
+
 RESTRICT=test
 fi
 
@@ -55,7 +81,7 @@ fi
 gst-plugins-ugly_src_configure() {
 
 	# disable any external plugin besides the plugin we want
-	local plugin gst_conf
+	local plugin gst_conf gst_orc_conf
 
 	einfo "Configuring to build ${GST_PLUGINS_BUILD} plugin(s) ..."
 
@@ -67,8 +93,13 @@ gst-plugins-ugly_src_configure() {
 		gst_conf="${gst_conf} --enable-${plugin} "
 	done
 
+	gst_orc_conf="--disable-orc"
+	if [[ ${GST_ORC} == "yes" ]]; then
+		gst_orc_conf="$(use_enable orc)"
+	fi
+
 	cd ${S}
-	econf ${@} --with-package-name="Gentoo GStreamer Ebuild" --with-package-origin="http://www.gentoo.org" ${gst_conf} || die "./configure failure"
+	econf ${gst_orc_conf} ${@} --with-package-name="Gentoo GStreamer Ebuild" --with-package-origin="http://www.gentoo.org" ${gst_conf} || die "./configure failure"
 
 }
 
@@ -113,6 +144,3 @@ gst-plugins-ugly_src_install() {
 
 	[[ -e README ]] && dodoc README
 }
-
-
-EXPORT_FUNCTIONS src_unpack src_compile src_install

@@ -1,7 +1,11 @@
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/mips/use.mask,v 1.25 2010/08/09 09:18:16 xarthisius Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/mips/use.mask,v 1.36 2011/05/09 21:20:22 chithanh Exp $
 
 # Unmask the flag which corresponds to ARCH.
 -mips
+
+# Ryan Hill <dirtyepic@gentoo.org>
+# Needs sci-mathematics/glpk.
+lpsol
 
 # Kacper Kowalik <xarthisius@gentoo.org> (9 Aug 2010)
 # cblas-external as virtual/cblas is also masked
@@ -52,10 +56,6 @@ laptop
 libnotify
 
 # Alexander Færøy <eroyf@gentoo.org>
-# Err, not enough time atm... Mask for now.
-xcb
-
-# Alexander Færøy <eroyf@gentoo.org>
 # ldap -- untested, masking for now.
 ldap
 
@@ -90,6 +90,7 @@ video_cards_tdfx
 video_cards_sunffb
 video_cards_mach64
 video_cards_mga
+video_cards_nouveau
 video_cards_nv
 video_cards_r128
 video_cards_radeon
@@ -175,10 +176,6 @@ mono
 # Temporarily masking ieee1394 until it can be tested
 # Quick fix to my tree b0rkage
 ieee1394
-
-# Hardave Riar <hardave@gentoo.org>
-# No hardware support
-lm_sensors
 
 # Hardave Riar <hardave@gentoo.org>
 # Temporarily masking wifi until I can test it
@@ -352,6 +349,30 @@ kerberos
 # mask ladspa USE
 # [22:30] <beandog> mips: plz to mask ladspa use flag
 ladspa
+
+# Matt Turner <mattst88@gentoo.org> (13 Dec 2010)
+# Dropping app-arch/rpm keywords, mask rpm USE accordingly
+rpm
+
+# Matt Turner <mattst88@gentoo.org> (13 Dec 2010)
+# We don't care much about bluetooth
+bluetooth
+
+# Matt Turner <mattst88@gentoo.org> (13 Dec 2010)
+# We don't have net-libs/libsmi keyworded
+smi
+
+# Matt Turner <mattst88@gentoo.org> (13 Dec 2010)
+# We don't have dev-libs/ocaml
+ocaml
+
+# Matt Turner <mattst88@gentoo.org> (13 Dec 2010)
+# We don't have sys-devel/llvm
+llvm
+
+# Mart Raudsepp <leio@gentoo.org> (7 Apr 2011)
+# Mask policykit for now, to get other keywording going first
+policykit
 
 # Mips USE flags
 -n32

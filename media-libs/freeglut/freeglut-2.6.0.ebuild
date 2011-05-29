@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/freeglut/freeglut-2.6.0.ebuild,v 1.5 2010/08/02 14:59:02 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/freeglut/freeglut-2.6.0.ebuild,v 1.14 2011/04/04 18:46:24 scarabeus Exp $
 
-EAPI="2"
+EAPI=3
 
 inherit eutils flag-o-matic libtool autotools
 
@@ -13,13 +13,14 @@ SRC_URI="mirror://sourceforge/freeglut/${P/_/-}.tar.gz
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
-IUSE="debug mpx"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 sh sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
+IUSE="debug mpx static-libs"
 
 RDEPEND="
 	virtual/opengl
 	virtual/glu
 	>=x11-libs/libXi-1.3
+	x11-libs/libXxf86vm
 "
 DEPEND="${RDEPEND}"
 
@@ -44,6 +45,7 @@ src_configure() {
 		--disable-warnings \
 		--disable-warnings-as-errors \
 		--enable-replace-glut \
+		$(use_enable static-libs static) \
 		$(use_enable debug)
 }
 
@@ -51,4 +53,5 @@ src_install() {
 	emake DESTDIR="${D}" install || die "make install failed"
 	dodoc AUTHORS ChangeLog NEWS README TODO || die "dodoc failed"
 	dohtml -r doc/*.html doc/*.png || die "dohtml failed"
+	find "${ED}" -name '*.la' -delete
 }

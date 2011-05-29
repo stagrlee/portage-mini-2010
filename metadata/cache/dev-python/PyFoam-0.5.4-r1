@@ -1,0 +1,22 @@
+sci-visualization/gnuplot || ( sci-libs/openfoam sci-libs/openfoam-bin ) extras? ( dev-python/matplotlib dev-python/numpy dev-python/ply dev-python/PyQt4 sci-libs/vtk ) >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+sci-visualization/gnuplot || ( sci-libs/openfoam sci-libs/openfoam-bin ) extras? ( dev-python/matplotlib dev-python/numpy dev-python/ply dev-python/PyQt4 sci-libs/vtk ) >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+http://openfoamwiki.net/images/a/ae/PyFoam-0.5.4.tar.gz
+
+http://openfoamwiki.net/index.php/Contrib_PyFoam
+GPL-2
+Tool to analyze and plot the residual files of OpenFOAM computations
+~amd64 ~x86
+distutils eutils multilib portability python toolchain-funcs
+extras
+
+
+
+3
+
+compile install postinst postrm prepare
+
+
+
+
+

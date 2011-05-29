@@ -1,6 +1,26 @@
-# Copyright 1999-2010 Gentoo Foundation; Distributed under the GPL v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/hppa/use.mask,v 1.29 2010/07/25 14:00:03 jer Exp $
+# Copyright 1999-2011 Gentoo Foundation; Distributed under the GPL v2
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/hppa/use.mask,v 1.38 2011/05/02 16:01:10 jer Exp $
 # DON'T TOUCH THIS FILE. Instead, file a bug and assign it to <hppa@gentoo.org>.
+
+# Jeroen Roovers <jer@gentoo.org> (2 May 2011)
+# No support for CUDA on HPPA
+cuda
+
+# Jeroen Roovers <jer@gentoo.org> (25 Mar 2011)
+# webm needs yasm/libvpx
+webm
+
+# Samuli Suominen <ssuominen@gentoo.org> (25 Dec 2010)
+# This will need stable gnome-base/gvfs.
+thunar
+
+# Jeroen Roovers <jer@gentoo.org> (29 Oct 2010)
+# Webkit does not work on HPPA right now.
+webkit
+
+# Jeroen Roovers <jer@gentoo.org> (25 Oct 2010)
+# FFI does not work: "Unknown cpu type" (bug #337956)
+ffi
 
 # Jeroen Roovers <jer@gentoo.org> (20 Jul 2010)
 # Mask USE=gnome entirely (bug #324511)
@@ -35,11 +55,6 @@ darcs
 # Jeroen Roovers <jer@gentoo.org> (5 Apr 2010)
 # Mask USE=kde (bug #304363).
 kde
-
-# Jeroen Roovers <jer@gentoo.org> (5 Apr 2010)
-# More video_cards_ drivers that HPPA does not support
-video_cards_svga
-video_cards_nouveau
 
 # Jeroen Roovers <jer@gentoo.org> (28 Feb 2010)
 # app-accessibility/flite does not work (bug #307241)
@@ -141,6 +156,7 @@ video_cards_mach64
 video_cards_mga
 video_cards_neomagic
 video_cards_newport
+video_cards_nouveau
 video_cards_nsc
 video_cards_nv
 video_cards_r128
@@ -153,6 +169,7 @@ video_cards_savage
 video_cards_siliconmotion
 video_cards_sis
 video_cards_sisusb
+video_cards_svga
 video_cards_tdfx
 video_cards_tga
 video_cards_trident

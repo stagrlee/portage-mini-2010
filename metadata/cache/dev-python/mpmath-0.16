@@ -1,0 +1,22 @@
+gmp? ( dev-python/gmpy ) matplotlib? ( dev-python/matplotlib ) doc? ( dev-python/sphinx ) >=app-admin/eselect-python-20091230 =dev-lang/python-2* test? ( dev-python/pytest )
+gmp? ( dev-python/gmpy ) matplotlib? ( dev-python/matplotlib ) >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+0
+http://mpmath.googlecode.com/files/mpmath-0.16.tar.gz doc? ( http://mpmath.googlecode.com/files/mpmath-docsrc-0.16.tar.gz )
+
+http://code.google.com/p/mpmath/ http://pypi.python.org/pypi/mpmath
+BSD
+Python library for arbitrary-precision floating-point arithmetic
+~amd64 ~x86 ~x86-linux ~ppc-macos
+distutils multilib python toolchain-funcs
+doc examples gmp matplotlib test
+
+
+
+3
+
+compile install postinst postrm prepare test
+
+
+
+
+

@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-sound/gnomeradio/gnomeradio-1.8-r1.ebuild,v 1.2 2010/07/29 21:49:55 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-sound/gnomeradio/gnomeradio-1.8-r1.ebuild,v 1.6 2011/04/14 11:05:58 nirbheek Exp $
 
 EAPI=2
 GCONF_DEBUG=no
@@ -12,10 +12,11 @@ SRC_URI="http://launchpad.net/${PN}/stable/${PV}/+download/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+KEYWORDS="amd64 ppc ~sparc x86"
 IUSE="lirc"
 
 RDEPEND=">=gnome-extra/gnome-media-2.14
+	<gnome-extra/gnome-media-2.91
 	>=gnome-base/libgnomeui-2.14
 	>=gnome-base/gconf-2.12
 	>=gnome-base/gnome-vfs-2.12

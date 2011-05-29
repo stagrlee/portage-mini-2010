@@ -1,12 +1,17 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-vcs/git/git-9999.ebuild,v 1.5 2010/08/16 05:47:29 robbat2 Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-vcs/git/git-9999.ebuild,v 1.19 2011/04/20 11:53:08 scarabeus Exp $
 
-EAPI=2
+EAPI=3
 
 GENTOO_DEPEND_ON_PERL=no
-inherit toolchain-funcs eutils elisp-common perl-module bash-completion
-[ "$PV" == "9999" ] && inherit git
+
+# bug #329479: git-remote-testgit is not multiple-version aware
+PYTHON_DEPEND="python? 2"
+[[ ${PV} == *9999 ]] && SCM="git-2"
+EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
+
+inherit toolchain-funcs eutils elisp-common perl-module bash-completion python ${SCM}
 
 MY_PV="${PV/_rc/.rc}"
 MY_P="${PN}-${MY_PV}"
@@ -15,22 +20,19 @@ DOC_VER=${MY_PV}
 
 DESCRIPTION="GIT - the stupid content tracker, the revision control system heavily used by the Linux kernel team"
 HOMEPAGE="http://www.git-scm.com/"
-if [ "$PV" != "9999" ]; then
+if [[ ${PV} != *9999 ]]; then
 	SRC_URI="mirror://kernel/software/scm/git/${MY_P}.tar.bz2
 			mirror://kernel/software/scm/git/${PN}-manpages-${DOC_VER}.tar.bz2
 			doc? ( mirror://kernel/software/scm/git/${PN}-htmldocs-${DOC_VER}.tar.bz2 )"
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~sparc-fbsd ~x86-fbsd ~x86-freebsd ~ia64-hpux ~x86-interix ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 else
 	SRC_URI=""
-	EGIT_BRANCH="master"
-	EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
-	# EGIT_REPO_URI="http://www.kernel.org/pub/scm/git/git.git"
 	KEYWORDS=""
 fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="+blksha1 +curl cgi doc emacs gtk iconv +perl ppcsha1 tk +threads +webdav xinetd cvs subversion"
+IUSE="+blksha1 +curl cgi doc emacs gtk iconv +perl +python ppcsha1 tk +threads +webdav xinetd cvs subversion"
 
 # Common to both DEPEND and RDEPEND
 CDEPEND="
@@ -52,11 +54,11 @@ RDEPEND="${CDEPEND}
 			cvs? ( >=dev-vcs/cvsps-2.1 dev-perl/DBI dev-perl/DBD-SQLite )
 			subversion? ( dev-vcs/subversion[-dso,perl] dev-perl/libwww-perl dev-perl/TermReadKey )
 			)
-	gtk?
+	python? ( gtk?
 	(
 		>=dev-python/pygtk-2.8
-		|| ( dev-python/pygtksourceview:2  dev-python/gtksourceview-python )
-	)"
+		dev-python/pygtksourceview:2
+	) )"
 
 # This is how info docs are created with Git:
 #   .txt/asciidoc --(asciidoc)---------> .xml/docbook
@@ -70,12 +72,11 @@ DEPEND="${CDEPEND}
 		sys-apps/texinfo
 	)"
 
-# Live ebuild builds HTML docs, additionally
-if [ "$PV" == "9999" ]; then
+# Live ebuild builds man pages and HTML docs, additionally
+if [[ ${PV} == *9999 ]]; then
 	DEPEND="${DEPEND}
-		doc?    (
-			app-text/xmlto
-		)"
+		app-text/asciidoc
+		app-text/xmlto"
 fi
 
 SITEFILE=50${PN}-gentoo.el
@@ -94,6 +95,10 @@ pkg_setup() {
 		ewarn "Per Gentoo bugs #223747, #238586, when subversion is built"
 		ewarn "with USE=dso, there may be weird crashes in git-svn. You"
 		ewarn "have been warned."
+	fi
+	if use python ; then
+		python_set_active_version 2
+		python_pkg_setup
 	fi
 }
 
@@ -114,17 +119,51 @@ exportmakeopts() {
 		myopts="${myopts} NO_CURL=YesPlease"
 	fi
 
+	# broken assumptions, because of broken build system ...
+	myopts="${myopts} NO_FINK=YesPlease NO_DARWIN_PORTS=YesPlease"
+	myopts="${myopts} INSTALL=install TAR=tar"
+	myopts="${myopts} SHELL_PATH=${EPREFIX}/bin/sh"
+	myopts="${myopts} SANE_TOOL_PATH="
+	myopts="${myopts} OLD_ICONV="
+	myopts="${myopts} NO_EXTERNAL_GREP="
+
+	# can't define this to null, since the entire makefile depends on it
+	sed -i -e '/\/usr\/local/s/BASIC_/#BASIC_/' Makefile
+
 	use iconv \
-		|| myopts="${myopts} NO_ICONV=YesPlease"
+		|| einfo "Forcing iconv for ${PVR} due to bugs #321895, #322205."
+	#	|| myopts="${myopts} NO_ICONV=YesPlease"
+	# because, above, we need to do this unconditionally (no "&& use iconv")
+	use !elibc_glibc && myopts="${myopts} NEEDS_LIBICONV=YesPlease"
+
 	use tk \
 		|| myopts="${myopts} NO_TCLTK=YesPlease"
 	use perl \
 		&& myopts="${myopts} INSTALLDIRS=vendor" \
 		|| myopts="${myopts} NO_PERL=YesPlease"
-	use threads \
-		&& myopts="${myopts} THREADED_DELTA_SEARCH=YesPlease"
+	use python \
+		|| myopts="${myopts} NO_PYTHON=YesPlease"
 	use subversion \
 		|| myopts="${myopts} NO_SVN_TESTS=YesPlease"
+	use threads \
+		&& myopts="${myopts} THREADED_DELTA_SEARCH=YesPlease"
+	use cvs \
+		|| myopts="${myopts} NO_CVS=YesPlease"
+# Disabled until ~m68k-mint can be keyworded again
+#	if [[ ${CHOST} == *-mint* ]] ; then
+#		myopts="${myopts} NO_MMAP=YesPlease"
+#		myopts="${myopts} NO_IPV6=YesPlease"
+#		myopts="${myopts} NO_STRLCPY=YesPlease"
+#		myopts="${myopts} NO_MEMMEM=YesPlease"
+#		myopts="${myopts} NO_MKDTEMP=YesPlease"
+#		myopts="${myopts} NO_MKSTEMPS=YesPlease"
+#	fi
+	if [[ ${CHOST} == ia64-*-hpux* ]]; then
+		myopts="${myopts} NO_NSEC=YesPlease"
+	fi
+	if [[ ${CHOST} == *-*-aix* ]]; then
+		myopts="${myopts} NO_FNMATCH_CASEFOLD=YesPlease"
+	fi
 
 	has_version '>=app-text/asciidoc-8.0' \
 		&& myopts="${myopts} ASCIIDOC8=YesPlease"
@@ -139,7 +178,7 @@ exportmakeopts() {
 }
 
 src_unpack() {
-	if [ "${PV}" != "9999" ]; then
+	if [[ ${PV} != *9999 ]]; then
 		unpack ${MY_P}.tar.bz2
 		cd "${S}"
 		unpack ${PN}-manpages-${DOC_VER}.tar.bz2
@@ -148,7 +187,7 @@ src_unpack() {
 			unpack ${PN}-htmldocs-${DOC_VER}.tar.bz2
 		cd "${S}"
 	else
-		git_src_unpack
+		git-2_src_unpack
 		cd "${S}"
 		#cp "${FILESDIR}"/GIT-VERSION-GEN .
 	fi
@@ -164,13 +203,31 @@ src_prepare() {
 	#epatch "${FILESDIR}"/20090505-git-1.6.2.5-getopt-fixes.patch
 
 	# JS install fixup
-	epatch "${FILESDIR}"/git-1.7.0-always-install-js.patch
+	epatch "${FILESDIR}"/git-1.7.2-always-install-js.patch
+
+	# USE=-iconv causes segfaults, fixed post 1.7.1
+	# Gentoo bug #321895
+	#epatch "${FILESDIR}"/git-1.7.1-noiconv-segfault-fix.patch
+
+	# Fix false positives with t3404 due to SHELL=/bin/false for the portage
+	# user.
+	# Merged upstream
+	#epatch "${FILESDIR}"/git-1.7.3.4-avoid-shell-issues.patch
+
+	# bug #350075: t9001: fix missing prereq on some tests
+	# Merged upstream
+	#epatch "${FILESDIR}"/git-1.7.3.4-fix-perl-test-prereq.patch
+
+	# bug #350330 - automagic CVS when we don't want it is bad.
+	epatch "${FILESDIR}"/git-1.7.3.5-optional-cvs.patch
 
 	sed -i \
 		-e 's:^\(CFLAGS =\).*$:\1 $(OPTCFLAGS) -Wall:' \
 		-e 's:^\(LDFLAGS =\).*$:\1 $(OPTLDFLAGS):' \
 		-e 's:^\(CC = \).*$:\1$(OPTCC):' \
 		-e 's:^\(AR = \).*$:\1$(OPTAR):' \
+		-e "s:\(PYTHON_PATH = \)\(.*\)$:\1${EPREFIX}\2:" \
+		-e "s:\(PERL_PATH = \)\(.*\)$:\1${EPREFIX}\2:" \
 		Makefile || die "sed failed"
 
 	# Never install the private copy of Error.pm (bug #296310)
@@ -182,17 +239,29 @@ src_prepare() {
 	sed -i 's/DOCBOOK2X_TEXI=docbook2x-texi/DOCBOOK2X_TEXI=docbook2texi.pl/' \
 		Documentation/Makefile || die "sed failed"
 
+	# bug #318289
+	# Merged upstream
+	#epatch "${FILESDIR}"/git-1.7.3.2-interix.patch
 }
 
 git_emake() {
+	# bug #326625: PERL_PATH, PERL_MM_OPT
+	# bug #320647: PYTHON_PATH
+	PYTHON_PATH=""
+	use python && PYTHON_PATH="$(PYTHON -a)"
 	emake ${MY_MAKEOPTS} \
 		DESTDIR="${D}" \
 		OPTCFLAGS="${CFLAGS}" \
 		OPTLDFLAGS="${LDFLAGS}" \
 		OPTCC="$(tc-getCC)" \
 		OPTAR="$(tc-getAR)" \
-		prefix=/usr \
-		htmldir=/usr/share/doc/${PF}/html \
+		prefix="${EPREFIX}"/usr \
+		htmldir="${EPREFIX}"/usr/share/doc/${PF}/html \
+		sysconfdir="${EPREFIX}"/etc \
+		PYTHON_PATH="${PYTHON_PATH}" \
+		PERL_PATH="${EPREFIX}/usr/bin/env perl" \
+		PERL_MM_OPT="" \
+		GIT_TEST_OPTS="--no-color" \
 		"$@"
 }
 
@@ -215,7 +284,7 @@ src_compile() {
 	fi
 
 	cd "${S}"/Documentation
-	if [[ "$PV" == "9999" ]] ; then
+	if [[ ${PV} == *9999 ]] ; then
 		git_emake man \
 			|| die "emake man failed"
 		if use doc ; then
@@ -235,7 +304,10 @@ src_install() {
 		install || \
 		die "make install failed"
 
-	doman man?/*.[157] Documentation/*.[157]
+	# Depending on the tarball and manual rebuild of the documentation, the
+	# manpages may exist in either OR both of these directories.
+	find man?/*.[157] >/dev/null 2>&1 && doman man?/*.[157]
+	find Documentation/*.[157] >/dev/null 2>&1 && doman Documentation/*.[157]
 
 	dodoc README Documentation/{SubmittingPatches,CodingGuidelines}
 	use doc && dodir /usr/share/doc/${PF}/html
@@ -256,59 +328,64 @@ src_install() {
 		#elisp-install ${PN}/compat contrib/emacs/vc-git.{el,elc} || die
 		# don't add automatically to the load-path, so the sitefile
 		# can do a conditional loading
-		touch "${D}${SITELISP}/${PN}/compat/.nosearch"
+		touch "${ED}${SITELISP}/${PN}/compat/.nosearch"
 		elisp-site-file-install "${FILESDIR}"/${SITEFILE} || die
 	fi
 
-	if use gtk ; then
+	if use python && use gtk ; then
 		dobin "${S}"/contrib/gitview/gitview
+		python_convert_shebangs ${PYTHON_ABI} "${ED}"/usr/bin/gitview
 		dodoc "${S}"/contrib/gitview/gitview.txt
 	fi
 
 	dobin contrib/fast-import/git-p4
 	dodoc contrib/fast-import/git-p4.txt
 	newbin contrib/fast-import/import-tars.perl import-tars
+	newbin contrib/git-resurrect.sh git-resurrect
 
 	dodir /usr/share/${PN}/contrib
 	# The following are excluded:
-	# svnimport - use git-svn
-	# p4import - excluded because fast-import has a better one
+	# completion - installed above
+	# emacs - installed above
 	# examples - these are stuff that is not used in Git anymore actually
+	# gitview - installed above
+	# p4import - excluded because fast-import has a better one
 	# patches - stuff the Git guys made to go upstream to other places
-	for i in continuous fast-import hg-to-git \
-		hooks remotes2config.sh stats \
-		workdir convert-objects blameview ; do
+	# svnimport - use git-svn
+	# thunderbird-patch-inline - fixes thunderbird
+	for i in \
+		blameview buildsystems ciabot continuous convert-objects fast-import \
+		hg-to-git hooks remotes2config.sh remotes2config.sh rerere-train.sh \
+		stats svn-fe vim workdir \
+		; do
 		cp -rf \
 			"${S}"/contrib/${i} \
-			"${D}"/usr/share/${PN}/contrib \
+			"${ED}"/usr/share/${PN}/contrib \
 			|| die "Failed contrib ${i}"
 	done
 
 	if use perl && use cgi ; then
-		dodir /usr/share/${PN}/gitweb
-		insinto /usr/share/${PN}/gitweb
-		doins "${S}"/gitweb/gitweb.cgi
-		doins "${S}"/gitweb/gitweb.css
-		js=gitweb.js
-		[ -f "${S}"/gitweb/gitweb.min.js ] && js=gitweb.min.js
-		doins "${S}"/gitweb/${js}
-		doins "${S}"/gitweb/git-{favicon,logo}.png
-
-		# Make sure it can run
-		fperms 0755 /usr/share/${PN}/gitweb/gitweb.cgi
+		# We used to install in /usr/share/${PN}/gitweb
+		# but upstream installs in /usr/share/gitweb
+		# so we will install a symlink and use their location for compat with other
+		# distros
+		dosym /usr/share/gitweb /usr/share/${PN}/gitweb
 
 		# INSTALL discusses configuration issues, not just installation
 		docinto /
 		newdoc  "${S}"/gitweb/INSTALL INSTALL.gitweb
 		newdoc  "${S}"/gitweb/README README.gitweb
 
-		find "${D}"/usr/lib64/perl5/ \
+		find "${ED}"/usr/lib64/perl5/ \
 			-name .packlist \
 			-exec rm \{\} \;
+	else
+		rm -rf "${ED}"/usr/share/gitweb
 	fi
+
 	if ! use subversion ; then
-		rm -f "${D}"/usr/libexec/git-core/git-svn \
-			"${D}"/usr/share/man/man1/git-svn.1*
+		rm -f "${ED}"/usr/libexec/git-core/git-svn \
+			"${ED}"/usr/share/man/man1/git-svn.1*
 	fi
 
 	if use xinetd ; then
@@ -386,11 +463,27 @@ src_test() {
 	for i in ${disabled} ; do
 		[[ -f "${i}" ]] && mv -f "${i}" "${i}.DISABLED" && einfo "Disabled $i"
 	done
-	cd "${S}"
+
+	# Avoid the test system removing the results because we want them ourselves
+	sed -e '/^[[:space:]]*$(MAKE) clean/s,^,#,g' \
+		-i "${S}"/t/Makefile
+
+	# Clean old results first
+	cd "${S}/t"
+	git_emake clean
+
 	# Now run the tests
+	cd "${S}"
 	einfo "Start test run"
-	git_emake \
-		test || die "tests failed"
+	git_emake test
+	rc=$?
+
+	# Display nice results
+	cd "${S}/t"
+	git_emake aggregate-results
+
+	# And exit
+	[ $rc -eq 0 ] || die "tests failed. Please file a bug."
 }
 
 showpkgdeps() {
@@ -401,6 +494,7 @@ showpkgdeps() {
 
 pkg_postinst() {
 	use emacs && elisp-site-regen
+	use python && python_mod_optimize git_remote_helpers
 	if use subversion && has_version dev-vcs/subversion && ! built_with_use --missing false dev-vcs/subversion perl ; then
 		ewarn "You must build dev-vcs/subversion with USE=perl"
 		ewarn "to get the full functionality of git-svn!"
@@ -415,4 +509,5 @@ pkg_postinst() {
 
 pkg_postrm() {
 	use emacs && elisp-site-regen
+	use python && python_mod_cleanup git_remote_helpers
 }

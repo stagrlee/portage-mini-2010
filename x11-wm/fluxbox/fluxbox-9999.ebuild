@@ -1,11 +1,11 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-wm/fluxbox/fluxbox-9999.ebuild,v 1.6 2010/08/16 19:43:13 abcd Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-wm/fluxbox/fluxbox-9999.ebuild,v 1.8 2011/04/16 18:22:51 ulm Exp $
 
 EAPI=3
 inherit eutils git prefix
 
-IUSE="nls xinerama +truetype gnome +imlib +slit +toolbar vim-syntax"
+IUSE="nls xinerama bidi +truetype gnome +imlib +slit +toolbar vim-syntax"
 
 DESCRIPTION="Fluxbox is an X11 window manager featuring tabs and an iconbar"
 
@@ -24,6 +24,7 @@ RDEPEND="x11-libs/libXpm
 	x11-apps/xmessage
 	x11-libs/libXft
 	truetype? ( media-libs/freetype )
+	bidi? ( dev-libs/fribidi )
 	imlib? ( >=media-libs/imlib2-1.2.0[X] )
 	vim-syntax? ( app-vim/fluxbox-syntax )
 	!!<x11-themes/fluxbox-styles-fluxmod-20040809-r1
@@ -33,7 +34,6 @@ DEPEND="nls? ( sys-devel/gettext )
 	x11-proto/xextproto
 	xinerama? ( x11-proto/xineramaproto )
 	${RDEPEND}"
-PROVIDE="virtual/blackbox"
 
 SLOT="0"
 LICENSE="MIT"
@@ -74,6 +74,7 @@ src_configure() {
 		$(use_enable imlib imlib2) \
 		$(use_enable slit ) \
 		$(use_enable toolbar ) \
+		$(use_enable bidi fribidi ) \
 		--sysconfdir="${EPREFIX}"/etc/X11/${PN} \
 		--with-style="${EPREFIX}"/usr/share/fluxbox/styles/Emerge \
 		${myconf}

@@ -1,6 +1,6 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-plugins/vdr-dxr3/vdr-dxr3-0.2.8.ebuild,v 1.3 2008/12/13 18:48:29 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-plugins/vdr-dxr3/vdr-dxr3-0.2.8.ebuild,v 1.5 2011/04/06 17:35:19 idl0r Exp $
 
 inherit vdr-plugin versionator
 
@@ -15,7 +15,8 @@ IUSE=""
 
 DEPEND="media-video/em8300-libraries
 	>=media-video/vdr-1.4.0
-	media-video/ffmpeg"
+	virtual/ffmpeg"
+RDEPEND="${DEPEND}"
 
 src_unpack() {
 	vdr-plugin_src_unpack
@@ -23,7 +24,7 @@ src_unpack() {
 	cd "${S}"
 	sed -i Makefile -e 's:^FFMDIR =.*$:FFMDIR=/usr/include/ffmpeg:'
 
-	if has_version ">=media-video/ffmpeg-0.4.9_p20080326"; then
+	if has_version ">=virtual/ffmpeg-0.4.9_p20080326"; then
 		epatch "${FILESDIR}/${P}-ffmpeg-includes.diff"
 	fi
 }

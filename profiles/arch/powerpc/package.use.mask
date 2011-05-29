@@ -1,10 +1,56 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/powerpc/package.use.mask,v 1.49 2010/09/16 15:52:50 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/powerpc/package.use.mask,v 1.81 2011/05/27 22:54:52 cardoe Exp $
 
-# Joseph Jezak <josejx@gentoo.org> (13 Sep 2010)
-# Masked libvpx, we'll wait for native vp8 support
-media-video/ffmpeg vpx
+# Doug Goldstein <cardoe@gentoo.org> (27 May 2011)
+# app-emulation/spice, app-emulation/xen, and sys-cluster/ceph
+# are not keyworded. bug #368959
+app-emulation/qemu-kvm spice xen rbd
+
+# Kacper Kowalik <xarthisius@gentoo.org> (16 Jan 2011)
+# bug 350513, app-pda/jpilot is not keyworded
+mail-client/claws-mail pda
+
+# Alexey Shvetsov <alexxy@gentoo.org> (04 Mar 2011)
+# Mask unsatisfied kde-deps bug #357403
+=kde-base/kdelibs-4.6* policykit
+=kde-base/solid-4.6* bluetooth
+
+# Sebastian Pipping <sping@gentoo.org> (22 Feb 2011)
+# No media-sound/lilypond here, yet (bug #356069)
+app-text/asciidoc test
+
+# Joseph Jezak <JoseJX@gentoo.org> (25 Jan 2011)
+# x11-libs/qt-webkit doesn't have a working JIT yet on PowerPC
+x11-libs/qt-webkit jit
+
+# Kacper Kowalik <xarthisius@gentoo.org> (16 Jan 2011)
+# bug 303931
+# dev-lang/icc is not available for ppc
+# sci-chemistry/arp-warp-bin is not available for ppc
+sci-biology/fasta icc
+sci-chemistry/ccp4 arpwarp
+
+# Brent Baude <ranger@gentoo.org> (13 Jan 2011)
+# no oracle stuff for powerpc
+net-im/ekg2 oracle
+
+# Nirbheek Chauhan <nirbheek@gentoo.org> (10 Dec 2010)
+# net-misc/connman is not keyworded, bug 348308
+mail-client/evolution connman
+
+# Dane Smith <c1pher@gentoo.org> (12 Nov 2010)
+# Valgrind is only available on amd64/x86/ppc/ppc64.
+net-libs/gnutls -valgrind
+
+# Justin Lecher <jlec@gentoo.org> (01 Nov 2010)
+# Deps not Keyworded
+sci-chemistry/apbs fetk
+
+# Vlastimil Babka <caster@gentoo.org> (13 Oct 2010)
+# dev-util/systemtap not keyworded on ppc arches. Note that this currently applies for java-overlay
+# icedtea only, but the plan is to move it to main tree.
+dev-java/icedtea systemtap
 
 # Alexey Shvetsov <alexxy@gentoo.org> (22 Aug 2010)
 # sci-chemistry/msms not available for this arch
@@ -58,10 +104,6 @@ net-im/pidgin zephyr
 # Marked ~ppc, but masking current versions because of stable keyword
 <=media-plugins/gst-plugins-meta-0.10-r2 dvb mythtv
 
-# nixnut <nixnut@gentoo.org> (11 mar 2008)
-# USE=musepack wants musepack-tools which can't be build on ppc
-media-sound/squeezecenter musepack
-
 # Mark Loeser <halcy0n@gentoo.org> (18 Jan 2008)
 # mono doesn't work with Openoffice - bug #202361
 app-office/openoffice mono
@@ -87,3 +129,14 @@ gnome-base/gnome mono
 # Joseph Jezak <josejx@gentoo.org> (12 November 2008)
 # Mask the JIT for pearpc, it's x86 only
 app-emulation/pearpc jit
+
+# Alexis Ballier <aballier@gentoo.org> (14 Nov 2010)
+# building the documentation needs ptex
+# app-text/ptex does not build: bug #323559
+# >=dev-texlive/texlive-langcjk-2010 provides ptex too but is masked
+# unmask when TeX Live 2010 keywording is done (bug #342513)
+app-i18n/canna doc
+
+# Tomas Touceda <chiiph@gentoo.org> (21 Nov 2010)
+# JIT isn't implemented on ppc: bug #346167
+x11-libs/qt-script jit

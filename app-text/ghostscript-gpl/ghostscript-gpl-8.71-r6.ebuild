@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-text/ghostscript-gpl/ghostscript-gpl-8.71-r6.ebuild,v 1.1 2010/08/17 18:18:25 tgurr Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-text/ghostscript-gpl/ghostscript-gpl-8.71-r6.ebuild,v 1.9 2011/03/27 12:19:15 nirbheek Exp $
 
 EAPI=3
 inherit autotools eutils versionator flag-o-matic
@@ -17,19 +17,19 @@ SRC_URI="!bindist? ( djvu? ( mirror://sourceforge/djvu/gsdjvu-${GSDJVU_PV}.tar.g
 
 LICENSE="GPL-3 CPL-1.0"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd"
 IUSE="bindist cairo cups djvu gtk jpeg2k X"
 
 COMMON_DEPEND="app-text/libpaper
 	media-libs/fontconfig
-	>=media-libs/jpeg-6b
+	virtual/jpeg
 	>=media-libs/libpng-1.2.42
 	>=media-libs/tiff-3.9.2
 	>=sys-libs/zlib-1.2.3
 	!bindist? ( djvu? ( app-text/djvu ) )
 	cairo? ( >=x11-libs/cairo-1.2.0 )
 	cups? ( >=net-print/cups-1.3.8 )
-	gtk? ( >=x11-libs/gtk+-2.0 )
+	gtk? ( x11-libs/gtk+:2 )
 	jpeg2k? ( media-libs/jasper )
 	X? ( x11-libs/libXt x11-libs/libXext )"
 

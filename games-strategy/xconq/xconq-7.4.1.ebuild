@@ -1,7 +1,8 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-strategy/xconq/xconq-7.4.1.ebuild,v 1.13 2008/12/21 04:31:45 darkside Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-strategy/xconq/xconq-7.4.1.ebuild,v 1.16 2010/10/13 23:47:25 mr_bones_ Exp $
 
+EAPI=2
 inherit eutils games
 
 DESCRIPTION="a general strategy game system"
@@ -19,20 +20,20 @@ DEPEND="x11-libs/libXmu
 	dev-lang/tk
 	dev-lang/tcl"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-	epatch \
-		"${FILESDIR}"/${PN}-gcc-3.4.patch \
-		"${FILESDIR}"/${PN}-tkconq.patch
+PATCHES=( "${FILESDIR}"/${PN}-gcc-3.4.patch
+		  "${FILESDIR}"/${PN}-tkconq.patch
+		  "${FILESDIR}"/${PN}-make-382.patch
+		)
+
+src_configure() {
+	egamesconf \
+		--enable-alternate-scoresdir="${GAMES_STATEDIR}"/${PN}
 }
 
 src_compile() {
-	egamesconf \
-		--enable-alternate-scoresdir="${GAMES_STATEDIR}"/${PN} \
-		|| die
 	emake \
 		CFLAGS="${CFLAGS}" \
+		LDFLAGS="${LDFLAGS}" \
 		datadir="${GAMES_DATADIR}"/${PN} \
 		|| die "emake failed"
 }

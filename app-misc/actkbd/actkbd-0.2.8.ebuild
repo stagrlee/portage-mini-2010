@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-misc/actkbd/actkbd-0.2.8.ebuild,v 1.3 2010/02/21 21:54:50 swegener Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-misc/actkbd/actkbd-0.2.8.ebuild,v 1.5 2011/03/04 08:12:18 tomka Exp $
 
 inherit linux-info eutils toolchain-funcs
 
@@ -10,7 +10,7 @@ SRC_URI="http://users.softlab.ece.ntua.gr/~thkala/projects/actkbd/files/${P}.tar
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="amd64 x86"
 IUSE=""
 
 DEPEND=""

@@ -1,6 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-misc/xxkb/xxkb-1.11-r1.ebuild,v 1.4 2010/08/28 21:30:27 phajdan.jr Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-misc/xxkb/xxkb-1.11-r1.ebuild,v 1.6 2011/03/02 10:16:16 jlec Exp $
+
+EAPI="1"
 
 inherit eutils
 
@@ -10,15 +12,15 @@ SRC_URI="mirror://sourceforge/${PN}/${P}-src.tar.gz"
 
 LICENSE="Artistic"
 SLOT="0"
-KEYWORDS="amd64 ~ppc x86"
+KEYWORDS="amd64 ppc x86"
 IUSE="svg"
 
 RDEPEND="x11-libs/libX11
 	x11-libs/libXt
 	x11-libs/libXpm
-	svg? ( >=dev-libs/glib-2
-		>=x11-libs/gtk+-2
-		gnome-base/librsvg )"
+	svg? ( dev-libs/glib:2
+		x11-libs/gtk+:2
+		gnome-base/librsvg:2 )"
 DEPEND="${RDEPEND}
 	app-text/rman
 	x11-misc/imake

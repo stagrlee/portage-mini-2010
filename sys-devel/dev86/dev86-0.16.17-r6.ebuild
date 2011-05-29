@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-devel/dev86/dev86-0.16.17-r6.ebuild,v 1.4 2009/11/09 12:46:38 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-devel/dev86/dev86-0.16.17-r6.ebuild,v 1.7 2011/04/20 20:23:45 jlec Exp $
 
 inherit eutils
 
@@ -30,8 +30,9 @@ src_unpack() {
 	cd "${S}"
 	epatch "${FILESDIR}"/dev86-pic.patch
 	epatch "${FILESDIR}"/${P}-fortify.patch
+	epatch "${FILESDIR}"/${P}-make382.patch
 	sed -i \
-		-e "s:-O2 -g:${CFLAGS} ${CPPFLAGS}:" \
+		-e "s:-O2 -g:${CFLAGS}:" \
 		-e '/INEXE=/s:-s::' \
 		makefile.in
 	sed -i -e '/INSTALL_OPTS=/s:-s::' bin86/Makefile
@@ -39,7 +40,11 @@ src_unpack() {
 }
 
 src_compile() {
-	emake -j1 DIST="${D}" || die
+	# Don't mess with CPPFLAGS as they tend to break compilation
+	# (bug #343655).
+	CPPFLAGS=""
+
+	emake -j1 DIST="${D}" CC="$(tc-getCC)" || die
 
 	export PATH=${S}/bin:${PATH}
 	cd bin

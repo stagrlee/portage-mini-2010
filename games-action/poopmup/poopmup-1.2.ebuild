@@ -1,7 +1,8 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-action/poopmup/poopmup-1.2.ebuild,v 1.17 2010/09/16 16:48:42 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-action/poopmup/poopmup-1.2.ebuild,v 1.19 2010/10/11 20:43:14 mr_bones_ Exp $
 
+EAPI=2
 inherit eutils toolchain-funcs games
 
 DESCRIPTION="You are now free to fly around the city and poop on passers-by"
@@ -21,9 +22,7 @@ DEPEND="media-libs/freeglut
 
 S=${WORKDIR}/${PN}
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
+src_prepare() {
 	sed -i \
 		-e "s:textures/:${GAMES_DATADIR}/${PN}/:" \
 		includes/textureLoader.h || die "sed failed"
@@ -36,7 +35,8 @@ src_unpack() {
 
 	epatch \
 		"${FILESDIR}"/${P}-freeglut.patch \
-		"${FILESDIR}"/${P}-gcc43.patch
+		"${FILESDIR}"/${P}-gcc43.patch \
+		"${FILESDIR}"/${P}-ldflags.patch
 	ecvs_clean
 }
 

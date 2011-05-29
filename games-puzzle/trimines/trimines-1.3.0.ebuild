@@ -1,8 +1,9 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-puzzle/trimines/trimines-1.3.0.ebuild,v 1.3 2009/11/16 14:48:34 volkmar Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-puzzle/trimines/trimines-1.3.0.ebuild,v 1.5 2010/10/13 22:44:05 mr_bones_ Exp $
 
-inherit eutils toolchain-funcs games
+EAPI=2
+inherit eutils games
 
 DESCRIPTION="A mine sweeper game that uses triangles instead of squares"
 HOMEPAGE="http://www.freewebs.com/trimines/"
@@ -13,15 +14,13 @@ SLOT="0"
 KEYWORDS="~ppc x86"
 IUSE=""
 
-DEPEND="media-libs/libsdl"
+DEPEND="media-libs/libsdl[video]"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
+src_prepare() {
 	sed -i \
 		-e "s:data/:${GAMES_DATADIR}/${PN}/:" src/gfx.c \
 		|| die "sed failed"
-	echo "${PN}: ; $(tc-getCC) ${CFLAGS} src/main.c -o ./${PN} \`sdl-config --cflags\` \`sdl-config --libs\`" > Makefile
+	epatch "${FILESDIR}"/${P}-gentoo.patch
 }
 
 src_install() {

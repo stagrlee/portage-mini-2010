@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-client/mail-notification/mail-notification-5.4-r4.ebuild,v 1.5 2010/09/11 10:26:31 nixnut Exp $
+# $Header: /var/cvsroot/gentoo-x86/mail-client/mail-notification/mail-notification-5.4-r4.ebuild,v 1.8 2011/03/06 07:37:29 graaff Exp $
 
 EAPI=2
 
@@ -10,7 +10,7 @@ DESCRIPTION="A GNOME trayicon which checks for email, with support for many onli
 HOMEPAGE="http://www.nongnu.org/mailnotify/"
 SRC_URI="http://savannah.nongnu.org/download/mailnotify/${P}.tar.bz2"
 
-KEYWORDS="amd64 ppc ~sparc x86"
+KEYWORDS="amd64 ppc sparc x86"
 SLOT="0"
 LICENSE="GPL-3"
 
@@ -20,10 +20,9 @@ IUSE="evo gmail imap ipv6 maildir mbox mh mozilla pop sasl ssl sylpheed"
 # it's pointless making it optional. gnome-keyring is required for
 # several specific access methods, and thus linked to those USE flags
 # instead of adding a keyring USE flag.
-RDEPEND=">=x11-libs/gtk+-2.12
+RDEPEND=">=x11-libs/gtk+-2.12:2
 	>=dev-libs/glib-2.14
 	>=gnome-base/gconf-2.4.0
-	>=gnome-base/gnome-panel-2.6
 	>=gnome-base/gconf-2.6
 	>=gnome-base/libgnomeui-2.14
 	>=gnome-base/libglade-2.0

@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-analyzer/pmacct/pmacct-0.12.2.ebuild,v 1.1 2010/07/21 16:21:47 jer Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-analyzer/pmacct/pmacct-0.12.2.ebuild,v 1.5 2010/10/16 14:01:10 ranger Exp $
 
 EAPI="2"
 
@@ -12,7 +12,7 @@ SRC_URI="http://www.pmacct.net/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86"
+KEYWORDS="amd64 ppc x86"
 IUSE="64bit debug ipv6 mysql postgres sqlite threads ulog"
 
 RDEPEND="net-libs/libpcap
@@ -22,8 +22,6 @@ RDEPEND="net-libs/libpcap
 DEPEND="${RDEPEND}"
 
 src_prepare() {
-	cp -av configure{,.org}
-	cp -av configure.in{,.org}
 	epatch "${FILESDIR}"/${PN}-0.12.0-gentoo.patch
 }
 

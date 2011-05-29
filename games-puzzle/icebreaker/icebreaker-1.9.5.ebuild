@@ -1,7 +1,8 @@
-# Copyright 1999-2007 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-puzzle/icebreaker/icebreaker-1.9.5.ebuild,v 1.11 2007/03/13 13:39:14 nyhm Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-puzzle/icebreaker/icebreaker-1.9.5.ebuild,v 1.17 2010/10/19 15:14:32 mr_bones_ Exp $
 
+EAPI=2
 inherit eutils games
 
 DESCRIPTION="Trap and capture penguins on Antarctica"
@@ -13,14 +14,12 @@ SLOT="0"
 KEYWORDS="amd64 ppc x86"
 IUSE=""
 
-DEPEND="media-libs/libsdl
+DEPEND="media-libs/libsdl[video]
 	media-libs/sdl-mixer"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-	sed -i '/install/s/-s //' Makefile || die "sed failed"
-}
+PATCHES=( "${FILESDIR}"/${P}-ldflags.patch
+	"${FILESDIR}"/${P}-gentoo.patch
+	"${FILESDIR}"/${P}-parallell-install.patch )
 
 src_compile() {
 	emake \
@@ -33,11 +32,11 @@ src_compile() {
 }
 
 src_install() {
-	einstall \
+	emake \
 		prefix="${D}/usr" \
 		bindir="${D}${GAMES_BINDIR}" \
 		datadir="${D}${GAMES_DATADIR}" \
-		highscoredir="${D}${GAMES_STATEDIR}" || die
+		highscoredir="${D}${GAMES_STATEDIR}" install || die
 	newicon ${PN}_48.bmp ${PN}.bmp
 	make_desktop_entry ${PN} IceBreaker /usr/share/pixmaps/${PN}.bmp
 	dodoc ChangeLog README* TODO

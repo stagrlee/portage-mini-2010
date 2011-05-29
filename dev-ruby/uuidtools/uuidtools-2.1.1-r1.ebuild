@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-ruby/uuidtools/uuidtools-2.1.1-r1.ebuild,v 1.4 2010/08/21 21:01:10 flameeyes Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-ruby/uuidtools/uuidtools-2.1.1-r1.ebuild,v 1.7 2011/03/08 11:29:54 tomka Exp $
 
 EAPI=2
 
@@ -20,14 +20,14 @@ SRC_URI="mirror://rubyforge/${PN}/${P}.tgz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE=""
 
 # Rakefile does not work without rspec (and is quite difficult to work
 # it around).
 ruby_add_bdepend "
-	doc? ( >=dev-ruby/rspec-1.0.8 )
-	test? ( >=dev-ruby/rspec-1.0.8 )"
+	doc? ( >=dev-ruby/rspec-1.0.8:0 )
+	test? ( >=dev-ruby/rspec-1.0.8:0 )"
 
 all_ruby_prepare() {
 	sed -i \

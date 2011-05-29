@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/avidemux/avidemux-2.5.1_p5428.ebuild,v 1.3 2010/01/09 15:36:42 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-video/avidemux/avidemux-2.5.1_p5428.ebuild,v 1.5 2010/10/24 10:00:27 ssuominen Exp $
 
 EAPI="2"
 
@@ -30,7 +30,6 @@ RDEPEND="dev-libs/libxml2
 	esd? ( media-sound/esound )
 	jack? ( media-sound/jack-audio-connection-kit )
 	libsamplerate? ( media-libs/libsamplerate )
-	oss? ( media-libs/alsa-oss )
 	pulseaudio? ( media-sound/pulseaudio )
 	sdl? ( media-libs/libsdl )
 	truetype? ( media-libs/freetype:2
@@ -47,6 +46,7 @@ DEPEND="${RDEPEND}
 	>=dev-util/cmake-2.6.4"
 
 S=${WORKDIR}/${MY_P}
+BUILD_S=${WORKDIR}/${P}_build
 
 AVIDEMUX_LANGS="bg ca cs de el es fr it ja pt_BR ru sr sr@latin tr zh_TW"
 for L in ${AVIDEMUX_LANGS}; do
@@ -87,8 +87,8 @@ src_prepare() {
 src_configure() {
 	mycmakeargs="${mycmakeargs}
 		-DAVIDEMUX_SOURCE_DIR='${S}'
-		-DAVIDEMUX_INSTALL_PREFIX='${S}_build'
-		-DAVIDEMUX_CORECONFIG_DIR='${S}_build/config'"
+		-DAVIDEMUX_INSTALL_PREFIX='${BUILD_S}'
+		-DAVIDEMUX_CORECONFIG_DIR='${BUILD_S}/config'"
 
 	# CMakeLists.txt
 	use gtk || mycmakeargs="${mycmakeargs} -DGTK=0"

@@ -1,11 +1,12 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/quagga/quagga-0.99.17-r2.ebuild,v 1.1 2010/09/06 14:19:00 flameeyes Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-misc/quagga/quagga-0.99.17-r2.ebuild,v 1.8 2010/10/11 20:17:13 jer Exp $
 
 EAPI="2"
 
 CLASSLESS_BGP_PATCH=ht-20040304-classless-bgp.patch
-REALMS_PATCH=quagga-0.99.14-realms-test2.diff
+#REALMS_PATCH=quagga-0.99.14-realms-test2.diff
+REALMS_PATCH=quagga-0.99.14-realms-test2-gentoo.patch.bz2
 
 inherit eutils multilib autotools pam
 
@@ -13,11 +14,12 @@ DESCRIPTION="A free routing daemon replacing Zebra supporting RIP, OSPF and BGP.
 HOMEPAGE="http://quagga.net/"
 SRC_URI="http://www.quagga.net/download/${P}.tar.gz
 	bgpclassless? ( http://hasso.linux.ee/stuff/patches/quagga/${CLASSLESS_BGP_PATCH} )
-	realms? ( http://linux.mantech.ro/download/quagga/${REALMS_PATCH} )"
+	realms? ( http://dev.gentoo.org/~flameeyes/patches/${PN}/${REALMS_PATCH} )"
+#	realms? ( http://linux.mantech.ro/download/quagga/${REALMS_PATCH} )
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ppc ~s390 ~sparc ~x86"
+KEYWORDS="alpha amd64 arm hppa ppc s390 sparc x86"
 IUSE="caps doc ipv6 snmp pam bgpclassless ospfapi realms multipath tcp-zebra elibc_glibc +readline"
 
 COMMON_DEPEND="

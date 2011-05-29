@@ -7,8 +7,7 @@
 		easy to manage your laptop or desktop system.
 	</longdescription>
 	<use>
-		<flag name="policykit">Enable <pkg>sys-auth/policykit</pkg>
-			authentication support</flag>
+		<flag name='applet'>Build battery monitor applet</flag>
 	</use>
 </pkgmetadata>
 

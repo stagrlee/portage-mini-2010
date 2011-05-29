@@ -1,12 +1,12 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-visualization/paraview/paraview-3.6.2.ebuild,v 1.9 2010/06/17 22:41:56 patrick Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-visualization/paraview/paraview-3.6.2.ebuild,v 1.14 2011/04/10 22:36:12 arfrever Exp $
 
-EAPI="2"
+EAPI="3"
 
 PYTHON_DEPEND="python? 2:2.6"
 
-inherit distutils eutils flag-o-matic toolchain-funcs versionator python qt4 cmake-utils
+inherit eutils flag-o-matic toolchain-funcs versionator python qt4 cmake-utils
 
 MAIN_PV=$(get_major_version)
 MAJOR_PV=$(get_version_component_range 1-2)
@@ -18,9 +18,9 @@ SRC_URI="mirror://gentoo/${P}.tar.gz
 	mirror://gentoo/${P}-openfoam-r173.patch.bz2"
 
 LICENSE="paraview GPL-2"
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="~amd64 ~ppc ~x86"
 SLOT="0"
-IUSE="mpi +python doc examples +gui plugins boost streaming cg overview mysql postgres odbc"
+IUSE="boost cg doc examples +gui mpi mysql plugins +python postgres streaming odbc overview"
 RDEPEND="sci-libs/hdf5[mpi=]
 	mpi? ( || (
 				sys-cluster/openmpi
@@ -32,11 +32,11 @@ RDEPEND="sci-libs/hdf5[mpi=]
 	mysql? ( virtual/mysql )
 	postgres? ( dev-db/postgresql-base )
 	odbc? ( dev-db/unixODBC )
-	dev-libs/libxml2
+	dev-libs/libxml2:2
 	media-libs/libpng
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/tiff
-	media-video/ffmpeg
+	virtual/ffmpeg
 	dev-libs/expat
 	sys-libs/zlib
 	media-libs/freetype

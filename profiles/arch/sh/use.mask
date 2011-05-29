@@ -13,6 +13,7 @@ hardened
 java
 java-internal
 java-external
+pdfannotextractor
 
 # broken upstream, see libavcodec/sh4/idct_sh4.c:#error
 ffmpeg
@@ -20,7 +21,7 @@ ffmpeg
 # No hardware to test
 bluetooth
 dvd
-iphone
+ios
 
 # Stuff we don't want
 chicken
@@ -37,6 +38,9 @@ fusion
 lensfun
 fits
 networkmanager
+lpsol
+openexr
+libev
 
 # Stuff that doesn't make sense on this arch
 3dfx
@@ -84,6 +88,7 @@ authdaemond
 v4l
 v4l2
 tokyocabinet
+wildmidi
 
 # 2006/02/05 - Donnie Berkholz <dberkholz@gentoo.org>
 # Modular X: mask for architectures on which they aren't available
@@ -102,6 +107,7 @@ video_cards_mach64
 video_cards_mga
 video_cards_neomagic
 video_cards_newport
+video_cards_nouveau
 video_cards_nsc
 video_cards_nv
 video_cards_r128

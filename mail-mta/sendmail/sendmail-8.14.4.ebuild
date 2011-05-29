@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-mta/sendmail/sendmail-8.14.4.ebuild,v 1.6 2010/02/01 19:54:56 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/mail-mta/sendmail/sendmail-8.14.4.ebuild,v 1.9 2011/04/22 16:12:51 flameeyes Exp $
 
 EAPI="2"
 
@@ -13,7 +13,7 @@ SRC_URI="ftp://ftp.sendmail.org/pub/${PN}/${PN}.${PV}.tar.gz"
 LICENSE="Sendmail"
 SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 s390 sh sparc x86"
-IUSE="ssl ldap sasl tcpd mbox mailwrapper ipv6 nis sockets"
+IUSE="ssl ldap sasl tcpd mbox ipv6 nis sockets"
 
 DEPEND="net-mail/mailbase
 	sys-devel/m4
@@ -26,10 +26,20 @@ DEPEND="net-mail/mailbase
 	"
 RDEPEND="${DEPEND}
 	>=net-mail/mailbase-0.00
-	!mailwrapper? ( !virtual/mta !net-mail/mailwrapper )
-	mailwrapper? ( >=net-mail/mailwrapper-0.2 )"
+	!mail-mta/courier
+	!mail-mta/esmtp
+	!mail-mta/exim
+	!mail-mta/mini-qmail
+	!mail-mta/msmtp
+	!mail-mta/nbsmtp
+	!mail-mta/netqmail
+	!mail-mta/nullmailer
+	!mail-mta/postfix
+	!mail-mta/qmail-ldap
+	!<mail-mta/ssmtp-2.64-r2
+	!>=mail-mta/ssmtp-2.64-r2[mta]"
+
 PDEPEND="!mbox? ( mail-filter/procmail )"
-PROVIDE="virtual/mta"
 
 # libmilter library is part of sendmail, but it does not share the version number with it.
 # In order to find the right libmilter version number, check SMFI_VERSION definition
@@ -49,6 +59,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/sendmail-build-system.patch
 	epatch "${FILESDIR}"/sendmail-delivered_hdr.patch
 	epatch "${FILESDIR}"/libmilter-sharedlib.patch
+	epatch "${FILESDIR}"/${P}+db-5.0.patch
 
 	local confCC="$(tc-getCC)"
 	local confCCOPTS="${CFLAGS}"
@@ -176,33 +187,4 @@ src_install () {
 	doinitd "${FILESDIR}"/sendmail
 	keepdir /usr/adm/sm.bin
 
-	if use mailwrapper
-	then
-		mv "${D}"/usr/sbin/sendmail "${D}"/usr/sbin/sendmail.sendmail
-		insinto /etc/mail
-		doins "${FILESDIR}"/mailer.conf
-		rm "${D}"/usr/bin/mailq
-		rm "${D}"/usr/bin/newaliases
-		mv "${D}"/usr/share/man/man8/sendmail.8 \
-			"${D}"/usr/share/man/man8/sendmail-sendmail.8
-		mv "${D}"/usr/share/man/man1/mailq.1 \
-			"${D}"/usr/share/man/man1/mailq-sendmail.1
-		mv "${D}"/usr/share/man/man1/newaliases.1 \
-			"${D}"/usr/share/man/man1/newaliases-sendmail.1
-		mv "${D}"/usr/share/man/man5/aliases.5 \
-			"${D}"/usr/share/man/man5/aliases-sendmail.5
-		dosed 's/} sendmail/} sendmail.sendmail/' /etc/init.d/sendmail
-		dosed 's/sbin\/sendmail/sbin\/sendmail.sendmail/' /etc/init.d/sendmail
-	fi
-
-}
-
-pkg_postinst() {
-	if ! use mailwrapper && [[ -e /etc/mailer.conf ]]
-	then
-		elog
-		elog "Since you emerged sendmail without mailwrapper in USE,"
-		elog "you probably want to 'emerge -C mailwrapper' now."
-		elog
-	fi
 }

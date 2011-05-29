@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/coin/coin-3.1.0.ebuild,v 1.5 2010/06/25 20:26:39 reavertm Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/coin/coin-3.1.0.ebuild,v 1.7 2011/01/13 00:31:29 reavertm Exp $
 
 EAPI=2
 
@@ -15,7 +15,7 @@ SRC_URI="ftp://ftp.coin3d.org/pub/coin/src/all/${MY_P}.tar.gz"
 
 LICENSE="|| ( GPL-2 PEL )"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc x86"
+KEYWORDS="~amd64 ppc x86"
 IUSE="debug doc javascript openal"
 
 RDEPEND="
@@ -38,6 +38,7 @@ DEPEND="${RDEPEND}
 
 src_prepare() {
 	epatch "${FILESDIR}/${P}-javascript.patch"
+	epatch "${FILESDIR}/${P}-wrap-msvc-wine-fix.patch"
 }
 
 src_configure() {

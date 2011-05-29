@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/wicd/wicd-1.7.0.ebuild,v 1.7 2010/05/23 19:26:04 darkside Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-misc/wicd/wicd-1.7.0.ebuild,v 1.10 2011/04/10 21:42:27 arfrever Exp $
 
-EAPI=2
+EAPI=3
 
 inherit eutils distutils
 
@@ -43,7 +43,10 @@ RDEPEND="
 	!gtk? ( dev-python/pygobject )
 	ioctl? ( dev-python/python-iwscan dev-python/python-wpactrl )
 	libnotify? ( dev-python/notify-python )
-	ncurses? ( >=dev-python/urwid-0.9.9.1 )
+	ncurses? (
+		>=dev-python/urwid-0.9.9.1
+		dev-python/pygobject
+		)
 	pm-utils? ( >=sys-power/pm-utils-1.1.1 )
 	"
 
@@ -53,7 +56,7 @@ src_compile() {
 	use libnotify || myconf="${myconf} --no-use-notifications"
 	use ncurses || myconf="${myconf} --no-install-ncurses"
 	use pm-utils || myconf="${myconf} --no-install-pmutils"
-	${python} ./setup.py configure --no-install-docs --resume=/usr/share/wicd/scripts/ --suspend=/usr/share/wicd/scripts/ --verbose ${myconf}
+	$(PYTHON) ./setup.py configure --no-install-docs --resume=/usr/share/wicd/scripts/ --suspend=/usr/share/wicd/scripts/ --verbose ${myconf}
 	distutils_src_compile
 }
 

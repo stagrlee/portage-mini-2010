@@ -6,15 +6,15 @@ mirror://gnome/sources/NetworkManager/0.8/NetworkManager-0.8.tar.bz2
 http://www.gnome.org/projects/NetworkManager/
 GPL-2
 Network configuration and management in an easy way. Desktop environment independent.
-amd64 ~arm ~ppc ~ppc64 x86
-eutils gnome.org multilib portability toolchain-funcs
+amd64 ~arm ppc ppc64 x86
+eutils gnome.org multilib portability toolchain-funcs versionator
 avahi bluetooth doc nss gnutls dhclient dhcpcd resolvconf connection-sharing
 
 
 
 2
 
-configure install postinst prepare
+configure install postinst prepare setup
 
 
 

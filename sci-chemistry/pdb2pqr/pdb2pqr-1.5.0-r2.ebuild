@@ -1,13 +1,15 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/pdb2pqr/pdb2pqr-1.5.0-r2.ebuild,v 1.3 2010/07/07 09:22:45 phajdan.jr Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/pdb2pqr/pdb2pqr-1.5.0-r2.ebuild,v 1.8 2011/04/12 17:37:53 arfrever Exp $
 
 EAPI="3"
 
+PYTHON_DEPEND="2:2.5"
 SUPPORT_PYTHON_ABIS="1"
 PYTHON_EXPORT_PHASE_FUNCTIONS="1"
+RESTRICT_PYTHON_ABIS="2.4 3.*"
 
-inherit eutils fortran multilib flag-o-matic distutils python versionator
+inherit autotools eutils flag-o-matic python toolchain-funcs versionator
 
 MY_PV=$(get_version_component_range 1-2)
 MY_P="${PN}-${MY_PV}"
@@ -19,16 +21,13 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
 
 SLOT="0"
 IUSE="doc examples opal"
-KEYWORDS="amd64 ~ppc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ppc x86 ~amd64-linux ~x86-linux"
 
-DEPEND="
+RDEPEND="
 	dev-python/numpy
 	sci-chemistry/openbabel
 	opal? ( dev-python/zsi )"
-RDEPEND="${DEPEND}"
-RESTRICT_PYTHON_ABIS="2.4 3.*"
-
-FORTRAN="g77 gfortran"
+DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${MY_P}"
 
@@ -53,12 +52,18 @@ src_configure() {
 	configuration() {
 		# Avoid automagic to numeric
 		NUMPY="${EPREFIX}/$(python_get_sitedir)" \
-			F77="${FORTRANC}" \
+			F77="$(tc-getFC)" \
 			econf \
-			$(use_with opal) || \
-			die "econf failed"
+			$(use_with opal)
 	}
 	python_execute_function -s configuration
+}
+
+src_compile() {
+	compilation() {
+		emake || die
+	}
+	python_execute_function -s compilation
 }
 
 src_test() {
@@ -138,4 +143,12 @@ src_install() {
 
 	dodoc ChangeLog NEWS README AUTHORS || \
 		die "Failed to install docs"
+}
+
+pkg_postinst() {
+	python_mod_optimize ${PN}
+}
+
+pkg_postrm() {
+	python_mod_cleanup ${PN}
 }

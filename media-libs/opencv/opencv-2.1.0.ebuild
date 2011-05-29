@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/opencv/opencv-2.1.0.ebuild,v 1.4 2010/07/28 14:49:57 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/opencv/opencv-2.1.0.ebuild,v 1.7 2011/04/14 12:39:11 scarabeus Exp $
 
 EAPI=3
 
@@ -16,18 +16,18 @@ SRC_URI="mirror://sourceforge/${PN}library/${MY_P}.tar.bz2"
 
 LICENSE="v4l? ( GPL-2 ) xine? ( GPL-2 ) BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~hppa ~ppc ~ppc64 ~x86"
 IUSE="debug +deprecated examples ffmpeg gstreamer gtk ieee1394 ipp jpeg jpeg2k octave png python sse sse2 sse3 ssse3 test tiff v4l xine"
 
 RDEPEND="sys-libs/zlib
 	ipp? ( sci-libs/ipp )
 	ieee1394? ( sys-libs/libraw1394
 		media-libs/libdc1394:2 )
-	ffmpeg? ( >=media-video/ffmpeg-0.5 )
+	ffmpeg? ( virtual/ffmpeg )
 	gstreamer? ( media-libs/gstreamer )
 	gtk? ( x11-libs/gtk+:2 )
 	jpeg2k? ( media-libs/jasper )
-	jpeg? ( media-libs/jpeg )
+	jpeg? ( virtual/jpeg )
 	png? ( >=media-libs/libpng-1.4 )
 	tiff? ( media-libs/tiff )
 	xine? ( media-libs/xine-lib )

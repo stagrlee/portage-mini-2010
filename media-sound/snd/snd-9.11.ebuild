@@ -1,6 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-sound/snd/snd-9.11.ebuild,v 1.5 2010/07/31 10:41:14 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-sound/snd/snd-9.11.ebuild,v 1.7 2011/03/29 12:42:02 angelos Exp $
+
+EAPI=1
 
 inherit multilib eutils versionator
 
@@ -14,13 +16,13 @@ KEYWORDS="amd64 ppc x86 ~x86-interix ~amd64-linux ~x86-linux"
 IUSE="alsa cairo esd fam fftw gsl gtk guile jack ladspa motif nls opengl oss ruby xpm"
 
 RDEPEND="media-libs/audiofile
-	motif? ( x11-libs/openmotif )
+	motif? ( >=x11-libs/openmotif-2.3:0 )
 	alsa? ( media-libs/alsa-lib )
 	esd? ( media-sound/esound )
 	fam? ( virtual/fam )
 	fftw? ( sci-libs/fftw )
 	gsl? ( >=sci-libs/gsl-0.8 )
-	gtk? ( >=x11-libs/gtk+-2
+	gtk? ( x11-libs/gtk+:2
 		opengl? ( x11-libs/gtkglext )
 		cairo? ( x11-libs/cairo ) )
 	guile? ( >=dev-scheme/guile-1.3.4 )

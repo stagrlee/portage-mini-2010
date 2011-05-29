@@ -1,17 +1,11 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License, v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/sparc/use.mask,v 1.56 2010/07/24 17:15:24 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/sparc/use.mask,v 1.74 2011/05/29 16:14:15 armin76 Exp $
 
 # Unmask the flag which corresponds to ARCH.
 -sparc
 
 # This file contains a list of useflags that cannot be used on sparc.
-
-# Samuli Suominen <ssuominen@gentoo.org> (17 Oct 2009)
-# Required packages:
-# media-sound/musepack-tools
-# media-plugins/gst-plugins-musepack
-musepack
 
 # Raúl Porcel <armin76@gentoo.org>
 # Stuff that sigbuses
@@ -20,6 +14,8 @@ libburn
 srtp
 # bug #290154
 tokyocabinet
+# bug 235685
+webkit
 
 # Gustavo Zacarias <gustavoz@gentoo.org> 14 Feb 2007
 # Mono needs gcc4 and it's not yet stable
@@ -36,9 +32,6 @@ krb4
 lcd_devices_g15
 lcd_devices_graphlcd
 lcd_devices_ula200
-# Mask BSDisms, used in net-proxy/squid for example
-ipf-transparent
-pf-transparent
 # mzscheme seems somewhat b0rked and we want vim7
 mzscheme
 # Masking hardened, it isn't really supported, see bugs #144126 #78951
@@ -53,6 +46,9 @@ dar64
 # 2006/09/05 - Tupone Alfredo <tupone@gentoo.org>
 # doomsday ebuild is not available on this architecture
 doomsday
+
+# Needs java
+pdfannotextractor
 
 # Stuff that won't ever work on sparc
 3dfx
@@ -76,7 +72,7 @@ voodoo3
 xfs
 
 # Need testing
-ifp
+musepack
 pyste
 v4l2
 topal
@@ -95,8 +91,17 @@ mod_wsgi
 vaapi
 rtmp
 vpx
+kde
+wildmidi
+barcode
+xmms2
+gme
+quvi
 
 # No hardware to test
+ifp
+chipcard
+hbci
 ivtv
 laptop
 lm_sensors
@@ -106,11 +111,17 @@ openct
 bluetooth
 dmraid
 ipod
-kde
+ios
+mtp
+pda
+apcupsd
 
 # Stuff we don't want
 schroedinger
 ots
+frei0r
+libvirt
+prelude
 
 # Asterisk use flag masking
 bri
@@ -201,6 +212,7 @@ video_cards_nv
 video_cards_vesa
 video_cards_radeonhd
 video_cards_ast
+video_cards_nouveau
 
 # Diego Pettenò <flameeyes@gentoo.org> (6 Dec 2006)
 # Unmask the Sun-specific drivers

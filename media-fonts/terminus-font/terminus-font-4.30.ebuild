@@ -1,13 +1,13 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-fonts/terminus-font/terminus-font-4.30.ebuild,v 1.9 2010/07/07 09:21:36 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-fonts/terminus-font/terminus-font-4.30.ebuild,v 1.12 2011/05/06 15:38:03 jlec Exp $
 
 EAPI="3"
 
 inherit eutils font
 
 DESCRIPTION="A clean fixed font for the console and X11"
-HOMEPAGE="http://sourceforge.net/projects/terminus-font/"
+HOMEPAGE="http://terminus-font.sourceforge.net/"
 URI="mirror://sourceforge/${PN}/files/${P}"
 SRC_URI="${URI}/${P}.tar.gz
 		ru-dv? ( ${URI}/${P}-dv1.diff.gz )
@@ -67,6 +67,8 @@ src_prepare() {
 	use ru-g && epatch "${WORKDIR}"/${P}-ge1.diff
 	use quote && epatch "${WORKDIR}"/${P}-gq2.diff
 	use width && epatch "${WORKDIR}"/${P}-cm2.diff
+
+	epatch "${FILESDIR}"/${PN}-4.32-parallel-install.patch
 }
 
 src_configure() {

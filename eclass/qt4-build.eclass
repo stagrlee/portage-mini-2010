@@ -1,6 +1,6 @@
 # Copyright 1999-2009 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/qt4-build.eclass,v 1.83 2010/09/05 09:25:08 hwoarang Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/qt4-build.eclass,v 1.90 2011/03/10 23:45:51 wired Exp $
 
 # @ECLASS: qt4-build.eclass
 # @MAINTAINER:
@@ -17,7 +17,9 @@ inherit base eutils multilib toolchain-funcs flag-o-matic versionator
 MY_PV=${PV/_/-}
 if version_is_at_least 4.5.99999999; then
 	MY_P=qt-everywhere-opensource-src-${MY_PV}
-	[[ ${CATEGORY}/${PN} != x11-libs/qt-xmlpatterns ]] && IUSE="+exceptions"
+	[[ ${CATEGORY}/${PN} != x11-libs/qt-xmlpatterns ]] && 
+		[[ ${CATEGORY}/${PN} != x11-themes/qgtkstyle ]] && 
+			IUSE="+exceptions"
 else
 	MY_P=qt-x11-opensource-src-${MY_PV}
 fi
@@ -196,12 +198,6 @@ qt4-build_src_prepare() {
 		replace-flags -O2 -O3
 	fi
 
-	if [[ ${CHOST} == arm* ]] ; then
-		# Fails on arm with -Os, bug 331641
-		# This can be removed once qt-4.7 is stable or the bug on gcc is fixed
-		replace-flags -Os -O2
-	fi
-
 	# Bug 178652
 	if [[ $(gcc-major-version) == 3 ]] && use amd64; then
 		ewarn "Appending -fno-gcse to CFLAGS/CXXFLAGS"
@@ -224,13 +220,13 @@ qt4-build_src_prepare() {
 	fi
 
 	# Bug 282984 && Bug 295530
-	sed -e "s:\(^SYSTEM_VARIABLES\):CC="$(tc-getCC)"\nCXX="$(tc-getCXX)"\nCFLAGS=\"${CFLAGS}\"\nCXXFLAGS=\"${CXXFLAGS}\"\nLDFLAGS=\"${LDFLAGS}\"\n\1:" \
+	sed -e "s:\(^SYSTEM_VARIABLES\):CC=\"$(tc-getCC)\"\nCXX=\"$(tc-getCXX)\"\nCFLAGS=\"${CFLAGS}\"\nCXXFLAGS=\"${CXXFLAGS}\"\nLDFLAGS=\"${LDFLAGS}\"\n\1:" \
 		-i configure || die "sed qmake compilers failed"
 	# bug 321335
 	if version_is_at_least 4.6; then
 		find ./config.tests/unix -name "*.test" -type f -exec grep -lZ \$MAKE '{}' \; | \
 			xargs -0 \
-			sed -e "s:\(\$MAKE\):\1 CC="$(tc-getCC)" CXX="$(tc-getCXX)" LD="$(tc-getCXX)" LINK="$(tc-getCXX)":g" \
+			sed -e "s:\(\$MAKE\):\1 CC=\"$(tc-getCC)\" CXX=\"$(tc-getCXX)\" LD=\"$(tc-getCXX)\" LINK=\"$(tc-getCXX)\":g" \
 				-i || die "sed test compilers failed"
 	fi
 
@@ -337,9 +333,15 @@ qt4-build_src_configure() {
 		myconf+=" $(pkg-config --cflags freetype2)"
 	fi
 
+	# Disable SSE4.x, since auto-detection is currently broken
+	# Upstream bug http://bugreports.qt.nokia.com/browse/QTBUG-13623
+	[[ ${PV} == "4.7.1" ]] && myconf+=" -no-sse4.1 -no-sse4.2"
+
 	echo ./configure ${myconf}
 	./configure ${myconf} || die "./configure failed"
 	myconf=""
+
+	prepare_directories ${QT4_TARGET_DIRECTORIES}
 }
 
 # @FUNCTION: qt4-build_src_compile
@@ -493,6 +495,25 @@ standard_configure_options() {
 	echo "${myconf}"
 }
 
+# @FUNCTION: prepare_directories
+# @USAGE: < directories >
+# @DESCRIPTION:
+# Generates makefiles for the directories set in $QT4_TARGET_DIRECTORIES
+prepare_directories() {
+	for x in "$@"; do
+		pushd "${S}"/${x} >/dev/null
+		einfo "running qmake in: $x"
+		# avoid running over the maximum argument number, bug #299810
+		{
+			echo "${S}"/mkspecs/common/*.conf
+			find "${S}" -name '*.pr[io]'
+		} | xargs sed -i -e "s:\$\$\[QT_INSTALL_LIBS\]:${EPREFIX}/usr/$(get_libdir)/qt4:g" || die
+		"${S}"/bin/qmake "LIBS+=-L${QTLIBDIR}" "CONFIG+=nostrip" || die "qmake failed"
+		popd >/dev/null
+	done
+}
+
+
 # @FUNCTION: build_directories
 # @USAGE: < directories >
 # @DESCRIPTION:
@@ -500,12 +521,6 @@ standard_configure_options() {
 build_directories() {
 	for x in "$@"; do
 		pushd "${S}"/${x} >/dev/null
-		# avoid running over the maximum argument number, bug #299810
-		{
-			echo "${S}"/mkspecs/common/*.conf
-			find "${S}" -name '*.pr[io]'
-		} | xargs sed -i -e "s:\$\$\[QT_INSTALL_LIBS\]:${EPREFIX}/usr/$(get_libdir)/qt4:g" || die
-		"${S}"/bin/qmake "LIBS+=-L${QTLIBDIR}" "CONFIG+=nostrip" || die "qmake failed"
 		emake CC="$(tc-getCC)" \
 			CXX="$(tc-getCXX)" \
 			LINK="$(tc-getCXX)" || die "emake failed"

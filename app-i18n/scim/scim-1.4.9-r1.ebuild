@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-i18n/scim/scim-1.4.9-r1.ebuild,v 1.9 2010/05/11 17:58:45 ranger Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-i18n/scim/scim-1.4.9-r1.ebuild,v 1.13 2011/05/25 16:57:29 matsuu Exp $
 
 EAPI="2"
 inherit autotools eutils flag-o-matic multilib
@@ -11,14 +11,14 @@ SRC_URI="mirror://sourceforge/scim/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 hppa ppc ppc64 sparc x86 ~x86-fbsd"
+KEYWORDS="amd64 hppa ppc ppc64 x86 ~x86-fbsd"
 IUSE="doc"
 
 RDEPEND="x11-libs/libX11
-	>=x11-libs/gtk+-2
+	dev-libs/glib:2
+	x11-libs/gtk+:2
 	>=dev-libs/atk-1
 	>=x11-libs/pango-1
-	>=dev-libs/glib-2
 	!app-i18n/scim-cvs"
 DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen
@@ -29,8 +29,10 @@ DEPEND="${RDEPEND}
 	sys-devel/libtool"
 
 pkg_setup() {
-	# An arch specific config directory is used on multilib systems
-	has_multilib_profile && GTK2_CONFDIR="/etc/gtk-2.0/${CHOST}"
+	# bug #366889
+	if has_version '>=x11-libs/gtk+-2.22.1-r1:2' || has_multilib_profile ; then
+		GTK2_CONFDIR="/etc/gtk-2.0/${CHOST}"
+	fi
 	GTK2_CONFDIR=${GTK2_CONFDIR:=/etc/gtk-2.0/}
 }
 

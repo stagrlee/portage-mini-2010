@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/elisp.eclass,v 1.46 2010/09/17 07:39:58 ulm Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/elisp.eclass,v 1.48 2011/02/07 21:48:53 ulm Exp $
 #
 # Copyright 2002-2003 Matthew Kennedy <mkennedy@gentoo.org>
 # Copyright 2003      Jeremy Maitin-Shepard <jbms@attbi.com>
@@ -79,14 +79,7 @@ IUSE=""
 # version requirement of the NEED_EMACS variable.
 
 elisp_pkg_setup() {
-	local need_emacs=${NEED_EMACS:-21}
-	local have_emacs=$(elisp-emacs-version)
-	if [ "${have_emacs%%.*}" -lt "${need_emacs%%.*}" ]; then
-		eerror "This package needs at least Emacs ${need_emacs%%.*}."
-		eerror "Use \"eselect emacs\" to select the active version."
-		die "Emacs version ${have_emacs} is too low."
-	fi
-	einfo "Emacs version: ${have_emacs}"
+	elisp-need-emacs "${NEED_EMACS:-21}" || die "Emacs version too low"
 }
 
 # @FUNCTION: elisp_src_unpack
@@ -139,7 +132,7 @@ elisp_src_configure() { :; }
 # @DESCRIPTION:
 # Call elisp-compile to byte-compile all Emacs Lisp (*.el) files.
 # If ELISP_TEXINFO lists any Texinfo sources, call makeinfo to generate
-# GNU Info files from then.
+# GNU Info files from them.
 
 elisp_src_compile() {
 	elisp-compile *.el || die

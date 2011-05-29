@@ -1,10 +1,10 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-libs/libp11/libp11-0.2.7.ebuild,v 1.6 2009/12/15 19:12:24 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/libp11/libp11-0.2.7.ebuild,v 1.8 2011/04/03 22:29:33 flameeyes Exp $
 
 EAPI="2"
 
-DESCRIPTION="Libp11 is a library implementing a small layer on top of PKCS#11 API to make using PKCS#11 implementations easier."
+DESCRIPTION="A library implementing a layer on top of PKCS#11 API to make using PKCS#11 implementations easier."
 HOMEPAGE="http://www.opensc-project.org/libp11/"
 
 if [[ "${PV}" = "9999" ]]; then
@@ -19,7 +19,9 @@ SLOT="0"
 KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86"
 IUSE="doc"
 
-RDEPEND="dev-libs/openssl"
+# libtool is required at runtime as it uses libltdl.
+RDEPEND="dev-libs/openssl
+	sys-devel/libtool"
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig
 	doc? ( app-doc/doxygen )"

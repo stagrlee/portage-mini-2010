@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-office/planner/planner-0.14.4.ebuild,v 1.6 2009/07/19 12:59:35 nixnut Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-office/planner/planner-0.14.4.ebuild,v 1.8 2011/03/16 08:55:24 nirbheek Exp $
 
 EAPI="1"
 
@@ -14,14 +14,14 @@ LICENSE="GPL-2"
 KEYWORDS="alpha amd64 ppc sparc x86"
 IUSE="doc eds libgda python examples"
 
-RDEPEND=">=dev-libs/glib-2.6
-	>=x11-libs/gtk+-2.6
+RDEPEND=">=dev-libs/glib-2.6:2
+	>=x11-libs/gtk+-2.6:2
 	>=gnome-base/libgnomecanvas-2.10
 	>=gnome-base/libgnomeui-2.10
-	>=gnome-base/libglade-2.4
-	>=gnome-base/gnome-vfs-2.10
-	>=gnome-base/gconf-2.6
-	>=dev-libs/libxml2-2.6.27
+	>=gnome-base/libglade-2.4:2.0
+	>=gnome-base/gnome-vfs-2.10:2
+	>=gnome-base/gconf-2.6:2
+	>=dev-libs/libxml2-2.6.27:2
 	>=dev-libs/libxslt-1.1.23
 	libgda? ( gnome-extra/libgda:3 )
 	python? ( >=dev-python/pygtk-2.6 )
@@ -64,4 +64,6 @@ src_install() {
 	if ! use examples; then
 		rm -rf "${D}/usr/share/doc/${PF}/examples"
 	fi
+
+	find "${D}" -name "*.la" -delete || die "removal of *.la files failed"
 }

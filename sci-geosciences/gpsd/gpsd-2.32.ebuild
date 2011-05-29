@@ -1,8 +1,10 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-geosciences/gpsd/gpsd-2.32.ebuild,v 1.10 2010/05/30 20:48:39 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-geosciences/gpsd/gpsd-2.32.ebuild,v 1.14 2011/04/10 22:00:13 arfrever Exp $
 
-inherit eutils libtool distutils
+EAPI=1
+
+inherit eutils libtool python
 
 DESCRIPTION="GPS daemon and library to support USB/serial GPS devices and various GPS/mapping clients."
 HOMEPAGE="http://gpsd.berlios.de/"
@@ -10,7 +12,7 @@ SRC_URI="mirror://berlios/gpsd/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="amd64 arm ppc ppc64 ~sparc x86"
+KEYWORDS="amd64 arm ppc ppc64 x86"
 
 IUSE="X usb dbus"
 
@@ -24,7 +26,7 @@ RDEPEND="X? (
 		x11-libs/libICE
 		x11-libs/libXpm
 		x11-libs/libXaw
-		x11-libs/openmotif
+		>=x11-libs/openmotif-2.3:0
 	)
 	usb? ( sys-apps/hotplug )
 	dbus? ( >=sys-apps/dbus-0.6 )

@@ -1,6 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-analyzer/scapy/scapy-1.1.1-r1.ebuild,v 1.5 2010/05/31 16:57:46 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-analyzer/scapy/scapy-1.1.1-r1.ebuild,v 1.8 2011/04/05 17:28:33 arfrever Exp $
+
+EAPI="3"
 
 inherit eutils python multilib
 
@@ -13,20 +15,18 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE="gnuplot pyx crypt graphviz imagemagick visual tcpreplay"
 
-DEPEND="virtual/python"
+DEPEND="dev-lang/python"
 RDEPEND="net-analyzer/tcpdump
 	gnuplot? ( dev-python/gnuplot-py )
 	pyx? ( dev-python/pyx )
 	crypt? ( dev-python/pycrypto )
 	graphviz? ( media-gfx/graphviz )
-	imagemagick? ( media-gfx/imagemagick )
+	imagemagick? ( || ( media-gfx/imagemagick
+						media-gfx/graphicsmagick[imagemagick] ) )
 	visual? ( dev-python/visual )
 	tcpreplay? ( net-analyzer/tcpreplay )"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
+src_prepare() {
 	epatch "${FILESDIR}"/${P}-config-file.patch
 }
 
@@ -45,7 +45,7 @@ src_install() {
 }
 
 pkg_postinst() {
-	python_mod_optimize $(python_get_sitedir)/scapy.py
+	python_mod_optimize scapy.py
 
 	einfo ""
 	einfo "- Check http://www.secdev.org/projects/scapy/ for additional info"
@@ -58,5 +58,5 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	python_mod_cleanup $(python_get_sitedir)/scapy.py
+	python_mod_cleanup scapy.py
 }

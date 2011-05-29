@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/autotools.eclass,v 1.101 2010/08/21 19:39:52 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/autotools.eclass,v 1.103 2011/05/16 03:44:26 vapier Exp $
 
 # @ECLASS: autotools.eclass
 # @MAINTAINER:
@@ -152,27 +152,17 @@ eaclocal() {
 	local amflags_file
 	for amflags_file in GNUmakefile.am Makefile.am GNUmakefile.in Makefile.in ; do
 		[[ -e ${amflags_file} ]] || continue
+		# setup the env in case the pkg does something crazy
+		# in their ACLOCAL_AMFLAGS.  like run a shell script
+		# which turns around and runs autotools #365401
+		autotools_env_setup
 		aclocal_opts=$(sed -n '/^ACLOCAL_AMFLAGS[[:space:]]*=/s:[^=]*=::p' ${amflags_file})
 		eval aclocal_opts=\"${aclocal_opts}\"
 		break
 	done
 
-	if [[ -n ${AT_M4DIR} ]] ; then
-		for x in ${AT_M4DIR} ; do
-			case "${x}" in
-			"-I")
-				# We handle it below
-				;;
-			*)
-				[[ ! -d ${x} ]] && ewarn "eaclocal: '${x}' does not exist"
-				aclocal_opts="${aclocal_opts} -I ${x}"
-				;;
-			esac
-		done
-	fi
-
 	[[ ! -f aclocal.m4 || -n $(grep -e 'generated.*by aclocal' aclocal.m4) ]] && \
-		autotools_run_tool aclocal "$@" ${aclocal_opts}
+		autotools_run_tool aclocal $(autotools_m4dir_include) "$@" ${aclocal_opts}
 }
 
 # @FUNCTION: _elibtoolize
@@ -201,7 +191,7 @@ _elibtoolize() {
 eautoheader() {
 	# Check if we should run autoheader
 	[[ -n $(autotools_check_macro "AC_CONFIG_HEADERS") ]] || return 0
-	NO_FAIL=1 autotools_run_tool autoheader "$@"
+	NO_FAIL=1 autotools_run_tool autoheader $(autotools_m4dir_include) "$@"
 }
 
 # @FUNCTION: eautoconf
@@ -215,7 +205,7 @@ eautoconf() {
 		die "No configure.{ac,in} present!"
 	fi
 
-	autotools_run_tool autoconf "$@"
+	autotools_run_tool autoconf $(autotools_m4dir_include) "$@"
 }
 
 # @FUNCTION: eautomake
@@ -271,11 +261,7 @@ eautopoint() {
 }
 
 # Internal function to run an autotools' tool
-autotools_run_tool() {
-	if [[ ${EBUILD_PHASE} != "unpack" && ${EBUILD_PHASE} != "prepare" ]]; then
-		ewarn "QA Warning: running $1 in ${EBUILD_PHASE} phase"
-	fi
-
+autotools_env_setup() {
 	# We do the “latest” → version switch here because it solves
 	# possible order problems, see bug #270010 as an example.
 	if [[ ${WANT_AUTOMAKE} == "latest" ]]; then
@@ -289,6 +275,13 @@ autotools_run_tool() {
 			die "Cannot find the latest automake! Tried ${_LATEST_AUTOMAKE}"
 	fi
 	[[ ${WANT_AUTOCONF} == "latest" ]] && export WANT_AUTOCONF=2.5
+}
+autotools_run_tool() {
+	if [[ ${EBUILD_PHASE} != "unpack" && ${EBUILD_PHASE} != "prepare" ]]; then
+		ewarn "QA Warning: running $1 in ${EBUILD_PHASE} phase"
+	fi
+
+	autotools_env_setup
 
 	local STDERR_TARGET="${T}/$1.out"
 	# most of the time, there will only be one run, but if there are
@@ -320,7 +313,7 @@ autotools_check_macro() {
 	[[ -f configure.ac || -f configure.in ]] || return 0
 	local macro
 	for macro ; do
-		WANT_AUTOCONF="2.5" autoconf --trace="${macro}" 2>/dev/null
+		WANT_AUTOCONF="2.5" autoconf $(autotools_m4dir_include) --trace="${macro}" 2>/dev/null
 	done
 	return 0
 }
@@ -354,4 +347,24 @@ autotools_get_auxdir() {
 	}' | uniq
 
 	return 0
+}
+
+autotools_m4dir_include() {
+	[[ -n ${AT_M4DIR} ]] || return
+
+	local include_opts=
+
+	for x in ${AT_M4DIR} ; do
+		case "${x}" in
+			"-I")
+				# We handle it below
+				;;
+			*)
+				[[ ! -d ${x} ]] && ewarn "autotools.eclass: '${x}' does not exist"
+				include_opts="${include_opts} -I ${x}"
+				;;
+		esac
+	done
+
+	echo $include_opts
 }

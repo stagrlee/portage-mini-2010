@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-editors/nedit/nedit-5.5_p20090914.ebuild,v 1.3 2009/10/30 19:07:13 grobian Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-editors/nedit/nedit-5.5_p20090914.ebuild,v 1.9 2011/04/12 12:12:50 ulm Exp $
 
 EAPI=2
 
@@ -13,10 +13,9 @@ SRC_URI="mirror://gentoo/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~mips ~ppc ~sparc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux"
-IUSE="spell"
+IUSE=""
 
-RDEPEND="spell? ( virtual/aspell-dict )
-	x11-libs/openmotif
+RDEPEND=">=x11-libs/openmotif-2.3:0
 	x11-libs/libXp
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
@@ -28,6 +27,9 @@ S="${WORKDIR}/${PN}"
 src_prepare() {
 	#respecting LDFLAGS, bug #208189
 	epatch "${FILESDIR}"/${P}-ldflags.patch
+	sed \
+		-e "s:bin/:${EPREFIX}/bin/:g" \
+		-i Makefile source/preferences.c source/help_data.h source/nedit.c Xlt/Makefile || die
 }
 
 src_configure() {
@@ -37,19 +39,17 @@ src_configure() {
 
 src_compile() {
 	emake CC="$(tc-getCC)" linux || die
-	cd doc; emake doc man || die
+	emake VERSION="NEdit ${PV}" -j1 -C doc all || die
 }
 
 src_install() {
-	into /usr
 	dobin source/nedit || die
-	exeinto /usr/bin
-	newexe source/nc neditc || die
+	newbin source/nc neditc || die
 	newman doc/nedit.man nedit.1 || die
 	newman doc/nc.man neditc.1 || die
 
-	dodoc README ReleaseNotes ChangeLog
+	dodoc README ReleaseNotes ChangeLog || die
 	cd doc
-	dodoc nedit.doc NEdit.ad faq.txt
-	dohtml nedit.html
+	dodoc nedit.doc NEdit.ad faq.txt || die
+	dohtml nedit.html || die
 }

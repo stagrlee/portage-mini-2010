@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-mobilephone/gnokii/gnokii-0.6.29.ebuild,v 1.5 2010/09/05 15:53:44 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-mobilephone/gnokii/gnokii-0.6.29.ebuild,v 1.7 2011/03/27 12:11:23 nirbheek Exp $
 
 EAPI=2
 
@@ -10,7 +10,7 @@ DESCRIPTION="user space driver and tools for use with mobile phones"
 HOMEPAGE="http://www.gnokii.org/"
 if [ "$PV" != "9999" ]; then
 	SRC_URI="http://www.gnokii.org/download/${PN}/${P}.tar.bz2"
-	KEYWORDS="amd64 ~hppa ~ppc ~ppc64 sparc x86"
+	KEYWORDS="amd64 hppa ~ppc ~ppc64 sparc x86"
 else
 	SRC_URI=""
 	KEYWORDS=""
@@ -24,11 +24,11 @@ IUSE="nls bluetooth ical irda sms postgres mysql usb X debug"
 
 RDEPEND="!app-mobilephone/smstools
 	sys-apps/pcsc-lite
-	X? ( >=x11-libs/gtk+-2 )
+	X? ( x11-libs/gtk+:2 )
 	bluetooth? ( net-wireless/bluez )
 	sms? (
 		!app-mobilephone/smstools
-		>=dev-libs/glib-2
+		dev-libs/glib:2
 		postgres? ( >=dev-db/postgresql-base-8.0 )
 		mysql? ( >=virtual/mysql-4.1 )
 	)

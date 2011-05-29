@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/tsmuxer/tsmuxer-1.10.6-r1.ebuild,v 1.1 2010/07/30 11:11:10 sbriesen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-video/tsmuxer/tsmuxer-1.10.6-r1.ebuild,v 1.3 2011/01/06 03:35:17 vapier Exp $
 
 EAPI="2"
 
@@ -19,13 +19,16 @@ QA_DT_HASH="opt/${PN}/bin/tsMuxeR opt/${PN}/bin/tsMuxerGUI"
 
 DEPEND="|| (
 	>=app-arch/upx-ucl-3.01
-	>=app-arch/upx-3.01
+	>=app-arch/upx-bin-3.01
 )"
-
 RDEPEND="
 	x86? (
 		media-libs/freetype:2
-		qt4? ( x11-libs/qt-gui:4 )
+		qt4? (
+			x11-libs/qt-gui:4
+			media-libs/libpng:1.2
+		)
+		sys-libs/glibc
 	)
 	amd64? (
 		app-emulation/emul-linux-x86-baselibs

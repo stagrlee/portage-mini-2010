@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-action/slune/slune-1.0.15.ebuild,v 1.1 2010/09/09 17:14:46 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-action/slune/slune-1.0.15.ebuild,v 1.3 2011/04/06 19:56:01 arfrever Exp $
 
-EAPI=2
+EAPI=3
 PYTHON_DEPEND="2"
 inherit python distutils
 
@@ -12,7 +12,7 @@ SRC_URI="http://download.gna.org/slune/Slune-${PV}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="x86"
 IUSE=""
 
 DEPEND="virtual/opengl
@@ -27,6 +27,7 @@ S=${WORKDIR}/Slune-${PV}
 
 pkg_setup() {
 	python_set_active_version 2
+	python_pkg_setup
 }
 
 src_prepare() {

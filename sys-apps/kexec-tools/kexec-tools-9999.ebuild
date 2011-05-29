@@ -1,14 +1,14 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/kexec-tools/kexec-tools-9999.ebuild,v 1.4 2009/01/23 04:43:47 darkside Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/kexec-tools/kexec-tools-9999.ebuild,v 1.6 2010/11/29 20:42:14 radhermit Exp $
 
 EAPI=2
 
-EGIT_REPO_URI="git://git.kernel.org/pub/scm/linux/kernel/git/horms/kexec-tools.git"
+EGIT_REPO_URI="git://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git"
 inherit git autotools
 
 DESCRIPTION="Load another kernel from the currently executing Linux kernel"
-HOMEPAGE="http://www.kernel.org/pub/linux/kernel/people/horms/kexec-tools/"
+HOMEPAGE="http://kernel.org/pub/linux/utils/kernel/kexec/"
 SRC_URI=""
 
 LICENSE="GPL-2"

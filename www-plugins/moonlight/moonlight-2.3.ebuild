@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/www-plugins/moonlight/moonlight-2.3.ebuild,v 1.2 2010/09/16 10:51:33 pacho Exp $
+# $Header: /var/cvsroot/gentoo-x86/www-plugins/moonlight/moonlight-2.3.ebuild,v 1.7 2011/04/18 09:14:02 scarabeus Exp $
 
 EAPI=2
 
@@ -23,20 +23,20 @@ RESTRICT="mirror"
 
 RDEPEND="
 	curl? ( net-misc/curl )
-	>=x11-libs/gtk+-2.14
-	>=dev-libs/glib-2.18
+	>=x11-libs/gtk+-2.14:2
+	>=dev-libs/glib-2.18:2
 	>=x11-libs/cairo-1.8.4
-	>=media-video/ffmpeg-0.4.9_p20090121
+	virtual/ffmpeg
 	>=net-libs/xulrunner-1.9.1:1.9
 	x11-libs/libXrandr
 	alsa? ( >=media-libs/alsa-lib-1.0.18 )
 	pulseaudio? ( >=media-sound/pulseaudio-0.9.14 )
 	>=media-libs/freetype-2.3.7
 	>=media-libs/fontconfig-2.6.0
-	>=dev-lang/mono-2.6.1[moonlight]
-	>=dev-dotnet/gtk-sharp-2.12.9
-	dev-dotnet/wnck-sharp
-	dev-dotnet/rsvg-sharp"
+	=dev-lang/mono-2.6*
+	>=dev-dotnet/gtk-sharp-2.12.9:2
+	dev-dotnet/wnck-sharp:2
+	dev-dotnet/rsvg-sharp:2"
 DEPEND="${RDEPEND}
 	>=dev-util/pkgconfig-0.23
 	dev-libs/expat"
@@ -97,8 +97,7 @@ src_configure() {
 		$(use_with debug) \
 		$(use_with test testing) \
 		$(use_with test performance) \
-		--without-examples \
-		|| die "econf moonlight failed"
+		--without-examples
 }
 
 src_compile() {
@@ -109,7 +108,8 @@ src_compile() {
 
 	einfo "Running make in "${S}""
 	cd "${S}"
-	emake || die "emake moonlight failed"
+	# and moonlight neither, bug #337960, upstream bug #640395
+	emake -j1 || die "emake moonlight failed"
 }
 
 src_install() {

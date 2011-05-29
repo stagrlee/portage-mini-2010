@@ -1,6 +1,8 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-shells/tcsh/tcsh-6.16.ebuild,v 1.9 2009/09/30 20:13:37 grobian Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-shells/tcsh/tcsh-6.16.ebuild,v 1.12 2011/04/22 07:17:44 grobian Exp $
+
+EAPI=3
 
 inherit eutils flag-o-matic autotools prefix
 
@@ -9,7 +11,7 @@ CONFVER="1.8"
 MY_P="${P}.00"
 DESCRIPTION="Enhanced version of the Berkeley C shell (csh)"
 HOMEPAGE="http://www.tcsh.org/"
-SRC_URI="ftp://ftp.astron.com/pub/tcsh/${MY_P}.tar.gz
+SRC_URI="ftp://ftp.astron.com/pub/tcsh/old/${MY_P}.tar.gz
 	http://www.gentoo.org/~grobian/distfiles/tcsh-gentoo-patches-r${CONFVER}.tar.bz2"
 
 LICENSE="BSD"
@@ -19,17 +21,16 @@ IUSE="perl catalogs"
 RESTRICT="test"
 
 # we need gettext because we run autoconf
-DEPEND=">=sys-libs/ncurses-5.1
+RDEPEND=">=sys-libs/ncurses-5.1
+	virtual/libiconv"
+DEPEND="${RDEPEND}
 	sys-devel/gettext
 	perl? ( dev-lang/perl )"
-RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/${MY_P}
 CONFDIR=${WORKDIR}/tcsh-gentoo-patches-r${CONFVER}
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
+src_prepare() {
 	epatch "${FILESDIR}/${MY_P/16/14}"-debian-dircolors.patch # bug #120792
 	epatch "${FILESDIR}"/${PN}-6.14-makefile.patch # bug #151951
 	epatch "${FILESDIR}"/${PN}-6.14-use-ncurses.patch
@@ -59,7 +60,7 @@ src_unpack() {
 	fi
 }
 
-src_compile() {
+src_configure() {
 	# make tcsh look and live along the lines of the prefix
 	append-flags -D_PATH_DOTCSHRC="'"'"${EPREFIX}/etc/csh.cshrc"'"'"
 	append-flags -D_PATH_DOTLOGIN="'"'"${EPREFIX}/etc/csh.login"'"'"
@@ -67,8 +68,7 @@ src_compile() {
 	append-flags -D_PATH_USRBIN="'"'"${EPREFIX}/usr/bin"'"'"
 	append-flags -D_PATH_BIN="'"'"${EPREFIX}/bin"'"'"
 
-	econf --prefix="${EPREFIX:-/}" || die "econf failed"
-	emake || die "compile problem"
+	econf --prefix="${EPREFIX:-/}" || die
 }
 
 src_install() {

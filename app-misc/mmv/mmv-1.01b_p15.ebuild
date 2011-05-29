@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-misc/mmv/mmv-1.01b_p15.ebuild,v 1.2 2010/06/15 11:25:13 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-misc/mmv/mmv-1.01b_p15.ebuild,v 1.5 2011/01/05 16:19:01 jlec Exp $
 
 EAPI="3"
 
@@ -17,7 +17,7 @@ SRC_URI="
 
 LICENSE="LGPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86 ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
+KEYWORDS="amd64 ~ppc x86 ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
 IUSE=""
 
 S="${WORKDIR}"/${PN}-${MY_VER}.orig
@@ -42,9 +42,9 @@ src_install() {
 	dosym mmv /usr/bin/mad || die
 
 	doman mmv.1 || die
-	dosym mmv.1.gz /usr/share/man/man1/mcp.1.gz || die
-	dosym mmv.1.gz /usr/share/man/man1/mln.1.gz || die
-	dosym mmv.1.gz /usr/share/man/man1/mad.1.gz || die
+	newman mmv.1 mcp.1 || die
+	newman mmv.1 mln.1 || die
+	newman mmv.1 mad.1 || die
 
 	dodoc ANNOUNCE debian/{changelog,control} || die
 }

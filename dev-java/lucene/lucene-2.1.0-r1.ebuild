@@ -1,6 +1,8 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-java/lucene/lucene-2.1.0-r1.ebuild,v 1.2 2008/11/01 09:39:23 robbat2 Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-java/lucene/lucene-2.1.0-r1.ebuild,v 1.4 2011/02/20 14:41:08 xarthisius Exp $
+
+EAPI=3
 
 JAVA_PKG_IUSE="doc source test"
 JAVA_PKG_BSFIX_ALL="no"
@@ -13,7 +15,7 @@ HOMEPAGE="http://jakarta.apache.org/lucene"
 SRC_URI="mirror://apache/lucene/java/archive/${P}-src.tar.gz"
 LICENSE="Apache-2.0"
 SLOT="2.1"
-KEYWORDS="amd64 ppc x86 ~x86-fbsd"
+KEYWORDS="amd64 ppc ~ppc64 x86 ~x86-fbsd"
 IUSE=""
 DEPEND=">=virtual/jdk-1.4
 	dev-java/ant-nodeps
@@ -27,7 +29,7 @@ src_compile() {
 	# doesn't use it - it's to fool the <available> test, first time
 	# it's useful not to have ignoresystemclasses=true...
 	ANT_TASKS="ant-nodeps javacc" eant \
-		-Djavacc.home=/usr/share/javacc/lib javacc
+		-Djavacc.home="${EPREFIX}"/usr/share/javacc/lib javacc
 	ANT_TASKS="none" eant -Dversion=${PV} jar-core jar-demo $(use_doc javadocs)
 }
 

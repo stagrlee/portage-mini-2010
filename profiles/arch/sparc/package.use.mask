@@ -1,6 +1,30 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/sparc/package.use.mask,v 1.54 2010/08/13 10:18:49 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/sparc/package.use.mask,v 1.73 2011/05/09 14:27:48 ssuominen Exp $
+
+# Pacho Ramos <pacho@gentoo.org> (02 Apr 2011)
+# quvi support is needed to play youtube files now
+media-video/totem youtube
+
+# Pacho Ramos <pacho@gentoo.org> (27 Jan 2011)
+# missing keywords on needed plugins
+media-plugins/gst-plugins-meta dv wavpack
+
+# Michael Weber <xmw@gentoo.org> (03 Jan 2011)
+# dev-libs/libev is not keyworded
+www-servers/lighttpd libev
+
+# Nirbheek Chauhan <nirbheek@gentoo.org> (10 Dec 2010)
+# net-misc/connman is not keyworded, bug 348308
+mail-client/evolution connman
+
+# Raúl Porcel <armin76@gentoo.org> (5 Dec 2010)
+# Mask doc-pdf because of Java dependencies (bug #347259)
+net-analyzer/wireshark doc-pdf
+
+# Arfrever Frehtes Taifersar Arahesis <arfrever@gentoo.org> (07 Nov 2010)
+# x11-libs/qt-declarative is not keyworded.
+dev-python/PyQt4 declarative
 
 # Justin Lecher <jlec@gentoo.org> (13 Aug 2010)
 # MKL not available on this arch
@@ -8,12 +32,7 @@ media-gfx/povray mkl
 
 # Arfrever Frehtes Taifersar Arahesis <arfrever@gentoo.org> (29 Jul 2010)
 # Mask python3 for stable portage until python-3.x is marked stable.
-=sys-apps/portage-2.1.8* python3
-=sys-apps/portage-2.1.7* python3
-
-# Pacho Ramos <pacho@gentoo.org> (08 Jul 2010)
-# Needs libimobiledevice keyworded (bug 325839)
-gnome-base/gvfs iphone
+=sys-apps/portage-2.1.9* python3
 
 # Steve Arnold <nerdboy@gentoo.org> (12 Jun 2010)
 # masking for gdal (see bug 315659)
@@ -70,12 +89,6 @@ sci-libs/hdf5 mpi
 # wavgain fails to build
 media-sound/rubyripper wav
 
-# Needs chicken
-dev-lang/swig chicken
-
-# Needs pike
-dev-lang/swig pike
-
 # Needs libmodplug
 media-libs/sdl-sound mikmod
 
@@ -90,3 +103,10 @@ app-text/enchant zemberek
 
 # Mask srtp for ortp because libsrtp is marked -sparc
 net-libs/ortp srtp
+
+# Alexis Ballier <aballier@gentoo.org> (14 Nov 2010)
+# building the documentation needs ptex
+# app-text/ptex does not build: bug #323559
+# >=dev-texlive/texlive-langcjk-2010 provides ptex too but is masked
+# unmask when TeX Live 2010 keywording is done (bug #342513)
+app-i18n/canna doc

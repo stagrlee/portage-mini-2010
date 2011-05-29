@@ -1,42 +1,121 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/base/package.use.mask,v 1.168 2010/09/17 11:14:58 grozin Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/base/package.use.mask,v 1.239 2011/05/15 17:09:38 ssuominen Exp $
 
 # This file requires >=portage-2.1.1
 # New entries go on top.
 
-# Theo Chatzimichos <tampakrap@gentoo.org> (16 Sep 2010)
-# Mask ayatana USE flag, as its deps aren't in good shape
-net-irc/quassel ayatana
+# Nirbheek Chauhan <nirbheek@gentoo.org> (30 Apr 2011)
+# glade-catalog creation needs >glade-3.9.0, which is broken and
+# needs to be slotted. See bug 364831 for details
+>=x11-libs/gtksourceview-3 glade
+>=x11-libs/vte-0.28 glade
+
+# Nirbheek Chauhan <nirbheek@gentoo.org> (24 Apr 2011)
+# Unmask introspection for specific packages. The migration to unmasking of
+# USE=introspection will be done this way
+>=x11-libs/gdk-pixbuf-2.22.1-r1 -introspection
+>=x11-libs/pango-1.28.4 -introspection
+>=dev-libs/atk-1.32.0-r1 -introspection
+>=x11-libs/gtk+-3 -introspection
+>=x11-libs/gtk+-2.24 -introspection
+>=dev-libs/libunique-3 -introspection
+>=dev-libs/gdl-3 -introspection
+>=dev-libs/json-glib-0.12 -introspection
+>=media-libs/clutter-1.6 -introspection
+>=media-libs/clutter-gtk-1 -introspection
+>=net-libs/libsoup-2.34 -introspection
+>=net-libs/libsoup-gnome-2.34 -introspection
+>=net-libs/telepathy-glib-0.14 -introspection
+>=x11-libs/vte-0.28 -introspection
+>=x11-libs/libwnck-3 -introspection
+net-libs/rest -introspection
+net-libs/libsocialweb -introspection
+
+# Andrey Grozin <grozin@gentoo.org> (29 Mar 2011)
+# dev-lang/swig-2.0.2 with -octave generated .cpp files
+# incompatible with >=sci-mathematics/octave-3.4.0
+sci-libs/mathgl octave
+
+# Samuli Suominen <ssuominen@gentoo.org> (29 Mar 2011)
+# This would need x11-libs/gtk+:3 stable.
+x11-libs/libnotify test
+
+# Luca Barbato <lu_zero@gentoo.org> (28 Mar 2011)
+# Mask mplayer2 arch specific flags
+media-video/mplayer2 vdpau bluray
+
+# Diego E. Pettenò <flameeyes@gentoo.org> (27 Mar 2011)
+#
+# Mask pdnsd's Linux-specific USE flags.
+net-dns/pdnsd isdn urandom
+
+# Gilles Dartiguelongue <eva@gentoo.org> (26 Mar 2011)
+# Mask due to unsatisfied dependencies
+# applet is required for the search panel applet
+>=app-misc/tracker-0.10 applet
+
+# Ultrabug <ultrabug@gentoo.org> (20 Mar 2011)
+# Mask clustering support until new sys-cluster/cman is pushed.
+sys-fs/lvm2 clvm cman
+
+# Gilles Dartiguelongue <eva@gentoo.org> (23 Feb 2011)
+# libgnome[esd] ABI broken, bug #348644 and bug #352260.
+>=gnome-base/libgnome-2.32 esd
+app-text/stardict pronounce
+
+# Raúl Porcel <armin76@gentoo.org> (13 Feb 2011)
+# Masked until devs know how to use repoman
+<media-video/mplayer-9999 bluray
+
+# Diego Elio Pettenò <flameeyes@gentoo.org> (02 Dec 2010)
+# Unmask as soon as bio2jack is back into stable (0.9-r1 or later).
+media-plugins/audacious-plugins jack
+
+# Robin H. Johnson <robbat2@gentoo.org> (28 Nov 2010)
+# bug 344885: USE=debug causes compile to fail presently.
+=dev-db/mysql-5.1.51* debug
+=dev-db/mysql-5.1.52* debug
+=dev-db/mysql-5.1.53* debug
+
+# Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org> (28 Nov 2010)
+# sys-devel/llvm is not keyworded on many arches, bug #320221
+media-libs/mesa llvm
+
+# Pacho Ramos <pacho@gentoo.org> (18 Nov 2010)
+# clutter support requires mx-1.0 that is still not in the tree,
+# bug #345937
+mail-client/evolution clutter
+
+# Justin Lecher <jlec@gentoo.org> (17 Nov 2010)
+# Upstream didn't release patches for aria yet
+>=sci-chemistry/cns-1.3 aria
+
+# Dane Smith <c1pher@gentoo.org> (10 Nov 2010)
+# Mask valgrind use flag for net-libs/gnutls as valgrind isn't usable
+# on several of the archs gnutls is stable for.
+net-libs/gnutls valgrind
 
 # Patrick Lauer <patrick@gentoo.org> (15 Sep 2010)
 # Feature broken in dovecot-1, see #337014
 <net-mail/dovecot-2 bzip2
 
 # Tomáš Chvátal <scarabeus@gentoo.org> (8 Sep 2010)
-# Drm don't even build here so mask everywhere expect live.
-<x11-libs/cairo-9999 drm
+# drm don't even build here so mask everywhere expect live.
+# openvg require openvg-1.1 implemenatation so mask until there is some
+<x11-libs/cairo-9999 drm openvg
 
 # Alex Legler <a3li@gentoo.org> (1 Sep 2010)
 # This feature is marked as experimental by upstream.
 dev-lang/ruby-enterprise fastthreading
 
-# Diego Elio Pettenò <flameeyes@gentoo.org> (25 Aug 2010)
-# Require 4suite dependency tree that is masked
-dev-python/scimath test
-dev-python/codetools test
-
 # Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org> (12 Jul 2010)
 # lirc support is broken in the snapshot
 >=www-plugins/gnash-0.8.7_p20100706 lirc
 
-# Andrey Grozin <grozin@gentoo.org> (7 Jul 2010)
-# Doesn't work with the current qt
-app-office/texmacs qt4
-
 # Nirbheek Chauhan <nirbheek@gentoo.org> (29 Jun 2010)
 # Mask clutter till introspection is unmasked
-gnome-extra/gnome-games clutter
+=gnome-extra/gnome-games-2.3* clutter
 
 # Kacper Kowalik <xarthisius@gentoo.org> (26 Jun 2010)
 # Mask infiniband until we've libibverbs and librdmacm with pc file
@@ -53,17 +132,9 @@ www-client/icecat ipc
 # Masking support for vulnerable firefox and xulrunner.
 =dev-java/swt-3.3* firefox xulrunner
 
-# Nirbheek Chauhna <nirbheek@gentoo.org> (26 Jun 2010)
-# Mask till gstreamer and gst-plugins-base get introspection support
-media-libs/clutter-gst introspection
-
 # Tomas Touceda <chiiph@gentoo.org> (13 Apr 2010)
 # Masked because libsvm module is broken with this release on every arch.
 dev-lisp/clisp svm
-
-# Chí-Thanh Christopher Nguyễn <chithanh@gentoo.org> (13 Apr 2010)
-# Masked because xf86-video-nouveau is not supported on most archs.
-x11-base/xorg-drivers video_cards_nouveau
 
 # Tomáš Chvátal <scarabeus@gentoo.org> (4 Apr 2010)
 # Masked because tools pulled in are not supported on most archs.
@@ -87,7 +158,6 @@ sci-mathematics/fricas gcl cmucl
 
 # Tomáš Chvátal <scarabeus@gentoo.org> (6 Jan 2010)
 # Still not really functional, upstream requires not building it.
-<media-libs/mesa-7.9 gallium
 x11-libs/cairo gallium
 
 # Alexey Shvetsov <alexxy@gentoo.org> (3 Dec 2009)
@@ -114,7 +184,6 @@ media-gfx/k3d cuda
 # Broken on so many setups it is just insane.
 # 0.7 is API/ABI incompatible but is the way to go.
 # Masking to lower maintainance headache, bug #291501.
-<gnome-base/nautilus-2.28 tracker
 media-video/totem tracker
 
 # Tomáš Chvátal <scarabeus@gentoo.org> (27 Oct 2009)
@@ -150,11 +219,6 @@ games-fps/quakeforge video_cards_tdfx
 # openmcl (aka clozurecl) is only available on x86 and amd64
 sci-mathematics/maxima gcl openmcl clozurecl
 
-# Jeremy Olexa <darkside@gentoo.org> (31 Jul 2009)
-# Mask the gnome USE flag globally for app-office/abiword-plugins-2.4.6 because
-# it depends on a GLSA affected atom. bug 271708
-=app-office/abiword-plugins-2.4.6 gnome
-
 # Tomas Chvatal <scarabeus@gentoo.org> (31 Jan 2009)
 # mask cuda for boinc. Works only on amd64 and x86
 sci-misc/boinc cuda
@@ -171,7 +235,7 @@ app-text/enchant zemberek
 # Php module fails to build due to newer autotools.
 >=media-libs/ming-0.4.0_beta5 php
 
-# Christian Faulhammer <opfer@gentoo.org> (03 Mar 2008) 
+# Christian Faulhammer <opfer@gentoo.org> (03 Mar 2008)
 # This feature is experimental and should be used by people willing to
 # test it
 app-portage/gatt libpaludis
@@ -182,7 +246,7 @@ dev-lang/php java-external
 
 dev-java/sun-jdk nsplugin
 dev-java/sun-jre-bin nsplugin
-dev-java/ibm-jdk-bin nsplugin 
+dev-java/ibm-jdk-bin nsplugin
 dev-java/ibm-jre-bin nsplugin
 
 # These are for BSD only
@@ -207,6 +271,26 @@ media-video/mplayer cpudetection custom-cpuopts bindist vdpau
 # Unmask internal real player codec support on newer mplayer
 >=media-video/mplayer-1.0_rc2_p20090226 -real
 
-# Alexis Ballier <aballier@gentoo.org> (07 Jul 2009)
-# The pda interface doesnt build, bug #277037
->=media-video/vlc-1.0.0 pda
+# Arun Raghavan <ford_prefect@gentoo.org> (19 Nov 2010)
+# Mart Raudsepp <leio@gentoo.org> (27 Dec 2010)
+# Arun Raghavan <ford_prefect@gentoo.org> (30 Jan 2011)
+# Mart Raudsepp <leio@gentoo.org> (20 Mar 2010)
+# Mart Raudsepp <leio@gentoo.org> (12 Apr 2010)
+# Orc isn't yet ready to be used on anything other than x86/amd64/arm
+>=media-libs/gst-plugins-base-0.10.30 orc
+>=media-plugins/gst-plugins-a52dec-0.10.16 orc
+>=media-plugins/gst-plugins-ffmpeg-0.10.11 orc
+>=media-libs/gst-plugins-good-0.10.28 orc
+>=media-libs/gst-plugins-bad-0.10.21 orc
+
+# Alexis Ballier <aballier@gentoo.org> <16 Feb 2011>
+# Win32 specific useflags for vlc. Can be used for cross-compiling.
+media-video/vlc direct2d directx dshow dxva2 waveout wingdi
+# Mac OSX / iPhone OS specific useflags
+media-video/vlc audioqueue ios-vout macosx macosx-audio macosx-dialog-provider macosx-eyetv macosx-quartztext macosx-qtcapture macosx-vout
+
+# Alexis Ballier <aballier@gentoo.org> <28 Apr 2011>
+# Requires masked libcelt
+# Leave it unmasked for live ebuild, people should know what they do if they use
+# it anyway
+<media-video/ffmpeg-9999 celt

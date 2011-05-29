@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/bombono-dvd/bombono-dvd-0.6.0.ebuild,v 1.1 2010/09/16 22:04:32 dilfridge Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-video/bombono-dvd/bombono-dvd-0.6.0.ebuild,v 1.5 2011/03/29 07:21:42 nirbheek Exp $
 
 EAPI=2
 
@@ -13,19 +13,19 @@ SRC_URI="mirror://sourceforge/bombono/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 
-KEYWORDS="~amd64"
+KEYWORDS="amd64"
 
 IUSE=""
 
-RDEPEND=">=x11-libs/gtk+-2.8
-	>=dev-cpp/gtkmm-2.4
+RDEPEND="x11-libs/gtk+:2
+	dev-cpp/gtkmm:2.4
 	>=media-gfx/graphicsmagick-1.1.7
 	>=media-video/mjpegtools-1.8.0
 	media-libs/libdvdread
 	media-video/dvdauthor
 	app-cdr/dvd+rw-tools
 	media-sound/twolame
-	dev-cpp/libxmlpp"
+	dev-cpp/libxmlpp:2.6"
 
 DEPEND=">=dev-util/scons-0.96.1
 	${RDEPEND}"

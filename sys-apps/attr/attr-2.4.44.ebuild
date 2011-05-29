@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/attr/attr-2.4.44.ebuild,v 1.1 2010/06/08 21:43:04 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/attr/attr-2.4.44.ebuild,v 1.8 2011/05/16 20:34:44 vapier Exp $
 
 EAPI="2"
 
@@ -12,7 +12,7 @@ SRC_URI="mirror://nongnu/${PN}/${P}.src.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86"
 IUSE="nls"
 
 DEPEND="nls? ( sys-devel/gettext )
@@ -27,7 +27,7 @@ src_prepare() {
 		-e '/HAVE_ZIPPED_MANPAGES/s:=.*:=false:' \
 		include/builddefs.in \
 		|| die "failed to update builddefs"
-	strip-linguas po
+	strip-linguas -u po
 }
 
 src_configure() {

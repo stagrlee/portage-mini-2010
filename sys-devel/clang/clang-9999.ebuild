@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-devel/clang/clang-9999.ebuild,v 1.7 2010/08/28 14:06:47 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-devel/clang/clang-9999.ebuild,v 1.12 2011/01/26 17:48:41 grobian Exp $
 
 EAPI=3
 
@@ -20,8 +20,7 @@ KEYWORDS=""
 IUSE="debug +static-analyzer system-cxx-headers test"
 
 # Note: for LTO support, clang will depend on binutils with gold plugins, and LLVM built after that - http://llvm.org/docs/GoldPlugin.html
-DEPEND="static-analyzer? ( dev-lang/perl )
-	test? ( dev-util/dejagnu )"
+DEPEND="static-analyzer? ( dev-lang/perl )"
 RDEPEND="~sys-devel/llvm-${PV}"
 
 S="${WORKDIR}/llvm"
@@ -44,7 +43,7 @@ src_prepare() {
 	sed -e 's/import ScanView/from clang \0/'  \
 		-i tools/clang/tools/scan-view/scan-view \
 		|| die "scan-view sed failed"
-	sed -e "/scanview.css\|sorttable.js/s#\$RealBin#/usr/share/${PN}#" \
+	sed -e "/scanview.css\|sorttable.js/s#\$RealBin#${EPREFIX}/usr/share/${PN}#" \
 		-i tools/clang/tools/scan-build/scan-build \
 		|| die "scan-build sed failed"
 	# Specify python version
@@ -54,12 +53,12 @@ src_prepare() {
 	einfo "Fixing install dirs"
 	sed -e 's,^PROJ_docsdir.*,PROJ_docsdir := $(PROJ_prefix)/share/doc/'${PF}, \
 		-e 's,^PROJ_etcdir.*,PROJ_etcdir := '"${EPREFIX}"'/etc/llvm,' \
-		-e 's,^PROJ_libdir.*,PROJ_libdir := $(PROJ_prefix)/'$(get_libdir), \
+		-e 's,^PROJ_libdir.*,PROJ_libdir := $(PROJ_prefix)/'$(get_libdir)/llvm, \
 		-i Makefile.config.in || die "Makefile.config sed failed"
 
 	einfo "Fixing rpath"
-	sed -e 's/\$(RPATH) -Wl,\$(\(ToolDir\|LibDir\))//g' -i Makefile.rules \
-		|| die "rpath sed failed"
+	sed -e 's,\$(RPATH) -Wl\,\$(\(ToolDir\|LibDir\)),$(RPATH) -Wl\,'"${EPREFIX}"/usr/$(get_libdir)/llvm, \
+		-i Makefile.rules || die "rpath sed failed"
 }
 
 src_configure() {
@@ -144,9 +143,23 @@ src_install() {
 	# Fix install_names on Darwin.  The build system is too complicated
 	# to just fix this, so we correct it post-install
 	if [[ ${CHOST} == *-darwin* ]] ; then
-		for lib in libCIndex.dylib ; do
-			install_name_tool -id "${EPREFIX}"/usr/lib/${lib} \
-				"${ED}"/usr/lib/${lib}
+		for lib in libclang.dylib ; do
+			ebegin "fixing install_name of $lib"
+			install_name_tool -id "${EPREFIX}"/usr/lib/llvm/${lib} \
+				"${ED}"/usr/lib/llvm/${lib}
+			eend $?
+		done
+		for f in usr/bin/{c-index-test,clang} usr/lib/llvm/libclang.dylib ; do
+			ebegin "fixing references in ${f##*/}"
+			install_name_tool \
+				-change "@rpath/libclang.dylib" \
+					"${EPREFIX}"/usr/lib/llvm/libclang.dylib \
+				-change "${S}"/Release/lib/libLLVM-${PV}.dylib \
+					"${EPREFIX}"/usr/lib/llvm/libLLVM-${PV}.dylib \
+				-change "${S}"/Release/lib/libclang.dylib \
+					"${EPREFIX}"/usr/lib/llvm/libclang.dylib \
+				"${ED}"/$f
+			eend $?
 		done
 	fi
 }

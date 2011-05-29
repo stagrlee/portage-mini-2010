@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-libs/cqrlib/cqrlib-1.0.5.ebuild,v 1.3 2010/07/15 20:23:09 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-libs/cqrlib/cqrlib-1.0.5.ebuild,v 1.5 2011/05/05 16:18:31 jlec Exp $
 
-EAPI="3"
+EAPI=3
 
 inherit base flag-o-matic multilib toolchain-funcs versionator
 
@@ -10,12 +10,12 @@ MY_PN=CQRlib
 MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="An ANSI C implementation of a utility library for quaternion arithmetic and quaternion rotation math"
-HOMEPAGE="http://cqrlib.sourceforge.net"
+HOMEPAGE="http://cqrlib.sourceforge.net/"
 SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="amd64 x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ~ppc x86 ~amd64-linux ~x86-linux"
 IUSE=""
 
 RDEPEND="dev-libs/cvector"

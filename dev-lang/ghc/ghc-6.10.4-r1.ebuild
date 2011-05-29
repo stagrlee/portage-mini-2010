@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-lang/ghc/ghc-6.10.4-r1.ebuild,v 1.10 2010/07/21 21:49:33 slyfox Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-lang/ghc/ghc-6.10.4-r1.ebuild,v 1.12 2010/11/06 20:28:25 slyfox Exp $
 
 # Brief explanation of the bootstrap logic:
 #
@@ -28,7 +28,7 @@
 # re-emerge ghc (or ghc-bin). People using vanilla gcc can switch between
 # gcc-3.x and 4.x with no problems.
 
-inherit base autotools bash-completion eutils flag-o-matic multilib toolchain-funcs ghc-package versionator
+inherit base autotools bash-completion eutils flag-o-matic multilib toolchain-funcs ghc-package versionator pax-utils
 
 DESCRIPTION="The Glasgow Haskell Compiler"
 HOMEPAGE="http://www.haskell.org/ghc/"
@@ -157,6 +157,11 @@ src_unpack() {
 		# See bug #313635.
 		sed -i -e "s|wrapped|wrapped ${GHC_CFLAGS}|" \
 			"${WORKDIR}/usr/bin/ghc-${PV}"
+
+		# allow hardened users use vanilla biary to bootstrap ghc
+		# ghci uses mmap with rwx protection at it implements dynamic
+		# linking on it's own (bug #299709)
+		pax-mark -m "${WORKDIR}/usr/$(get_libdir)/${P}/ghc"
 	fi
 
 	if use binary; then
@@ -192,6 +197,9 @@ src_unpack() {
 
 		# patch aclocal.m4 and configure.ac to work with >=autoconf-2.64
 		epatch "${FILESDIR}/${P}-autoconf.patch"
+
+		# >=autoconf-2.66 compatibility
+		epatch "${FILESDIR}/ghc-6.12.3-autoconf-2.66-4252.patch"
 
 		# fix configure.ac to detect libm need
 		#    http://bugs.gentoo.org/show_bug.cgi?id=293208
@@ -304,6 +312,11 @@ src_install() {
 		emake -j1 ${insttarget} \
 			DESTDIR="${D}" \
 			|| die "make ${insttarget} failed"
+
+		# ghci uses mmap with rwx protection at it implements dynamic
+		# linking on it's own (bug #299709)
+		# so mark resulting binary
+		pax-mark -m "${D}/usr/$(get_libdir)/${P}/ghc"
 
 		dodoc "${S}/README" "${S}/ANNOUNCE" "${S}/LICENSE" "${S}/VERSION"
 

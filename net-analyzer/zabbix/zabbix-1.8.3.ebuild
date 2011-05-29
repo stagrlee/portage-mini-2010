@@ -1,12 +1,12 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-analyzer/zabbix/zabbix-1.8.3.ebuild,v 1.4 2010/09/12 16:09:28 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-analyzer/zabbix/zabbix-1.8.3.ebuild,v 1.7 2011/02/11 18:28:04 flameeyes Exp $
 
 EAPI="2"
 
 # needed to make webapp-config dep optional
 WEBAPP_OPTIONAL="yes"
-inherit eutils flag-o-matic webapp depend.php
+inherit eutils flag-o-matic webapp depend.php autotools
 
 DESCRIPTION="ZABBIX is software for monitoring of your applications, network and servers."
 HOMEPAGE="http://www.zabbix.com/"
@@ -35,12 +35,18 @@ RDEPEND="${COMMON_DEPEND}
 	proxy? ( net-analyzer/fping )
 	server? ( net-analyzer/fping
 		app-admin/webapp-config )
-	frontend? ( dev-lang/php[bcmath,ctype,sockets,gd]
+	frontend? ( dev-lang/php[bcmath,ctype,sockets,gd,truetype,xml,session]
+		media-libs/gd[png]
 		app-admin/webapp-config )"
 DEPEND="${COMMON_DEPEND}
 	jabber? ( dev-util/pkgconfig )"
 
 useq frontend && need_php_httpd
+
+src_prepare() {
+	epatch "${FILESDIR}/${P}-as-needed.patch"
+	eautoreconf
+}
 
 pkg_setup() {
 	if useq server || useq proxy ; then

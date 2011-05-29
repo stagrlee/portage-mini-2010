@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-arch/libarchive/libarchive-2.8.4.ebuild,v 1.1 2010/08/11 08:48:08 ferringb Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-arch/libarchive/libarchive-2.8.4.ebuild,v 1.6 2011/03/21 22:14:57 ranger Exp $
 
 EAPI="2"
 
@@ -13,7 +13,7 @@ SRC_URI="http://${PN}.googlecode.com/files/${P}.tar.gz
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ppc ~ppc64 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
 IUSE="static static-libs acl xattr kernel_linux +bzip2 +lzma +zlib"
 
 COMPRESS_LIBS_DEPEND="lzma? ( app-arch/xz-utils )
@@ -22,6 +22,7 @@ COMPRESS_LIBS_DEPEND="lzma? ( app-arch/xz-utils )
 
 RDEPEND="!dev-libs/libarchive
 	dev-libs/openssl
+	|| ( dev-libs/libxml2 dev-libs/expat )
 	acl? ( virtual/acl )
 	xattr? ( kernel_linux? ( sys-apps/attr ) )
 	!static? ( ${COMPRESS_LIBS_DEPEND} )"
@@ -31,6 +32,7 @@ DEPEND="${RDEPEND}
 		virtual/os-headers )"
 
 src_prepare() {
+	epatch "$FILESDIR"/libarchive-disable-lzma-size-test.patch
 	elibtoolize
 	epunt_cxx
 }
@@ -62,7 +64,7 @@ src_configure() {
 		$(use_enable static-libs static) \
 		--without-lzmadec \
 		${myconf} \
-		--disable-dependency-tracking || die "econf failed."
+		--disable-dependency-tracking
 }
 
 src_test() {

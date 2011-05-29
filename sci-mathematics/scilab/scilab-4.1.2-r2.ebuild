@@ -1,8 +1,10 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-mathematics/scilab/scilab-4.1.2-r2.ebuild,v 1.2 2010/06/24 16:09:15 xarthisius Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-mathematics/scilab/scilab-4.1.2-r2.ebuild,v 1.8 2011/03/07 10:42:36 jlec Exp $
 
-inherit eutils fortran toolchain-funcs multilib autotools java-pkg-opt-2
+EAPI="1"
+
+inherit eutils toolchain-funcs multilib autotools java-pkg-opt-2
 
 DESCRIPTION="Scientific software package for numerical computations (Matlab lookalike)"
 LICENSE="scilab"
@@ -18,12 +20,12 @@ RDEPEND="virtual/blas
 	virtual/cblas
 	sys-libs/ncurses
 	gtk? (
-		media-libs/jpeg
+		virtual/jpeg
 		media-libs/libpng
 		sys-libs/zlib
-		>=x11-libs/gtk+-2
-		x11-libs/vte
-		=gnome-extra/gtkhtml-2*
+		x11-libs/gtk+:2
+		x11-libs/vte:0
+		gnome-extra/gtkhtml:2
 	)
 	>=dev-lang/tk-8.4
 	>=dev-lang/tcl-8.4
@@ -36,7 +38,6 @@ DEPEND="${RDEPEND}
 
 pkg_setup() {
 	java-pkg-opt-2_pkg_setup
-	need_fortran gfortran g77
 }
 
 src_unpack() {
@@ -87,7 +88,7 @@ src_compile() {
 	# the tk interface is the default
 	myopts="${myopts} --with-tk"
 
-	if [[ ${FORTRANC} == gfortran ]]; then
+	if [[ $(tc-getFC) =~ gfortran ]]; then
 		myopts="${myopts} --with-gfortran"
 	fi
 

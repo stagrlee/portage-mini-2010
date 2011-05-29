@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-libs/gdal/gdal-1.6.3-r1.ebuild,v 1.11 2010/07/18 20:08:22 nerdboy Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-libs/gdal/gdal-1.6.3-r1.ebuild,v 1.18 2011/04/12 17:41:54 arfrever Exp $
 
 EAPI="3"
 WANT_AUTOCONF="2.5"
@@ -8,7 +8,7 @@ RUBY_OPTIONAL="yes"
 USE_RUBY="ruby18"
 PYTHON_DEPEND="2"
 
-inherit autotools distutils eutils perl-module ruby toolchain-funcs
+inherit autotools eutils perl-module python ruby toolchain-funcs
 
 DESCRIPTION="GDAL is a translator library for raster geospatial data formats (includes OGR support)"
 HOMEPAGE="http://www.gdal.org/"
@@ -16,7 +16,7 @@ SRC_URI="http://download.osgeo.org/gdal/${P}.tar.gz"
 
 SLOT="0"
 LICENSE="MIT"
-KEYWORDS="amd64 ppc ~ppc64 sparc x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
+KEYWORDS="amd64 ppc ppc64 x86 ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
 # need to get these arches updated on several libs first
 #KEYWORDS="~alpha ~hppa"
 
@@ -28,11 +28,11 @@ RDEPEND=">=sys-libs/zlib-1.1.4
 	sci-libs/libgeotiff
 	dev-libs/expat
 	curl? ( net-misc/curl )
-	jpeg? ( media-libs/jpeg )
+	jpeg? ( virtual/jpeg )
 	gif? ( media-libs/giflib )
 	png? ( media-libs/libpng )
 	perl? ( dev-lang/perl )
-	python? ( virtual/python
+	python? ( dev-lang/python
 		dev-python/numpy )
 	ruby? ( >=dev-lang/ruby-1.8.4.20060226 )
 	fits? ( sci-libs/cfitsio )
@@ -108,7 +108,7 @@ src_configure() {
 	    $(use_with gml xerces) $(use_with hdf5) $(use_with curl) \
 	    $(use_with postgres pg) $(use_with python) $(use_with ruby) \
 	    $(use_with threads) $(use_with fits cfitsio) $(use_with perl) \
-	    $(use_with sqlite sqlite3 =${EPREFIX}/usr) $(use_with geos) \
+	    $(use_with sqlite sqlite3 ="${EPREFIX}"/usr) $(use_with geos) \
 	    $(use_with jpeg2k jasper) $(use_with odbc) $(use_enable debug)"
 
 	# It can't find this

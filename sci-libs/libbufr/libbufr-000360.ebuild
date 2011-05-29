@@ -1,8 +1,10 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-libs/libbufr/libbufr-000360.ebuild,v 1.2 2008/12/31 03:41:08 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-libs/libbufr/libbufr-000360.ebuild,v 1.6 2011/03/17 15:02:27 mr_bones_ Exp $
 
-inherit fortran eutils flag-o-matic toolchain-funcs
+EAPI="2"
+
+inherit eutils flag-o-matic toolchain-funcs
 
 MY_P="${PN/lib/}_${PV}"
 
@@ -15,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 # needs someone to test on these: ~alpha ~hppa ~ia64 ~ppc ~ppc64 ~sparc etc ...
 
-IUSE="doc examples"
+IUSE="debug doc examples"
 
 RDEPEND=""
 
@@ -24,17 +26,15 @@ DEPEND="sys-apps/findutils"
 S=${WORKDIR}/${MY_P}
 
 pkg_setup() {
-	FORTRAN="gfortran g77 ifc ifort pgf77 pgf90"
-	fortran_pkg_setup
-	case "${FORTRANC}" in
-		gfortran)
+	case "$(tc-getFC)" in
+		*gfortran)
 			export CNAME="_gfortran"
 			;;
-		g77)
+		*g77)
 			export CNAME="_gnu"
 			;;
-		pgf90|pgf77)
-			export CNAME="_linux"
+		*pgf90|*pgf77)
+			export CNAME=""
 			;;
 		ifc|ifort)
 			export CNAME="_intel"
@@ -43,18 +43,9 @@ pkg_setup() {
 
 	export target="linux"
 	case "${ARCH}" in
-		amd64|ppc64)
+		amd64)
 			export A64="A64"
 			export R64="R64"
-			;;
-		ia64)
-			export A64=""
-			export R64="R64"
-			export target="itanium"
-			;;
-		hppa)
-			export target="hppa"
-			export R64=""
 			;;
 		*)
 			export A64=""
@@ -63,18 +54,24 @@ pkg_setup() {
 	esac
 }
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
+src_prepare() {
 	find . -type f | xargs chmod -x
 	chmod +x bufrtables/links.sh
-	if use debug ; then
-		sed -i -e "s:-O2:-g ${CFLAGS}:g" \
-			config/config.$target$CNAME$R64$A64
-	else
-		sed -i -e "s:-O2:${CFLAGS}:g" \
-			config/config.$target$CNAME$R64$A64
-	fi
+
+	local config="config/config.$target$CNAME$R64$A64"
+
+	sed -i -e "s:DEBUG = -O2:DEBUG = -g:g" $config
+
+	# add local CFLAGS to and build flags
+	use debug || sed -i -e "s|\$(DEBUG)|${CFLAGS}|" $config
+
+	# add local LDFLAGS to link commands
+	sed -i \
+		-e "s|-o|${LDFLAGS} -o|" \
+		examples/Makefile \
+		bufrtables/Makefile
+	# updated for newer gcc
+	epatch "${FILESDIR}"/${P}-gcc-includes.patch
 }
 
 src_compile() {
@@ -154,7 +151,8 @@ generate_files() {
 	N
 	N
 	N
+	1
 
-	Y
+	N
 	EOF
 }

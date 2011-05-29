@@ -1,10 +1,11 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-zope/zope-viewlet/zope-viewlet-3.7.2.ebuild,v 1.1 2010/05/30 18:59:15 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-zope/zope-viewlet/zope-viewlet-3.7.2.ebuild,v 1.3 2010/12/05 19:07:09 arfrever Exp $
 
 EAPI="3"
 PYTHON_DEPEND="2"
 SUPPORT_PYTHON_ABIS="1"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
 
 inherit distutils
 
@@ -13,7 +14,7 @@ MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Zope Viewlets"
 HOMEPAGE="http://pypi.python.org/pypi/zope.viewlet"
-SRC_URI="http://pypi.python.org/packages/source/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
+SRC_URI="mirror://pypi/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
 
 LICENSE="ZPL"
 SLOT="0"
@@ -34,7 +35,6 @@ RDEPEND="net-zope/zope-browserpage
 	net-zope/zope-traversing"
 DEPEND="${RDEPEND}
 	dev-python/setuptools"
-RESTRICT_PYTHON_ABIS="3.*"
 
 S="${WORKDIR}/${MY_P}"
 

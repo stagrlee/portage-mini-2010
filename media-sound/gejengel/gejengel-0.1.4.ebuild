@@ -1,9 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-sound/gejengel/gejengel-0.1.4.ebuild,v 1.3 2010/08/31 12:56:14 hwoarang Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-sound/gejengel/gejengel-0.1.4.ebuild,v 1.6 2011/04/03 19:16:01 scarabeus Exp $
 
-EAPI=2
-inherit base eutils multilib
+EAPI=3
+inherit eutils multilib
 
 DESCRIPTION="Lightweight audio player"
 HOMEPAGE="http://code.google.com/p/gejengel"
@@ -14,16 +14,16 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE="+alsa audioscrobbler debug dbus +ffmpeg flac libnotify mad openal pulseaudio syslog"
 
-RDEPEND=">=dev-cpp/gtkmm-2.16
-	>=dev-cpp/pangomm-2.24
+RDEPEND="dev-cpp/gtkmm:2.4
+	dev-cpp/pangomm:1.4
 	dev-cpp/libsexymm
 	media-libs/taglib
-	dev-db/sqlite
+	dev-db/sqlite:3
 	|| ( media-gfx/imagemagick[cxx]
 	media-gfx/graphicsmagick[imagemagick] )
 	mad? ( media-libs/libmad )
 	flac? ( media-libs/flac[cxx] )
-	ffmpeg? ( >=media-video/ffmpeg-0.4.9_p20070330 )
+	ffmpeg? ( virtual/ffmpeg )
 	audioscrobbler? ( >=media-libs/lastfmlib-0.4 )
 	dbus? ( dev-libs/dbus-glib )
 	libnotify? ( x11-libs/libnotify )
@@ -33,6 +33,10 @@ RDEPEND=">=dev-cpp/gtkmm-2.16
 DEPEND="${RDEPEND}
 	dev-libs/libxdg-basedir
 	>=sys-devel/automake-1.11"
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-libnotify-0.7.patch
+}
 
 src_configure() {
 	econf \

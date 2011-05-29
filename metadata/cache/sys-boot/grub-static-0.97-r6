@@ -11,10 +11,10 @@ eutils mount-boot multilib portability toolchain-funcs
 
 
 
-virtual/bootloader
 
 
-config install postinst preinst prerm
+
+config install postinst preinst
 
 
 

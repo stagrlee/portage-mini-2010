@@ -1,11 +1,11 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-electronics/gresistor/gresistor-0.0.1.ebuild,v 1.5 2010/06/29 09:09:30 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-electronics/gresistor/gresistor-0.0.1.ebuild,v 1.7 2011/04/09 21:40:51 arfrever Exp $
 
-EAPI=2
+EAPI=3
 PYTHON_DEPEND="2:2.5"
 
-inherit python distutils eutils
+inherit distutils eutils
 
 DESCRIPTION="Translate a resistor color codes into a readable value"
 HOMEPAGE="http://www.roroid.ro/index.php?option=com_content&view=article&id=1:gresistor&catid=1:software-projects&Itemid=2"
@@ -16,9 +16,10 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE=""
 
-DEPEND="dev-python/pygtk:2
+DEPEND="
+	dev-python/pygtk:2
 	x11-libs/gtk+:2
-	gnome-base/libglade"
+	gnome-base/libglade:2.0"
 RDEPEND="${DEPEND}"
 
 DOCS=(
@@ -27,6 +28,7 @@ DOCS=(
 
 pkg_setup() {
 	python_set_active_version 2
+	python_pkg_setup
 }
 
 src_install() {

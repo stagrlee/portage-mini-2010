@@ -1,5 +1,5 @@
->=app-admin/eselect-python-20091230 dev-lang/python
->=app-admin/eselect-python-20091230 dev-lang/python
+net-wireless/wireless-tools >=app-admin/eselect-python-20091230 =dev-lang/python-2*
+net-wireless/wireless-tools >=app-admin/eselect-python-20091230 =dev-lang/python-2*
 0
 mirror://gentoo/python-iwscan-20080402.tar.bz2
 
@@ -7,14 +7,14 @@ http://projects.otaku42.de/browser/python-iwscan
 GPL-2
 A Python extension for iwscan access
 amd64 ppc ppc64 x86
-distutils multilib python toolchain-funcs
+distutils eutils multilib portability python toolchain-funcs
 
 
 
 
+3
 
-
-compile install postinst postrm unpack
+compile install postinst postrm prepare
 
 
 

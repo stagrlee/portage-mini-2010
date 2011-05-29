@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-misc/google-gadgets/google-gadgets-0.11.2.ebuild,v 1.2 2010/02/23 15:33:58 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-misc/google-gadgets/google-gadgets-0.11.2.ebuild,v 1.9 2011/05/09 23:04:06 hwoarang Exp $
 
 EAPI=2
 
@@ -15,7 +15,7 @@ SRC_URI="http://${MY_PN}.googlecode.com/files/${MY_P}.tar.bz2"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~alpha amd64 ~ia64 ~ppc ~ppc64 x86"
 IUSE="+dbus debug +gtk +qt4 +gstreamer networkmanager soup startup-notification webkit +xulrunner"
 
 # Weird things happen when we start mix-n-matching, so for the time being
@@ -23,21 +23,21 @@ IUSE="+dbus debug +gtk +qt4 +gstreamer networkmanager soup startup-notification 
 # luck, they'll be stable when we get to stabling this package.
 
 RDEPEND="
-	>=dev-libs/libxml2-2.6.32
+	>=dev-libs/libxml2-2.6.32:2
 	sys-libs/zlib
 	x11-libs/libX11
 	x11-libs/libXext
 	dbus? ( sys-apps/dbus )
 	gstreamer? (
-		>=media-libs/gstreamer-0.10.19
-		>=media-libs/gst-plugins-base-0.10.19
+		>=media-libs/gstreamer-0.10.19:0.10
+		>=media-libs/gst-plugins-base-0.10.19:0.10
 	)
 	gtk? (
 		>=dev-libs/atk-1.22.0
-		gnome-base/librsvg
+		gnome-base/librsvg:2
 		>=net-misc/curl-7.18.2
 		>=x11-libs/cairo-1.6.4
-		>=x11-libs/gtk+-2.12.10
+		>=x11-libs/gtk+-2.12.10:2
 		>=x11-libs/pango-1.20.3
 		dbus? ( >=dev-libs/dbus-glib-0.74 )
 	)
@@ -50,10 +50,10 @@ RDEPEND="
 		>=x11-libs/qt-xmlpatterns-4.4.0
 		dbus? ( >=x11-libs/qt-dbus-4.4.0 )
 	)
-	soup? ( >=net-libs/libsoup-2.26 )
+	soup? ( >=net-libs/libsoup-2.26:2.4 )
 	startup-notification? ( x11-libs/startup-notification )
-	webkit? ( >=net-libs/webkit-gtk-1.0.3 )
-	xulrunner? ( net-libs/xulrunner:1.9 )
+	webkit? ( >=net-libs/webkit-gtk-1.0.3:2 )
+	xulrunner? ( =net-libs/xulrunner-1.9*:1.9 )
 "
 DEPEND="${RDEPEND}
 	>=dev-util/pkgconfig-0.20
@@ -125,7 +125,8 @@ src_configure() {
 			--with-smjs-libdir=/usr/$(get_libdir)/xulrunner-1.9 \
 			--with-smjs-incdir=/usr/include/xulrunner-1.9/unstable"
 	else
-		myconf="${myconf} --disable-gtkmoz-browser-element"
+		myconf="${myconf} --disable-gtkmoz-browser-element \
+			--disable-smjs-script-runtime"
 	fi
 
 	econf ${myconf}

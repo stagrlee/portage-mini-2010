@@ -4,8 +4,11 @@
 <herd>freedesktop</herd>
 <use>
   <flag name='applet'>Build tracker monitor applet</flag>
-  <flag name='gsf'>Enable <pkg>gnome-extra/libgsf</pkg> based data extractor
-  </flag>
+  <flag name='flickr'>Build flickr data miner</flag>
+  <flag name='gsf'>Enable <pkg>gnome-extra/libgsf</pkg> based data extractor and
+  for ODT.</flag>
+  <flag name="introspection">Use <pkg>dev-libs/gobject-introspection</pkg>
+    for introspection</flag>
   <flag name="iptc">Enable extraction of IPTC data from pictures</flag>
   <flag name="kmail">Build kmail data miner</flag>
   <flag name="laptop">Make tracker power management aware</flag>
@@ -15,5 +18,6 @@
   <flag name="playlist">Add support for playlists</flag>
   <flag name="strigi">Add support for <pkg>app-misc/strigi</pkg> search
   engine.</flag>
+  <flag name="upnp">Add support for video extraction via <pkg>media-libs/gupnp-dlna</pkg>.</flag>
 </use>
 </pkgmetadata>

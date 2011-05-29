@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-misc/glunarclock/glunarclock-0.34.1.ebuild,v 1.1 2010/04/05 11:34:40 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-misc/glunarclock/glunarclock-0.34.1.ebuild,v 1.5 2011/05/10 09:09:04 xmw Exp $
 
 EAPI=2
 GCONF_DEBUG=no
@@ -12,13 +12,13 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2 FDL-1.1"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86"
+KEYWORDS="amd64 ppc x86"
 IUSE=""
 
 RDEPEND=">=x11-libs/gtk+-2.14:2
 	>=dev-libs/glib-2.12:2
 	>=gnome-base/gconf-2.8
-	>=gnome-base/gnome-panel-2.12"
+	|| ( gnome-base/gnome-panel[bonobo] <gnome-base/gnome-panel-2.32 )"
 DEPEND="${RDEPEND}
 	>=dev-util/pkgconfig-0.19
 	>=dev-util/intltool-0.35

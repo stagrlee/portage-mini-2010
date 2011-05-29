@@ -1,6 +1,8 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-gfx/fbida/fbida-2.07-r2.ebuild,v 1.9 2010/05/12 20:07:21 ranger Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/fbida/fbida-2.07-r2.ebuild,v 1.12 2010/12/10 22:54:23 spock Exp $
+
+EAPI=1
 
 inherit eutils toolchain-funcs
 
@@ -25,14 +27,14 @@ RDEPEND="png? ( media-libs/libpng )
 	X? ( x11-libs/libX11
 		x11-libs/libXt
 		x11-libs/libXpm
-		x11-libs/openmotif
+		>=x11-libs/openmotif-2.3:0
 	)
 	!media-gfx/fbi
-	>=media-libs/jpeg-8a
+	virtual/jpeg
 	media-libs/libexif
 	>=media-libs/freetype-2.0
 	>=media-libs/fontconfig-2.2
-	media-fonts/ttf-bitstream-vera"
+	virtual/ttf-fonts"
 
 DEPEND="${RDEPEND}
 	X? ( x11-proto/xextproto x11-proto/xproto )"

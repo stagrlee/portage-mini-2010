@@ -1,10 +1,10 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/mopac7/mopac7-1.15.ebuild,v 1.2 2010/09/06 13:46:54 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/mopac7/mopac7-1.15.ebuild,v 1.5 2011/05/28 13:54:36 ranger Exp $
 
 EAPI="3"
 
-inherit autotools fortran
+inherit autotools toolchain-funcs
 
 DESCRIPTION="Autotooled, updated version of a powerful, fast semi-empirical package"
 HOMEPAGE="http://sourceforge.net/projects/mopac7/"
@@ -15,13 +15,11 @@ SRC_URI="
 
 LICENSE="mopac7"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc x86"
+KEYWORDS="amd64 ppc x86"
 IUSE="gmxmopac7 static-libs"
 
 DEPEND="dev-libs/libf2c"
 RDEPEND="${DEPEND}"
-
-FORTRAN="gfortran"
 
 src_prepare() {
 	# Install the executable
@@ -54,7 +52,7 @@ src_compile() {
 		cp -f "${DISTDIR}"/gmxmop.f "${DISTDIR}"/dcart.f . || die
 		sed "s:GENTOOVERSION:${PV}:g" -i Makefile
 		emake \
-			FC=${FORTRANC} || die
+			FC=$(tc-getFC) || die
 		if use static-libs; then
 			emake static || die
 		fi

@@ -3,10 +3,11 @@
 <pkgmetadata>
 <herd>no-herd</herd>
 <maintainer>
-  <email>jurek@gentoo.org</email>
-  <name>Jurek Bartuszek</name>
+	<email>aidecoe@gentoo.org</email>
+	<name>Amadeusz Żołnowski</name>
 </maintainer>
-	<use>
-		<flag name='vim'>Install vim plugin allowing to paste from vim by :Wklej</flag>
-	</use>
+<use>
+	<flag name='vim'>Install the vim plugin allowing to paste
+		through ':Wklej'.</flag>
+</use>
 </pkgmetadata>

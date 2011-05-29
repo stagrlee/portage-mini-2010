@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-libs/liblist/liblist-2.3.1-r1.ebuild,v 1.1 2010/08/13 03:06:15 nerdboy Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/liblist/liblist-2.3.1-r1.ebuild,v 1.5 2011/03/11 14:07:26 tomka Exp $
 
 EAPI=3
 
@@ -12,11 +12,16 @@ SRC_URI="ftp://ohnopublishing.net/mirror/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~amd64-linux ~ppc ~ppc64 ~x86"
+KEYWORDS="amd64 ~ppc ~ppc64 x86 ~amd64-linux"
 IUSE="doc examples static-libs"
 
+DEPEND="doc? ( media-gfx/transfig
+	dev-texlive/texlive-metapost
+	virtual/latex-base )"
+
 src_configure() {
-	econf $(use_enable doc docs) \
+	econf --docdir="${EPREFIX}"/usr/share/doc/${PF} \
+		$(use_enable doc docs) \
 		$(use_enable examples) \
 		$(use_enable static-libs static)
 }
@@ -27,9 +32,9 @@ src_install() {
 	dodoc README || die
 
 	if use examples; then
-		insinto /usr/share/doc/${P}/examples
+		insinto /usr/share/doc/${PF}/examples
 		doins examples/{*.c,Makefile,README} || die
-		insinto /usr/share/doc/${P}/examples/cache
+		insinto /usr/share/doc/${PF}/examples/cache
 		doins examples/cache/{*.c,README} || die
 	fi
 

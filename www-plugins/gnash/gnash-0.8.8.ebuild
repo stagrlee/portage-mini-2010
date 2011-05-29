@@ -1,13 +1,13 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/www-plugins/gnash/gnash-0.8.8.ebuild,v 1.3 2010/08/24 14:01:19 chithanh Exp $
+# $Header: /var/cvsroot/gentoo-x86/www-plugins/gnash/gnash-0.8.8.ebuild,v 1.19 2011/05/17 14:45:53 chithanh Exp $
 
 EAPI=3
 CMAKE_REQUIRED="never"
 KDE_REQUIRED="optional"
 AT_M4DIR="cygnal"
 
-inherit autotools eutils kde4-base multilib nsplugins flag-o-matic
+inherit autotools eutils kde4-base multilib nsplugins python flag-o-matic
 
 DESCRIPTION="GNU Flash movie player that supports many SWF v7,8,9 features"
 HOMEPAGE="http://www.gnu.org/software/gnash/"
@@ -22,14 +22,15 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
-IUSE="+agg cairo cygnal dbus doc fbcon +ffmpeg gnome gstreamer gtk kde lirc mysql +nls nsplugin opengl openssl python +sdl sdl-sound ssh test vaapi video_cards_intel xv"
+KEYWORDS="amd64 ~ppc ~ppc64 ~sparc x86"
+IUSE="+agg cairo cygnal dbus doc fbcon +ffmpeg gnome gstreamer gtk kde lirc mysql +nls nsplugin opengl python +sdl sdl-sound ssh ssl test vaapi video_cards_intel xv"
 
+# gnash fails if obsolete boost is installed, bug #334259
 RDEPEND=">=dev-libs/boost-1.41.0
 	!!dev-libs/boost:0
 	dev-libs/expat
 	dev-libs/libxml2
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/libpng
 	net-misc/curl
 	x11-libs/libX11
@@ -46,7 +47,7 @@ RDEPEND=">=dev-libs/boost-1.41.0
 		app-text/docbook-sgml-utils
 	)
 	ffmpeg? (
-		media-video/ffmpeg[vaapi?]
+		virtual/ffmpeg[vaapi?]
 	)
 	gstreamer? (
 		media-plugins/gst-plugins-ffmpeg
@@ -69,18 +70,21 @@ RDEPEND=">=dev-libs/boost-1.41.0
 	media-libs/speex[ogg]
 	sys-libs/zlib
 	>=sys-devel/libtool-2.2
-	mysql? ( dev-db/mysql )
+	mysql? ( virtual/mysql )
 	lirc? ( app-misc/lirc )
 	dbus? ( sys-apps/dbus )
 	ssh?  ( >=net-libs/libssh-0.4[server] )
-	openssl? ( dev-libs/openssl )
+	ssl? ( dev-libs/openssl )
 	vaapi? ( x11-libs/libva[opengl?] )
 	xv? ( x11-libs/libXv )
 	"
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig
 	nls? ( sys-devel/gettext )
-	gnome? ( app-text/rarian )"
+	gnome? ( app-text/rarian )
+	test? ( dev-util/dejagnu )"
+# Tests hang with sandbox, bug #321017
+RESTRICT="test"
 
 pkg_setup() {
 	if use !ffmpeg && use !gstreamer; then
@@ -118,6 +122,11 @@ pkg_setup() {
 		die "Nsplugin requires the gtk gui."
 	fi
 
+	if use fbcon && use !agg; then
+		eerror "Building gnash with fbcon requires the agg renderer."
+		die "fbcon requires the agg USE flag."
+	fi
+
 	if use sdl; then
 		einfo "Enable SDL as gui frontend and sound handler"
 	fi
@@ -143,10 +152,27 @@ src_prepare() {
 	# gentoo bug #283905
 	epatch "${FILESDIR}"/${PN}-0.8.7-moc-qt4.patch
 
+	# Install documentation into the proper directories, bug #296110
+	epatch "${FILESDIR}"/${PN}-0.8.8-documentation-paths.patch
+
+	# Use external dejagnu for tests, bug #321017
+	epatch "${FILESDIR}"/${PN}-0.8.8-external-dejagnu.patch
+
+	# Fix insecure creation of temporary files, bug #351724
+	epatch "${FILESDIR}"/${PN}-0.8.8-secure-tempfile-creation.patch
+
+	# Fix detection of recent ffmpeg, bug #362683
+	epatch "${FILESDIR}"/${PN}-0.8.9-ffmpeg-detection.patch
+	epatch "${FILESDIR}"/${PN}-0.8.9-libavcodec-version.patch
+	epatch "${FILESDIR}"/${PN}-0.8.9-look-harder-for-version_h.patch
+
+	# Fix building on ppc64, bug #342535
+	use ppc64 && append-flags -mminimal-toc
+
 	eautoreconf
 }
 src_configure() {
-	local gui hwaccel input myconf myext renderers
+	local gui hwaccel input media myconf myext renderers
 
 	# Set nsplugin install directory.
 	use nsplugin && myconf="${myconf} --with-npapi-plugindir=/usr/$(get_libdir)/gnash/npapi/"
@@ -174,13 +200,10 @@ src_configure() {
 	fi
 
 	# Set media handler.
-	if use ffmpeg; then
-		myconf="${myconf} --enable-media=ffmpeg"
-	elif use gstreamer; then
-		myconf="${myconf} --enable-media=gst"
-	else
-		myconf="${myconf} --enable-media=none"
-	fi
+	use ffmpeg || use gstreamer || media+=",none"
+	use ffmpeg && media+=",ffmpeg"
+	use gstreamer && media+=",gst"
+
 	# Set gui.
 	use gtk && gui=",gtk"
 	use fbcon && gui="${gui},fb"
@@ -202,6 +225,7 @@ src_configure() {
 	hwaccel=$( echo $hwaccel | sed -e 's/,//' )
 	myext=$( echo $myext | sed -e 's/,//' )
 	renderers=$( echo $renderers | sed -e 's/,//' )
+	media=$( echo $media | sed -e 's/,//' )
 
 	econf \
 		--docdir=/usr/share/doc/${PF} \
@@ -217,13 +241,14 @@ src_configure() {
 		$(use_enable nsplugin npapi) \
 		$(use_enable python) \
 		$(use_enable ssh) \
-		$(use_enable openssl ssl) \
+		$(use_enable ssl) \
 		$(use_enable test testsuite) \
 		$(use_enable video_cards_intel i810-lod-bias) \
 		--enable-gui=${gui} \
 		--enable-extensions=${myext} \
 		--enable-renderer=${renderers} \
 		--enable-hwaccel=${hwaccel} \
+		--enable-media=${media} \
 		${myconf}
 }
 src_test() {
@@ -249,6 +274,11 @@ src_install() {
 	fi
 	# Create a symlink in /usr/$(get_libdir)/nsbrowser/plugins to the nsplugin install directory.
 	use nsplugin && inst_plugin /usr/$(get_libdir)/gnash/npapi/libgnashplugin.so \
+
+	# Remove pointless .la file, bug 338831
+	if use python; then
+		rm "${D}/$(python_get_sitedir)"/gtk-2.0/${PN}.la || die
+	fi
 
 	dodoc AUTHORS ChangeLog NEWS README || die "dodoc failed"
 }

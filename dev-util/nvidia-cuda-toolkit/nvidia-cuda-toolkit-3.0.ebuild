@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-util/nvidia-cuda-toolkit/nvidia-cuda-toolkit-3.0.ebuild,v 1.6 2010/07/05 12:55:49 spock Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-util/nvidia-cuda-toolkit/nvidia-cuda-toolkit-3.0.ebuild,v 1.8 2010/12/12 19:01:32 spock Exp $
 
 EAPI=2
 
@@ -34,7 +34,6 @@ RDEPEND="${DEPEND}
 		media-libs/libpng:1.2
 	)
 	debugger? ( >=sys-libs/libtermcap-compat-2.0.8-r2 )"
-RESTRICT="strip binchecks"
 
 S="${WORKDIR}"
 
@@ -144,6 +143,11 @@ EOF
 	dobin open64/bin/*
 	libopts -m0755
 	dolib open64/lib/*
+
+	# TODO: ideally, there would be multiple OpenCL implementations available in
+	# the tree and an eselect module would allow to switch between them.
+	into /
+	dosym /opt/cuda/include/CL usr/include/CL
 }
 
 pkg_postinst() {

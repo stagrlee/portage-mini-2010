@@ -1,19 +1,21 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-lang/mercury/mercury-10.04.1.ebuild,v 1.2 2010/09/12 03:17:24 keri Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-lang/mercury/mercury-10.04.1.ebuild,v 1.5 2011/02/12 18:28:00 armin76 Exp $
 
-inherit elisp-common eutils flag-o-matic java-pkg-opt-2 multilib
+inherit autotools elisp-common eutils flag-o-matic java-pkg-opt-2 multilib
 
+PATCHSET_VER="0"
 MY_P=${PN}-compiler-${PV}
 
 DESCRIPTION="Mercury is a modern general-purpose logic/functional programming language"
 HOMEPAGE="http://www.cs.mu.oz.au/research/mercury/index.html"
 SRC_URI="http://www.mercury.cs.mu.oz.au/download/files/${MY_P}.tar.gz
+	mirror://gentoo/${P}-gentoo-patchset-${PATCHSET_VER}.tar.gz
 	test? ( http://www.mercury.cs.mu.oz.au/download/files/mercury-tests-${PV}.tar.gz )"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 
 IUSE="debug emacs erlang java minimal readline test threads"
 
@@ -34,14 +36,9 @@ SITEFILE=50${PN}-gentoo.el
 src_unpack() {
 	unpack ${A}
 
-	epatch "${FILESDIR}"/${P}-multilib.patch
-	epatch "${FILESDIR}"/${P}-linker-flags.patch
-	epatch "${FILESDIR}"/${P}-default-grade.patch
-	epatch "${FILESDIR}"/${P}-boehm_gc.patch
-	epatch "${FILESDIR}"/${P}-sparc-llds-base-grade.patch
-	epatch "${FILESDIR}"/${P}-char-det-from-int.patch
-	epatch "${FILESDIR}"/${P}-docs.patch
-	epatch "${FILESDIR}"/${P}-no-reconf.patch
+	EPATCH_FORCE=yes
+	EPATCH_SUFFIX=patch
+	epatch "${WORKDIR}"/${PV}
 
 	sed -i -e "s/@libdir@/$(get_libdir)/" \
 		"${S}"/compiler/file_util.m \
@@ -61,10 +58,11 @@ src_unpack() {
 	touch "${S}"/compiler/*.c
 
 	if use test; then
-		epatch "${FILESDIR}"/${P}-tests-workspace.patch
-		epatch "${FILESDIR}"/${P}-tests-sandbox.patch
-		epatch "${FILESDIR}"/${P}-tests-static-link.patch
+		epatch "${WORKDIR}"/${PV}-tests
 	fi
+
+	cd "${S}"
+	eautoreconf
 }
 
 src_compile() {
@@ -73,7 +71,6 @@ src_compile() {
 	local myconf
 	myconf="--libdir=/usr/$(get_libdir) \
 		--disable-gcc-back-end \
-		--disable-aditi-back-end \
 		--disable-deep-profiler \
 		--disable-dotnet-grades \
 		$(use_enable erlang erlang-grade) \
@@ -86,6 +83,11 @@ src_compile() {
 	econf \
 		${myconf} \
 		|| die "econf failed"
+
+	emake \
+		PARALLEL=${MAKEOPTS} \
+		bootstrap_depend || die "emake depend failed"
+
 	emake \
 		PARALLEL=${MAKEOPTS} \
 		EXTRA_MLFLAGS=--no-strip \

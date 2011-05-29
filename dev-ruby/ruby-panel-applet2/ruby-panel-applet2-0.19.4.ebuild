@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-ruby/ruby-panel-applet2/ruby-panel-applet2-0.19.4.ebuild,v 1.3 2010/08/01 09:56:20 hwoarang Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-ruby/ruby-panel-applet2/ruby-panel-applet2-0.19.4.ebuild,v 1.5 2010/12/08 20:41:27 pacho Exp $
 
 EAPI="2"
 USE_RUBY="ruby18"
@@ -8,11 +8,11 @@ USE_RUBY="ruby18"
 inherit ruby-ng-gnome2
 
 DESCRIPTION="Ruby Panel-applet bindings"
-KEYWORDS="amd64 ~ia64 ~ppc ~sparc x86"
+KEYWORDS="amd64 ~ia64 ppc ~sparc x86"
 IUSE=""
 
 RDEPEND="${RDEPEND}
-	>=gnome-base/gnome-panel-2.8
+	|| ( gnome-base/gnome-panel[bonobo] <gnome-base/gnome-panel-2.32 )
 	=gnome-base/libgnome-2*
 	=gnome-base/libgnomeui-2*"
 DEPEND="${DEPEND}

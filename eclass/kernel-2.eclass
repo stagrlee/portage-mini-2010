@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/kernel-2.eclass,v 1.240 2010/08/03 18:31:08 robbat2 Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/kernel-2.eclass,v 1.251 2011/04/30 17:07:50 ulm Exp $
 
 # Description: kernel.eclass rewrite for a clean base regarding the 2.6
 #              series of kernel with back-compatibility for 2.4
@@ -52,7 +52,9 @@
 #						  If false, either optional deblobbing will be available
 #						  or the license will note the inclusion of freedist
 #						  code.
-
+# K_LONGTERM			- If set, the eclass will search for the kernel source
+#						  in the long term directories on the upstream servers
+#						  as the location has been changed by upstream
 # H_SUPPORTEDARCH		- this should be a space separated list of ARCH's which
 #						  can be supported by the headers ebuild
 
@@ -85,8 +87,9 @@ HOMEPAGE="http://www.kernel.org/ http://www.gentoo.org/ ${HOMEPAGE}"
 	LICENSE="GPL-2"
 
 # This is the latest KV_PATCH of the deblob tool available from the
-# libre-sources upstream.
-[[ -z ${DEBLOB_MAX_VERSION} ]] && DEBLOB_MAX_VERSION=35
+# libre-sources upstream. If you bump this, you MUST regenerate the Manifests
+# for ALL kernel-2 consumer packages where deblob is available.
+[[ -z ${DEBLOB_MAX_VERSION} ]] && DEBLOB_MAX_VERSION=38
 
 # No need to run scanelf/strip on kernel sources/headers (bug #134453).
 RESTRICT="binchecks strip"
@@ -158,17 +161,21 @@ detect_version() {
 		KV_PATCH=$(get_version_component_range 3- ${OKV})
 	fi
 	KV_PATCH=${KV_PATCH/[-_]*}
-	
+
 	local v n=0 missing
-	for v in CKV OKV KV_{MAJOR,MINOR,PATCH} ; do 
-		[[ -z ${!v} ]] && n=1 && missing="${missing}${v} "; 
+	for v in CKV OKV KV_{MAJOR,MINOR,PATCH} ; do
+		[[ -z ${!v} ]] && n=1 && missing="${missing}${v} ";
 	done
 	[[ $n -eq 1 ]] && \
 		eerror "Missing variables: ${missing}" && \
-		die "Failed to extract kernel version (try explicit CKV in ebuild)!" 
+		die "Failed to extract kernel version (try explicit CKV in ebuild)!"
 	unset v n missing
 
-	KERNEL_URI="mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/linux-${OKV}.tar.bz2"
+	KERNEL_BASE_URI="mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}"
+	[[ -n "${K_LONGTERM}" ]] &&
+		KERNEL_BASE_URI="${KERNEL_BASE_URI}/longterm/v${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}"
+
+	KERNEL_URI="${KERNEL_BASE_URI}/linux-${OKV}.tar.bz2"
 
 	RELEASE=${CKV/${OKV}}
 	RELEASE=${RELEASE/_beta}
@@ -216,8 +223,8 @@ detect_version() {
 	# KV_FULL evaluates to MAJ.MIN.PAT.EXT.EXT after EXTRAVERSION
 	if [[ -n ${KV_EXTRA} ]]; then
 		OKV="${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}"
-		KERNEL_URI="mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/patch-${CKV}.bz2
-					mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/linux-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}.tar.bz2"
+		KERNEL_URI="${KERNEL_BASE_URI}/patch-${CKV}.bz2
+					${KERNEL_BASE_URI}/linux-${OKV}.tar.bz2"
 		UNIPATCH_LIST_DEFAULT="${DISTDIR}/patch-${CKV}.bz2"
 	fi
 
@@ -237,22 +244,23 @@ detect_version() {
 
 	if [[ ${RELEASETYPE} == -rc ]] || [[ ${RELEASETYPE} == -pre ]]; then
 		OKV="${KV_MAJOR}.${KV_MINOR}.$((${KV_PATCH} - 1))"
-		KERNEL_URI="mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/testing/patch-${CKV//_/-}.bz2
-					mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/linux-${OKV}.tar.bz2"
+		KERNEL_URI="${KERNEL_BASE_URI}/testing/patch-${CKV//_/-}.bz2
+					${KERNEL_BASE_URI}/linux-${OKV}.tar.bz2"
 		UNIPATCH_LIST_DEFAULT="${DISTDIR}/patch-${CKV//_/-}.bz2"
 	fi
 
 	if [[ ${RELEASETYPE} == -git ]]; then
-		KERNEL_URI="mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/snapshots/patch-${OKV}${RELEASE}.bz2
-					mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/linux-${OKV}.tar.bz2"
+		KERNEL_URI="${KERNEL_BASE_URI}/snapshots/patch-${OKV}${RELEASE}.bz2
+					${KERNEL_BASE_URI}/linux-${OKV}.tar.bz2"
 		UNIPATCH_LIST_DEFAULT="${DISTDIR}/patch-${OKV}${RELEASE}.bz2"
 	fi
 
 	if [[ ${RELEASETYPE} == -rc-git ]]; then
 		OKV="${KV_MAJOR}.${KV_MINOR}.$((${KV_PATCH} - 1))"
-		KERNEL_URI="mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/snapshots/patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}${RELEASE}.bz2
-					mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/testing/patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}${RELEASE/-git*}.bz2
-					mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/linux-${OKV}.tar.bz2"
+		KERNEL_URI="${KERNEL_BASE_URI}/snapshots/patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}${RELEASE}.bz2
+					${KERNEL_BASE_URI}/testing/patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}${RELEASE/-git*}.bz2
+					${KERNEL_BASE_URI}/linux-${OKV}.tar.bz2"
+
 		UNIPATCH_LIST_DEFAULT="${DISTDIR}/patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}${RELEASE/-git*}.bz2 ${DISTDIR}/patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}${RELEASE}.bz2"
 	fi
 
@@ -313,11 +321,8 @@ if [[ ${ETYPE} == sources ]]; then
 	DEPEND="!build? ( sys-apps/sed
 					  >=sys-devel/binutils-2.11.90.0.31 )"
 	RDEPEND="!build? ( >=sys-libs/ncurses-5.2
-			           sys-devel/make )"
+					   sys-devel/make )"
 	PDEPEND="!build? ( virtual/dev-manager )"
-
-	PROVIDE="virtual/linux-sources"
-	kernel_is gt 2 4 && PROVIDE="${PROVIDE} virtual/alsa"
 
 	SLOT="${PVR}"
 	DESCRIPTION="Sources for the ${KV_MAJOR}.${KV_MINOR} linux kernel"
@@ -325,11 +330,11 @@ if [[ ${ETYPE} == sources ]]; then
 
 	# Bug #266157, deblob for libre support
 	if [[ -z ${K_PREDEBLOBBED} ]] ; then
-		if [[ -z ${K_DEBLOB_AVAILABLE} ]] ; then
-			kernel_is ge 2 6 27 && \
+		# Bug #359865, force a call to detect_version if needed
+		kernel_is ge 2 6 27 && \
+			[[ -z "${K_DEBLOB_AVAILABLE}" ]] && \
 				kernel_is le 2 6 ${DEBLOB_MAX_VERSION} && \
-				K_DEBLOB_AVAILABLE=1
-		fi
+					K_DEBLOB_AVAILABLE=1
 		if [[ ${K_DEBLOB_AVAILABLE} == "1" ]] ; then
 			IUSE="${IUSE} deblob"
 			# Reflect that kernels contain firmware blobs unless otherwise
@@ -348,7 +353,7 @@ if [[ ${ETYPE} == sources ]]; then
 			fi
 			DEBLOB_URI="${DEBLOB_HOMEPAGE}/${DEBLOB_URI_PATH}/${DEBLOB_A}"
 			HOMEPAGE="${HOMEPAGE} ${DEBLOB_HOMEPAGE}"
-				
+
 			KERNEL_URI="${KERNEL_URI}
 				deblob? (
 					${DEBLOB_URI}
@@ -369,8 +374,6 @@ elif [[ ${ETYPE} == headers ]]; then
 	unset KBUILD_OUTPUT
 
 	if [[ ${CTARGET} = ${CHOST} ]]; then
-		DEPEND="!virtual/os-headers"
-		PROVIDE="virtual/os-headers"
 		SLOT="0"
 	else
 		SLOT="${CTARGET}"
@@ -577,62 +580,15 @@ install_headers() {
 
 	# Do not use "linux/*" as that can cause problems with very long
 	# $S values where the cmdline to cp is too long
-	cd "${S}"
+	pushd "${S}" >/dev/null
 	dodir ${ddir}/linux
 	cp -pPR "${S}"/include/linux "${D}"/${ddir}/ || die
 	rm -rf "${D}"/${ddir}/linux/modules
 
-	# Handle multilib headers and crap
-	local multi_dirs="" multi_defs=""
-	case $(tc-arch-kernel) in
-		sparc64)
-			multi_dirs="sparc sparc64"
-			multi_defs="!__arch64__ __arch64__"
-			;;
-		x86_64)
-			multi_dirs="i386 x86_64"
-			multi_defs="__i386__ __x86_64__"
-			;;
-		ppc64)
-			multi_dirs="ppc ppc64"
-			multi_defs="!__powerpc64__ __powerpc64__"
-			;;
-		s390x)
-			multi_dirs="s390 s390x"
-			multi_defs="!__s390x__ __s390x__"
-			;;
-		arm)
-			dodir ${ddir}/asm
-			cp -pPR "${S}"/include/asm/* "${D}"/${ddir}/asm
-			[[ ! -e ${D}/${ddir}/asm/arch ]] && ln -sf arch-ebsa285 "${D}"/${ddir}/asm/arch
-			[[ ! -e ${D}/${ddir}/asm/proc ]] && ln -sf proc-armv "${D}"/${ddir}/asm/proc
-			;;
-		powerpc)
-			dodir ${ddir}/asm
-			cp -pPR "${S}"/include/asm/* "${D}"/${ddir}/asm
-			if [[ -e "${S}"/include/asm-ppc ]] ; then
-				dodir ${ddir}/asm-ppc
-				cp -pPR "${S}"/include/asm-ppc/* "${D}"/${ddir}/asm-ppc
-			fi
-			;;
-		*)
-			dodir ${ddir}/asm
-			cp -pPR "${S}"/include/asm/* "${D}"/${ddir}/asm
-			;;
-	esac
-	if [[ -n ${multi_dirs} ]] ; then
-		local d ml_inc=""
-		for d in ${multi_dirs} ; do
-			dodir ${ddir}/asm-${d}
-			cp -pPR "${S}"/include/asm-${d}/* "${D}"/${ddir}/asm-${d}/ || die "cp asm-${d} failed"
+	dodir ${ddir}/asm
+	cp -pPR "${S}"/include/asm/* "${D}"/${ddir}/asm
 
-			ml_inc="${ml_inc} ${multi_defs%% *}:${ddir}/asm-${d}"
-			multi_defs=${multi_defs#* }
-		done
-		create_ml_includes ${ddir}/asm ${ml_inc}
-	fi
-
-	if kernel_is 2 6; then
+	if kernel_is 2 6 ; then
 		dodir ${ddir}/asm-generic
 		cp -pPR "${S}"/include/asm-generic/* "${D}"/${ddir}/asm-generic
 	fi
@@ -640,7 +596,7 @@ install_headers() {
 	# clean up
 	find "${D}" -name '*.orig' -exec rm -f {} \;
 
-	cd ${OLDPWD}
+	popd >/dev/null
 }
 
 install_sources() {
@@ -870,9 +826,9 @@ unipatch() {
 					PATCH_ORDER="${z}${STRICT_COUNT}"
 
 					mkdir -p ${KPATCH_DIR}/${PATCH_ORDER}/
-					$(${PIPE_CMD} ${i} > ${KPATCH_DIR}/${PATCH_ORDER}/${x}.patch${PATCH_LEVEL})
+					$(${PIPE_CMD} ${i} > ${KPATCH_DIR}/${PATCH_ORDER}/${x}.patch${PATCH_LEVEL}) || die "uncompressing patch failed"
 				else
-					$(${PIPE_CMD} ${i} > ${KPATCH_DIR}/${x}.patch${PATCH_LEVEL})
+					$(${PIPE_CMD} ${i} > ${KPATCH_DIR}/${x}.patch${PATCH_LEVEL}) || die "uncompressing patch failed"
 				fi
 			fi
 		fi

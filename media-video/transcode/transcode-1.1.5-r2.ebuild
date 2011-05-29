@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/transcode/transcode-1.1.5-r2.ebuild,v 1.5 2010/09/13 14:46:24 klausman Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-video/transcode/transcode-1.1.5-r2.ebuild,v 1.9 2011/05/17 19:29:07 aballier Exp $
 
-EAPI="2"
+EAPI=2
 
 WANT_AUTOCONF="2.5"
 WANT_AUTOMAKE="1.10"
@@ -16,7 +16,7 @@ HOMEPAGE="http://tcforge.berlios.de/"
 SRC_URI="mirror://berlios/tcforge/${MY_P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 ppc ppc64 ~sparc x86"
+KEYWORDS="alpha amd64 ppc ppc64 sparc x86"
 IUSE="X 3dnow a52 aac alsa altivec dv dvd iconv imagemagick jpeg lzo mjpeg mp3 mpeg mmx nuv ogg oss postproc quicktime sdl sse sse2 theora truetype v4l2 vorbis x264 xml xvid"
 
 RDEPEND="aac? ( media-libs/faac )
@@ -33,9 +33,9 @@ RDEPEND="aac? ( media-libs/faac )
 	vorbis? ( media-libs/libvorbis )
 	ogg? ( media-libs/libogg )
 	theora? ( media-libs/libtheora )
-	jpeg? ( media-libs/jpeg:0 )
+	jpeg? ( virtual/jpeg )
 	truetype? ( >=media-libs/freetype-2 )
-	>=media-video/ffmpeg-0.4.9_p20081014
+	virtual/ffmpeg
 	|| ( sys-libs/glibc dev-libs/libiconv )
 	mpeg? ( media-libs/libmpeg2 )
 	x264? ( media-libs/x264 )
@@ -79,6 +79,7 @@ src_prepare() {
 
 	epatch "${FILESDIR}"/${P}-jpeg-7.patch
 	epatch "${FILESDIR}"/${P}-mpa.patch
+	epatch "${FILESDIR}"/${P}-ffmpeg.patch
 
 	eautoreconf
 }

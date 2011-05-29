@@ -6,6 +6,10 @@
 # Unmask the Altivec instruction set
 -altivec
 
+# vpx is not supported by non x86 archs yet
+vpx
+
+
 # Incompatible Use Flags
 #
 # These use-flags are x86/amd64 only, please feel free to make a bug report if
@@ -144,6 +148,7 @@ video_cards_tga
 video_cards_tseng
 video_cards_vesa
 
+
 # Doug Goldstein <cardoe@gentoo.org> (3 Apr 2008)
 # nvidia-drivers specific feature which don't exist for ppc
 opengl-xvmc
@@ -153,3 +158,17 @@ ipp
 
 # dev-lang/orc doesn't play nice
 schroedinger
+
+# This will need >=media-libs/libgpod-0.8.0 keyworded and stabilized on both ppc/ppc64, bugs 313691 and 325839
+ipod
+ios
+
+# Christian Faulhammer <fauli@gentoo.org> (01 Nov 2010)
+# app-misc/lirc fails to compile on PPC64, see bug 275872 for example
+# Samuli Suominen <ssuominen@gentoo.org> (03 Nov 2010)
+# and it's also masked in arch/powerpc/ppc64/32ul/package.mask
+lirc
+
+# Matt Turner <mattst88@gmail.com> (06 May 2011)
+# media-sound/mumble not keyworded on ppc
+mumble

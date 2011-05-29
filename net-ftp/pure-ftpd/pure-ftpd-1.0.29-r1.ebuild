@@ -1,11 +1,11 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-ftp/pure-ftpd/pure-ftpd-1.0.29-r1.ebuild,v 1.2 2010/08/19 08:07:13 polynomial-c Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-ftp/pure-ftpd/pure-ftpd-1.0.29-r1.ebuild,v 1.4 2011/04/22 12:04:38 polynomial-c Exp $
 
 EAPI=2
 inherit eutils confutils flag-o-matic
 
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~x86-fbsd"
 
 DESCRIPTION="Fast, production-quality, standard-conformant FTP server."
 HOMEPAGE="http://www.pureftpd.org/"
@@ -89,6 +89,8 @@ src_install() {
 	newconfd "${FILESDIR}/pure-ftpd.conf_d-2" pure-ftpd
 
 	newinitd "${FILESDIR}/pure-ftpd.rc10" pure-ftpd
+
+	dodir /var/lib/run/${PN}
 
 	if use xinetd ; then
 		insinto /etc/xinetd.d

@@ -1,6 +1,6 @@
 # Copyright 1999-2005 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/vdr-plugin.eclass,v 1.71 2009/10/11 11:49:05 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/vdr-plugin.eclass,v 1.73 2011/03/13 19:06:26 hd_brummy Exp $
 #
 # Author:
 #   Matthias Schwarzott <zzam@gentoo.org>
@@ -67,6 +67,10 @@
 #
 
 inherit base multilib eutils flag-o-matic
+
+if ! has "${EAPI:-0}" 0 1 2 3; then
+	die "API of vdr-plugin.eclass in EAPI=\"${EAPI}\" not established"
+fi
 
 IUSE=""
 
@@ -382,6 +386,12 @@ vdr-plugin_pkg_setup() {
 	# -fPIC is needed for shared objects on some platforms (amd64 and others)
 	append-flags -fPIC
 
+	# Plugins need to be compiled with position independent code, otherwise linking
+	# VDR against it will fail
+	if has_version ">=media-video/vdr-1.7.13"; then
+		append-flags -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
+	fi
+
 	# Where should the plugins live in the filesystem
 	VDR_PLUGIN_DIR="/usr/$(get_libdir)/vdr/plugins"
 	VDR_CHECKSUM_DIR="${VDR_PLUGIN_DIR%/plugins}/checksums"
@@ -395,7 +405,11 @@ vdr-plugin_pkg_setup() {
 	DVB_INCLUDE_DIR="/usr/include"
 
 	TMP_LOCALE_DIR="${WORKDIR}/tmp-locale"
-	LOCDIR="/usr/share/vdr/locale"
+	if has_version ">=media-video/vdr-1.7.17"; then   
+		LOCDIR="/usr/share/locale"
+	else
+		LOCDIR="/usr/share/vdr/locale"
+	fi
 
 	if ! has_vdr; then
 		# set to invalid values to detect abuses
@@ -461,7 +475,7 @@ vdr-plugin_src_unpack() {
 	fi
 	if [ -z "$1" ]; then
 		case "${EAPI:-0}" in
-			2)
+			2|3)
 				vdr-plugin_src_util unpack
 				;;
 			*)
@@ -604,7 +618,7 @@ vdr-plugin_pkg_config() {
 }
 
 case "${EAPI:-0}" in
-	2)
+	2|3)
 		EXPORT_FUNCTIONS pkg_setup src_unpack src_prepare src_compile src_install pkg_postinst pkg_postrm pkg_config
 		;;
 	*)

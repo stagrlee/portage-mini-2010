@@ -1,8 +1,11 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-analyzer/prewikka/prewikka-0.9.14-r2.ebuild,v 1.4 2009/06/02 16:39:31 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-analyzer/prewikka/prewikka-0.9.14-r2.ebuild,v 1.7 2011/05/29 16:20:14 armin76 Exp $
 
-EAPI="2"
+EAPI="3"
+PYTHON_DEPEND="2"
+SUPPORT_PYTHON_ABIS="1"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
 
 inherit distutils
 
@@ -12,14 +15,15 @@ SRC_URI="http://www.prelude-ids.org/download/releases/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ppc sparc x86"
+KEYWORDS="~amd64 ppc ~x86"
 IUSE=""
 
-DEPEND=">=dev-lang/python-2.3
-	>=dev-python/cheetah-0.9.18
+DEPEND=">=dev-python/cheetah-0.9.18
 	>=dev-libs/libprelude-0.9.0[python]
-	>=dev-libs/libpreludedb-0.9.0"
+	>=dev-libs/libpreludedb-0.9.0[python]"
 RDEPEND="${DEPEND}"
+
+DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES="1"
 
 src_install() {
 	distutils_src_install
@@ -29,6 +33,8 @@ src_install() {
 }
 
 pkg_postinst() {
+	distutils_pkg_postinst
+
 	elog
 	elog "For additional installation instructions go to"
 	elog "https://trac.prelude-ids.org/wiki/InstallingPrewikka"

@@ -1,7 +1,8 @@
-# Copyright 1999-2005 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-action/dungeon/dungeon-3.2.3.ebuild,v 1.8 2005/03/04 04:20:24 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-action/dungeon/dungeon-3.2.3.ebuild,v 1.10 2010/10/11 19:30:38 mr_bones_ Exp $
 
+EAPI=2
 inherit eutils games
 
 DESCRIPTION="A linux port of the Dungeon game once distributed by DECUS"
@@ -18,11 +19,7 @@ DEPEND="dev-lang/f2c"
 S=${WORKDIR}/dungn32c
 DATS=${GAMES_DATADIR}/${PN}
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-	epatch "${FILESDIR}/${P}-makefile.patch"
-}
+PATCHES=( "${FILESDIR}"/${P}-makefile.patch )
 
 src_compile() {
 	local f

@@ -1,8 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/xfce-extra/xfce4-screenshooter/xfce4-screenshooter-1.7.9-r1.ebuild,v 1.9 2010/08/29 18:08:34 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/xfce-extra/xfce4-screenshooter/xfce4-screenshooter-1.7.9-r1.ebuild,v 1.12 2011/05/19 20:38:52 ssuominen Exp $
 
-EAPI=2
+EAPI=4
+EAUTORECONF=yes
 inherit xfconf
 
 DESCRIPTION="Xfce4 screenshooter application and panel plugin"
@@ -17,15 +18,22 @@ IUSE="debug"
 RDEPEND=">=x11-libs/gtk+-2.14:2
 	>=dev-libs/glib-2.16:2
 	>=net-libs/libsoup-2.26.0
-	>=xfce-base/xfce4-panel-4.4
-	>=xfce-base/libxfce4util-4.4
-	>=xfce-base/libxfcegui4-4.4"
+	>=xfce-base/xfce4-panel-4.8
+	>=xfce-base/libxfce4util-4.8
+	>=xfce-base/libxfcegui4-4.8"
 DEPEND="${RDEPEND}
+	dev-util/intltool
 	dev-util/pkgconfig"
 
 pkg_setup() {
-	PATCHES=( "${FILESDIR}/${P}-fix-segfault-at-startup.patch" )
-	XFCONF="--disable-dependency-tracking
-		$(use_enable debug)"
-	DOCS="AUTHORS ChangeLog NEWS README TODO"
+	PATCHES=( "${FILESDIR}"/${P}-fix-segfault-at-startup.patch )
+	XFCONF=( $(xfconf_use_debug) )
+	DOCS=( AUTHORS ChangeLog NEWS README TODO )
+}
+
+src_prepare() {
+	sed -i \
+		-e "s:\$(datadir)/xfce4/doc:\$(datadir)/doc/${PF}/html:" \
+		Makefile.am || die
+	xfconf_src_prepare
 }

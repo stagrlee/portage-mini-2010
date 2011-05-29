@@ -1,6 +1,6 @@
-# Copyright 2004-2010 Gentoo Foundation.
+# Copyright 1999-2011 Gentoo Foundation.
 # Distributed under the terms of the GNU General Public License, v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/alpha/use.mask,v 1.41 2010/08/15 13:59:06 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/alpha/use.mask,v 1.50 2011/05/29 16:12:29 armin76 Exp $
 
 # Unmask the flag which corresponds to ARCH.
 -alpha
@@ -12,13 +12,14 @@
 
 # No hardware to test by the team
 3dfx
+apcupsd
 bluetooth
 chipcard
 dvb
 gnokii
 gps
 hbci
-iphone
+ios
 ipod
 ivtv
 mtp
@@ -59,6 +60,7 @@ vaapi
 rtmp
 vpx
 kde
+quvi
 
 # Stuff that doesn't compile on alpha
 clisp
@@ -70,8 +72,15 @@ ocamlopt
 afs
 schroedinger
 ots
+frei0r
+libev
+prelude
 
 # Other
+
+# Raúl Porcel <armin76@gentoo.org> (23 Apr 2011)
+# Needs to be tested
+video_cards_nouveau
 
 # Ben de Groot <yngwin@gentoo.org> 11 Feb 2009
 # both x11-libs/qt-phonon and media-sound/phonon are unkeyworded
@@ -82,11 +91,11 @@ phonon
 networkmanager
 
 
-# alpha doesn't have java support other than compaq-j*, which isn't a
-# current version.  must mask this to keep things sane
+# alpha doesn't have java support
 java
 java-internal
 java-external
+pdfannotextractor
 
 # Mask vpopmail until net-mail/vpopmail goes out of package.mask
 vpopmail
@@ -152,3 +161,7 @@ audit
 
 # uses gnat/ada which is too big to support currently
 topal
+
+# Matt Turner <mattst88@gentoo.org> (13 Dec 2010)
+# We don't have sys-devel/llvm
+llvm

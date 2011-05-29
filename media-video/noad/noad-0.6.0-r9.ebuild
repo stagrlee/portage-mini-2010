@@ -1,24 +1,20 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/noad/noad-0.6.0-r9.ebuild,v 1.8 2010/01/05 20:09:54 hd_brummy Exp $
-
-WANT_AUTOMAKE="latest"
-WANT_AUTOCONF="latest"
+# $Header: /var/cvsroot/gentoo-x86/media-video/noad/noad-0.6.0-r9.ebuild,v 1.10 2011/04/06 17:33:09 idl0r Exp $
 
 inherit eutils autotools
 
 DESCRIPTION="Mark commercial Breaks in VDR records"
-HOMEPAGE="http://www.freepgs.com/noad/"
-SRC_URI="http://www.freepgs.com/${PN}/${P}.tar.bz2
-		mirror://vdrfiles/${PN}/${P}.tar.bz2"
+HOMEPAGE="http://noad.heliohost.org/"
+SRC_URI="http://noad.heliohost.org/oldv/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 x86"
+KEYWORDS="amd64 x86"
 IUSE="ffmpeg imagemagick"
 
 DEPEND="media-libs/libmpeg2
-	ffmpeg? ( >=media-video/ffmpeg-0.4.8 )
+	ffmpeg? ( >=virtual/ffmpeg-0.4.8 )
 	imagemagick? ( >=media-gfx/imagemagick-6.2.4.2-r1 )"
 RDEPEND="${DEPEND}"
 
@@ -39,7 +35,7 @@ src_unpack() {
 
 	sed -e "s:char \*indents:const char \*indents:" -i showindex.cpp
 
-	if has_version ">=media-video/ffmpeg-0.4.9_p20080326" ; then
+	if has_version ">=virtual/ffmpeg-0.4.9_p20080326" ; then
 		sed -e "s:include/ffmpeg:include/libavcodec:g" -i configure.ac
 	fi
 

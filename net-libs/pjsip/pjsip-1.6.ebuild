@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-libs/pjsip/pjsip-1.6.ebuild,v 1.1 2010/07/16 09:47:34 elvanor Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-libs/pjsip/pjsip-1.6.ebuild,v 1.4 2011/02/22 10:59:09 elvanor Exp $
 
 EAPI="2"
 
@@ -11,7 +11,7 @@ SRC_URI="http://www.pjsip.org/release/${PV}/pjproject-${PV}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~amd64 x86"
 IUSE="alsa doc epoll examples ext-sound g711 g722 g7221 gsm ilbc l16
 oss python speex"
 #small-filter large-filter speex-aec ssl

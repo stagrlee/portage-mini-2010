@@ -1,10 +1,11 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-admin/system-config-printer-gnome/system-config-printer-gnome-1.2.2.ebuild,v 1.5 2010/07/31 15:13:28 pacho Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-admin/system-config-printer-gnome/system-config-printer-gnome-1.2.2.ebuild,v 1.9 2011/02/16 19:00:09 reavertm Exp $
 
 EAPI="3"
 
 PYTHON_DEPEND="2"
+PYTHON_USE_WITH="xml"
 WANT_AUTOMAKE="1.11"
 inherit python autotools
 
@@ -15,7 +16,7 @@ HOMEPAGE="http://cyberelk.net/tim/software/system-config-printer/"
 SRC_URI="http://cyberelk.net/tim/data/system-config-printer/1.2/${MY_P}.tar.xz"
 
 LICENSE="GPL-2"
-KEYWORDS="amd64 x86"
+KEYWORDS="~alpha amd64 ~arm ~ia64 ~sh ~sparc x86"
 SLOT="0"
 IUSE="gnome-keyring"
 
@@ -23,16 +24,14 @@ IUSE="gnome-keyring"
 RESTRICT="test"
 
 RDEPEND="
-	>=app-admin/system-config-printer-common-${PV}
-	dev-python/libgnome-python
+	~app-admin/system-config-printer-common-${PV}
 	dev-python/notify-python
 	>=dev-python/pygtk-2.4
-	dev-python/pyxml
 	gnome-keyring? ( dev-python/gnome-keyring-python )
 "
 DEPEND="${RDEPEND}
 	app-text/docbook-xml-dtd:4.1.2
-	app-text/xmlto
+	>=app-text/xmlto-0.0.22
 	dev-util/intltool
 	sys-devel/gettext
 "

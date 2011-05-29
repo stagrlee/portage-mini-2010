@@ -1,9 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-ruby/json/json-1.4.6.ebuild,v 1.1 2010/08/28 14:22:12 graaff Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-ruby/json/json-1.4.6.ebuild,v 1.12 2011/04/23 17:36:25 armin76 Exp $
 
 EAPI=2
-USE_RUBY="ruby18 ree18 ruby19 jruby"
+USE_RUBY="ruby18 ree18 jruby"
 
 RUBY_FAKEGEM_TASK_DOC="doc"
 RUBY_FAKEGEM_EXTRADOC="CHANGES TODO README"
@@ -16,7 +16,7 @@ HOMEPAGE="http://json.rubyforge.org/"
 LICENSE="|| ( Ruby GPL-2 )"
 SRC_URI="mirror://rubygems/${P}.gem"
 
-KEYWORDS="~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux ~x64-macos ~x86-solaris"
+KEYWORDS="alpha amd64 ~arm hppa ia64 ppc ppc64 ~s390 ~sh sparc x86 ~amd64-linux ~x86-linux ~x64-macos ~x86-solaris"
 SLOT="0"
 IUSE=""
 
@@ -44,17 +44,12 @@ each_ruby_compile() {
 }
 
 each_ruby_test() {
-	# We have to set RUBYLIB because otherwise the tests will run
-	# against the sytem-installed json; at the same time, we cannot
-	# use the -I parameter because rake won't let it pass to the
-	# testrb call that is executed down the road.
-
-	RUBYLIB="${RUBYLIB}${RUBYLIB+:}lib:ext/json/ext" \
-		${RUBY} -S rake test_pure || die "pure ruby tests failed"
+	JSON=pure \
+	${RUBY} -Iext:lib -S testrb tests/*.rb || die "pure ruby tests failed"
 
 	if [[ $(basename ${RUBY}) != "jruby" ]]; then
-		RUBYLIB="${RUBYLIB}${RUBYLIB+:}lib:ext" \
-			${RUBY} -Ilib:ext -S rake test_ext || die " ruby extension tests failed"
+		JSON=ext \
+		${RUBY} -Iext:lib -S testrb tests/*.rb || die "ext ruby tests failed"
 	fi
 }
 

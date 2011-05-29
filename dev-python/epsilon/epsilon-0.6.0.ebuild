@@ -1,31 +1,34 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/epsilon/epsilon-0.6.0.ebuild,v 1.4 2010/08/12 09:07:05 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-python/epsilon/epsilon-0.6.0.ebuild,v 1.13 2011/03/05 17:25:30 armin76 Exp $
 
-EAPI="2"
+EAPI="3"
+PYTHON_DEPEND="2"
 SUPPORT_PYTHON_ABIS="1"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
+DISTUTILS_SRC_TEST="trial"
+DISTUTILS_DISABLE_TEST_DEPENDENCY="1"
 
 # setup.py uses epsilon.setuphelper.autosetup(), which tries to use
 # build-${PYTHON_ABI} directories as packages.
 DISTUTILS_USE_SEPARATE_SOURCE_DIRECTORIES="1"
 
-inherit eutils distutils twisted
+inherit eutils twisted
 
 MY_PN="Epsilon"
 MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Epsilon is a Python utilities package, most famous for its Time class."
 HOMEPAGE="http://divmod.org/trac/wiki/DivmodEpsilon http://pypi.python.org/pypi/Epsilon"
-SRC_URI="http://pypi.python.org/packages/source/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
+SRC_URI="mirror://pypi/${MY_PN:0:1}/${MY_PN}/${MY_P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="amd64 ~ia64 ~ppc64 x86"
+KEYWORDS="amd64 ppc ppc64 sparc x86"
 IUSE=""
 
 DEPEND=">=dev-python/twisted-2.4"
 RDEPEND="${DEPEND}"
-RESTRICT_PYTHON_ABIS="3.*"
 
 S="${WORKDIR}/${MY_P}"
 
@@ -53,16 +56,5 @@ src_test() {
 	# Release tests need DivmodCombinator.
 	rm -f epsilon/test/test_release.py*
 
-	testing() {
-		PYTHONPATH="build-${PYTHON_ABI}/lib" trial epsilon
-	}
-	python_execute_function testing
-}
-
-pkg_postrm() {
-	twisted_pkg_postrm
-}
-
-pkg_postinst() {
-	twisted_pkg_postinst
+	distutils_src_test
 }

@@ -1,13 +1,12 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/apbs/apbs-1.2.1b-r4.ebuild,v 1.7 2010/07/09 13:36:47 fauli Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/apbs/apbs-1.2.1b-r4.ebuild,v 1.9 2010/12/16 08:55:54 jlec Exp $
 
 EAPI="3"
 
 PYTHON_DEPEND="python? 2"
-FORTRAN="g77 gfortran ifc"
 
-inherit autotools eutils flag-o-matic fortran python versionator
+inherit autotools eutils flag-o-matic python toolchain-funcs versionator
 
 MY_PV=$(get_version_component_range 1-3)
 MY_P="${PN}-${MY_PV}"
@@ -18,10 +17,11 @@ SRC_URI="mirror://sourceforge/${PN}/${P}-source.tar.gz"
 
 SLOT="0"
 LICENSE="BSD"
-IUSE="arpack doc mpi openmp python tinker tools"
+IUSE="arpack doc mpi openmp python tools"
 KEYWORDS="amd64 ppc x86 ~amd64-linux ~x86-linux"
 
-DEPEND="dev-libs/maloc[mpi=]
+DEPEND="
+	dev-libs/maloc[mpi=]
 	virtual/blas
 	sys-libs/readline
 	arpack? ( sci-libs/arpack )
@@ -32,11 +32,11 @@ S="${WORKDIR}"/"${MY_P}-source"
 
 pkg_setup() {
 	use python && python_set_active_version 2
-	fortran_pkg_setup
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${P}-openmp.patch \
+	epatch \
+		"${FILESDIR}"/${P}-openmp.patch \
 		"${FILESDIR}"/${P}-install-fix.patch \
 		"${FILESDIR}"/${PN}-1.2.0-contrib.patch \
 		"${FILESDIR}"/${PN}-1.2.0-link.patch \
@@ -81,21 +81,15 @@ src_configure() {
 		--with-blas=-lblas \
 		$(use_enable openmp) \
 		$(use_enable python) \
-		$(use_enable tinker) \
 		$(use_enable tools) \
 		${myconf}
 }
 
 src_test() {
-	if use tinker; then
-		elog "tinker code make apbs to not reach the expected precission"
-		elog "https://sourceforge.net/tracker/?func=detail&aid=3019465&group_id=148472&atid=771704"
-	else
-		export LC_NUMERIC=C
-		cd examples && make test \
-			|| die "Tests failed"
-		grep -q 'FAILED' "${S}"/examples/TESTRESULTS.log && die "Tests failed"
-	fi
+	export LC_NUMERIC=C
+	cd examples && make test \
+		|| die "Tests failed"
+	grep -q 'FAILED' "${S}"/examples/TESTRESULTS.log && die "Tests failed"
 }
 
 src_install() {

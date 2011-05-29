@@ -1,10 +1,11 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-devel/distcc/distcc-2.18.3-r10.ebuild,v 1.11 2008/11/02 22:24:23 gengor Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-devel/distcc/distcc-2.18.3-r10.ebuild,v 1.13 2011/03/30 11:12:30 angelos Exp $
 
 # If you change this in any way please email lisa@gentoo.org and make an
 # entry in the ChangeLog (this means you spanky :P). (2004-04-11) Lisa Seelye
 
+EAPI=1
 inherit eutils flag-o-matic toolchain-funcs
 
 PATCHLEVEL="2.18"
@@ -15,7 +16,7 @@ SRC_URI="http://distcc.samba.org/ftp/distcc/distcc-${PV}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 mips ppc ppc64 s390 sh sparc ~sparc-fbsd x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd"
 IUSE="gnome gtk hardened selinux ipv6"
 
 DEPEND=">=sys-devel/gcc-config-1.3.1
@@ -24,15 +25,15 @@ DEPEND=">=sys-devel/gcc-config-1.3.1
 	gtk? ( dev-util/pkgconfig )"
 RDEPEND="
 	gnome? (
-		>=x11-libs/gtk+-2.0.0
+		x11-libs/gtk+:2
 		>=gnome-base/libgnome-2.0.0
 		>=gnome-base/libgnomeui-2.0.0.0
-		>=gnome-base/libglade-2.0.0
+		gnome-base/libglade:2.0
 		x11-libs/pango
-		>=gnome-base/gconf-2.0.0
+		>=gnome-base/gconf-2.0.0:2
 	)
 	gtk? (
-		>=x11-libs/gtk+-2.0.0
+		x11-libs/gtk+:2
 		x11-libs/pango
 	)
 	selinux? ( sec-policy/selinux-distcc )"

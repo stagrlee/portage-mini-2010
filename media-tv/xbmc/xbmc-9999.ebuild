@@ -1,18 +1,14 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.63 2010/08/28 16:13:24 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-tv/xbmc/xbmc-9999.ebuild,v 1.83 2011/05/18 18:45:37 vapier Exp $
 
 EAPI="2"
 
 inherit eutils python
 
-# Use XBMC_ESVN_REPO_URI to track a different branch
-ESVN_REPO_URI=${XBMC_ESVN_REPO_URI:-http://xbmc.svn.sourceforge.net/svnroot/xbmc/trunk}
-ESVN_PROJECT=${ESVN_REPO_URI##*/svnroot/}
-ESVN_PROJECT=${ESVN_PROJECT%/*}
+EGIT_REPO_URI="git://github.com/xbmc/xbmc.git"
 if [[ ${PV} == "9999" ]] ; then
-	inherit subversion autotools
-	KEYWORDS=""
+	inherit git autotools
 else
 	inherit autotools
 	MY_P=${P/_/-}
@@ -26,11 +22,10 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="aac alsa altivec avahi css debug hal joystick midi profile pulseaudio rtmp sse sse2 vaapi vdpau webserver xrandr"
+IUSE="alsa altivec avahi bluray css debug joystick midi profile pulseaudio rtmp sse sse2 udev vaapi vdpau webserver +xrandr"
 
-RDEPEND="virtual/opengl
+COMMON_DEPEND="virtual/opengl
 	app-arch/bzip2
-	app-arch/unrar
 	app-arch/unzip
 	app-arch/zip
 	app-i18n/enca
@@ -38,25 +33,21 @@ RDEPEND="virtual/opengl
 	dev-libs/boost
 	dev-libs/fribidi
 	dev-libs/libcdio[-minimal]
-	dev-libs/libpcre
-	dev-libs/lzo
+	dev-libs/libpcre[cxx]
+	>=dev-libs/lzo-2.04
 	>=dev-python/pysqlite-2
-	media-libs/a52dec
 	media-libs/alsa-lib
-	aac? ( media-libs/faac )
-	media-libs/faad2
 	media-libs/flac
 	media-libs/fontconfig
 	media-libs/freetype
-	media-libs/glew
+	>=media-libs/glew-1.5.6
 	media-libs/jasper
 	media-libs/jbigkit
-	media-libs/jpeg:0
+	virtual/jpeg
 	>=media-libs/libass-0.9.7
-	media-libs/libdca
+	bluray? ( media-libs/libbluray )
 	css? ( media-libs/libdvdcss )
 	media-libs/libmad
-	media-libs/libmms
 	media-libs/libmodplug
 	media-libs/libmpeg2
 	media-libs/libogg
@@ -65,20 +56,19 @@ RDEPEND="virtual/opengl
 	alsa? ( media-libs/libsdl[alsa] )
 	media-libs/libvorbis
 	media-libs/sdl-gfx
-	media-libs/sdl-image[gif,jpeg,png]
+	>=media-libs/sdl-image-1.2.10[gif,jpeg,png]
 	media-libs/sdl-mixer
 	media-libs/sdl-sound
 	media-libs/tiff
 	pulseaudio? ( media-sound/pulseaudio )
 	media-sound/wavpack
-	>=media-video/ffmpeg-0.6
+	>=virtual/ffmpeg-0.6
 	rtmp? ( media-video/rtmpdump )
 	avahi? ( net-dns/avahi )
 	webserver? ( net-libs/libmicrohttpd )
 	net-misc/curl
 	|| ( >=net-fs/samba-3.4.6[smbclient] <net-fs/samba-3.3 )
 	sys-apps/dbus
-	hal? ( sys-apps/hal )
 	sys-libs/zlib
 	virtual/mysql
 	x11-apps/xdpyinfo
@@ -86,13 +76,15 @@ RDEPEND="virtual/opengl
 	vaapi? ( x11-libs/libva )
 	vdpau? (
 		|| ( x11-libs/libvdpau >=x11-drivers/nvidia-drivers-180.51 )
-		media-video/ffmpeg[vdpau]
+		virtual/ffmpeg[vdpau]
 	)
 	x11-libs/libXinerama
 	xrandr? ( x11-libs/libXrandr )
 	x11-libs/libXrender"
 # The cpluff bundled addon uses gettext which needs CVS ...
-DEPEND="${RDEPEND}
+RDEPEND="${COMMON_DEPEND}
+	udev? (	sys-fs/udisks sys-power/upower )"
+DEPEND="${COMMON_DEPEND}
 	dev-util/gperf
 	dev-vcs/cvs
 	x11-proto/xineramaproto
@@ -101,7 +93,7 @@ DEPEND="${RDEPEND}
 
 src_unpack() {
 	if [[ ${PV} == "9999" ]] ; then
-		subversion_src_unpack
+		git_src_unpack
 		cd "${S}"
 		rm -f configure
 	else
@@ -115,13 +107,9 @@ src_unpack() {
 }
 
 src_prepare() {
-	sed -i \
-		-e '1i#include <stdlib.h>\n#include <string.h>\n' \
-		xbmc/lib/libid3tag/libid3tag/metadata.c || die
-
 	# some dirs ship generated autotools, some dont
 	local d
-	for d in . xbmc/cores/dvdplayer/Codecs/{libdts,libdvd/lib*/} lib/cpluff ; do
+	for d in . lib/{libdvd/lib*/,cpluff,libapetag,libid3tag/libid3tag} xbmc/screensavers/rsxs-* ; do
 		[[ -e ${d}/configure ]] && continue
 		pushd ${d} >/dev/null
 		einfo "Generating autotools in ${d}"
@@ -136,19 +124,21 @@ src_prepare() {
 	sed -i \
 		-e '/^CXXFLAGS/{s:-D[^=]*=.::;s:-m[[:alnum:]]*::}' \
 		-e "1iCXXFLAGS += ${squish}" \
-		xbmc/lib/libsquish/Makefile.in || die
+		lib/libsquish/Makefile.in || die
 
 	# Fix XBMC's final version string showing as "exported"
 	# instead of the SVN revision number.
-	export SVN_REV=${ESVN_WC_REVISION:-exported}
+	export HAVE_GIT=no GIT_REV=${EGIT_VERSION:-exported}
 
 	# Avoid lsb-release dependency
 	sed -i \
 		-e 's:lsb_release -d:cat /etc/gentoo-release:' \
-		xbmc/utils/SystemInfo.cpp
+		xbmc/utils/SystemInfo.cpp || die
 
-	# Do not use termcap #262822
-	sed -i 's:-ltermcap::' xbmc/lib/libPython/Python/configure
+	# avoid long delays when powerkit isn't running #348580
+	sed -i \
+		-e '/dbus_connection_send_with_reply_and_block/s:-1:3000:' \
+		xbmc/linux/*.cpp || die
 
 	epatch_user #293109
 
@@ -170,10 +160,10 @@ src_configure() {
 		--enable-goom \
 		--enable-gl \
 		$(use_enable avahi) \
+		$(use_enable bluray libbluray) \
 		$(use_enable css dvdcss) \
 		$(use_enable debug) \
-		$(use_enable aac faac) \
-		$(use_enable hal) \
+		--disable-hal \
 		$(use_enable joystick) \
 		$(use_enable midi mid) \
 		$(use_enable profile profiling) \
@@ -199,5 +189,5 @@ src_install() {
 }
 
 pkg_postinst() {
-	elog "Visit http://xbmc.org/wiki/?title=XBMC_Online_Manual"
+	elog "Visit http://wiki.xbmc.org/?title=XBMC_Online_Manual"
 }

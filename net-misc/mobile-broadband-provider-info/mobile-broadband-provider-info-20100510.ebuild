@@ -1,17 +1,15 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/mobile-broadband-provider-info/mobile-broadband-provider-info-20100510.ebuild,v 1.3 2010/08/20 10:16:51 hwoarang Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-misc/mobile-broadband-provider-info/mobile-broadband-provider-info-20100510.ebuild,v 1.5 2011/03/18 15:46:48 mr_bones_ Exp $
 
 inherit gnome.org
 
 DESCRIPTION="Database of mobile broadband service providers"
 HOMEPAGE="http://live.gnome.org/NetworkManager/MobileBroadband/ServiceProviders"
-# Weird bug in gnome.org causes a dot to be added in uri
-SRC_URI="${SRC_URI/${PV}./${PV}}"
 
 LICENSE="CC-PD"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~ppc x86"
+KEYWORDS="amd64 ~arm ppc x86"
 IUSE=""
 
 RDEPEND=""

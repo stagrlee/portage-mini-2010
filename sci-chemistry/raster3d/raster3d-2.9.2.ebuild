@@ -1,10 +1,10 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/raster3d/raster3d-2.9.2.ebuild,v 1.1 2010/04/02 08:31:46 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/raster3d/raster3d-2.9.2.ebuild,v 1.4 2010/12/17 07:57:02 jlec Exp $
 
 EAPI="3"
 
-inherit fortran flag-o-matic multilib toolchain-funcs versionator
+inherit flag-o-matic multilib toolchain-funcs versionator
 
 MY_PN="Raster3D"
 MY_PV=$(replace_version_separator 2 -)
@@ -20,7 +20,7 @@ IUSE=""
 KEYWORDS="~amd64 ~ppc ~x86 ~amd64-linux ~x86-linux"
 
 RDEPEND="
-	media-libs/jpeg
+	virtual/jpeg
 	media-libs/libpng
 	media-libs/tiff"
 DEPEND="${RDEPEND}"
@@ -36,7 +36,7 @@ src_compile() {
 		-i Makefile.template || \
 		die "Failed to patch makefile.template"
 
-	if [[ ${FORTRANC} == gfortran ]]; then
+	if [[ $(tc-getFC) =~ gfortran ]]; then
 		append-cflags -Dgfortran
 	fi
 
@@ -48,7 +48,7 @@ src_compile() {
 			LDFLAGS="${LDFLAGS}" \
 			FFLAGS="${FFLAGS}" \
 			CC="$(tc-getCC)"\
-			FC="${FORTRANC}" \
+			FC="$(tc-getFC)" \
 			INCDIRS="-I${EPREFIX}"/usr/include \
 			LIBDIRS="-L${EPREFIX}"/usr/$(get_libdir) \
 			${target} || die

@@ -1,9 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-sound/gmpc/gmpc-0.20.0.ebuild,v 1.2 2010/06/30 20:18:50 angelos Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-sound/gmpc/gmpc-0.20.0.ebuild,v 1.11 2011/05/16 11:06:37 angelos Exp $
 
 EAPI=2
-inherit gnome2-utils
+inherit autotools eutils gnome2-utils
 
 DESCRIPTION="A GTK+2 client for the Music Player Daemon"
 HOMEPAGE="http://gmpc.wikia.com/wiki/Gnome_Music_Player_Client"
@@ -11,7 +11,7 @@ SRC_URI="http://download.sarine.nl/Programs/${PN}/${PV}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+KEYWORDS="amd64 ppc x86"
 IUSE="nls xspf"
 
 RDEPEND=">=dev-libs/glib-2.16:2
@@ -23,13 +23,19 @@ RDEPEND=">=dev-libs/glib-2.16:2
 	dev-db/sqlite:3
 	xspf? ( >=media-libs/libxspf-1.2 )"
 DEPEND="${RDEPEND}
-	>=dev-lang/vala-0.7.10
+	dev-lang/vala:0.10
 	dev-util/gob
 	dev-util/pkgconfig
 	nls? ( dev-util/intltool
 		sys-devel/gettext )"
 
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-underlinking.patch
+	eautoreconf
+}
+
 src_configure() {
+	VALAC=$(type -p valac-0.10) \
 	econf \
 		--disable-dependency-tracking \
 		$(use_enable nls) \

@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/subtitlecomposer/subtitlecomposer-0.5.3.ebuild,v 1.3 2010/06/24 18:44:27 xarthisius Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-video/subtitlecomposer/subtitlecomposer-0.5.3.ebuild,v 1.6 2011/02/02 05:22:33 tampakrap Exp $
 
-EAPI="2"
+EAPI=3
 
 KDE_LINGUAS="bg cs de el es fr pl pt_BR sr"
 inherit kde4-base
@@ -12,12 +12,11 @@ HOMEPAGE="http://www.sourceforge.net/projects/subcomposer/"
 SRC_URI="mirror://sourceforge/subcomposer/${P}.tar.bz2"
 
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 SLOT="4"
 IUSE="debug gstreamer xine"
 
 RDEPEND="
-	media-sound/phonon
 	gstreamer? ( media-libs/gstreamer )
 	xine? ( media-libs/xine-lib )
 "

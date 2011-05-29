@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/eutils.eclass,v 1.350 2010/09/16 22:38:25 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/eutils.eclass,v 1.356 2011/04/18 15:09:16 vapier Exp $
 
 # @ECLASS: eutils.eclass
 # @MAINTAINER:
@@ -291,9 +291,9 @@ epatch() {
 		local a=${patchname#*_} # strip the ???_
 		a=${a%%_*}              # strip the _foo.patch
 		if ! [[ ${SINGLE_PATCH} == "yes" || \
-		        ${EPATCH_FORCE} == "yes" || \
-		        ${a} == all     || \
-		        ${a} == ${ARCH} ]]
+				${EPATCH_FORCE} == "yes" || \
+				${a} == all     || \
+				${a} == ${ARCH} ]]
 		then
 			continue
 		fi
@@ -359,6 +359,13 @@ epatch() {
 		if [[ -n ${abs_paths} ]] ; then
 			count=1
 			printf "NOTE: skipping -p0 due to absolute paths in patch:\n%s\n" "${abs_paths}" >> "${STDERR_TARGET}"
+		fi
+		# Similar reason, but with relative paths.
+		local rel_paths=$(egrep -n '^[-+]{3} [^	]*[.][.]/' "${PATCH_TARGET}")
+		if [[ -n ${rel_paths} ]] ; then
+			eqawarn "QA Notice: Your patch uses relative paths '../'."
+			eqawarn " In the future this will cause a failure."
+			eqawarn "${rel_paths}"
 		fi
 
 		# Dynamically detect the correct -p# ... i'm lazy, so shoot me :/
@@ -1386,9 +1393,9 @@ unpack_makeself() {
 	esac
 
 	# lets grab the first few bytes of the file to figure out what kind of archive it is
-	local tmpfile=$(emktemp)
+	local filetype tmpfile=$(emktemp)
 	eval ${exe} 2>/dev/null | head -c 512 > "${tmpfile}"
-	local filetype=$(file -b "${tmpfile}")
+	filetype=$(file -b "${tmpfile}") || die
 	case ${filetype} in
 		*tar\ archive*)
 			eval ${exe} | tar --no-same-owner -xf -
@@ -1787,7 +1794,9 @@ preserve_old_lib_notify() {
 			ewarn "helper program, simply emerge the 'gentoolkit' package."
 			ewarn
 		fi
-		ewarn "  # revdep-rebuild --library ${lib##*/}"
+		# temp hack for #348634 #357225
+		[[ ${PN} == "mpfr" ]] && lib=${lib##*/}
+		ewarn "  # revdep-rebuild --library '${lib}'"
 	done
 	if [[ ${notice} -eq 1 ]] ; then
 		ewarn
@@ -1943,26 +1952,31 @@ EOF
 	fi
 }
 
-# @FUNCTION: prepalldocs
-# @USAGE:
+# @FUNCTION: path_exists
+# @USAGE: [-a|-o] <paths>
 # @DESCRIPTION:
-# Compress files in /usr/share/doc which are not already
-# compressed, excluding /usr/share/doc/${PF}/html.
-# Uses the ecompressdir to do the compression.
-# 2009-02-18 by betelgeuse:
-# Commented because ecompressdir is even more internal to
-# Portage than prepalldocs (it's not even mentioned in man 5
-# ebuild). Please submit a better version for review to gentoo-dev
-# if you want prepalldocs here.
-#prepalldocs() {
-#	if [[ -n $1 ]] ; then
-#		ewarn "prepalldocs: invalid usage; takes no arguments"
-#	fi
+# Check if the specified paths exist.  Works for all types of paths
+# (files/dirs/etc...).  The -a and -o flags control the requirements
+# of the paths.  They correspond to "and" and "or" logic.  So the -a
+# flag means all the paths must exist while the -o flag means at least
+# one of the paths must exist.  The default behavior is "and".  If no
+# paths are specified, then the return value is "false".
+path_exists() {
+	local opt=$1
+	[[ ${opt} == -[ao] ]] && shift || opt="-a"
 
-#	cd "${D}"
-#	[[ -d usr/share/doc ]] || return 0
+	# no paths -> return false
+	# same behavior as: [[ -e "" ]]
+	[[ $# -eq 0 ]] && return 1
 
-#	find usr/share/doc -exec gzip {} +
-#	ecompressdir --ignore /usr/share/doc/${PF}/html
-#	ecompressdir --queue /usr/share/doc
-#}
+	local p r=0
+	for p in "$@" ; do
+		[[ -e ${p} ]]
+		: $(( r += $? ))
+	done
+
+	case ${opt} in
+		-a) return $(( r != 0 )) ;;
+		-o) return $(( r == $# )) ;;
+	esac
+}

@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-mail/uw-imap/uw-imap-2007e.ebuild,v 1.8 2009/09/23 19:14:33 patrick Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-mail/uw-imap/uw-imap-2007e.ebuild,v 1.12 2011/05/07 11:20:37 eras Exp $
 
 inherit eutils flag-o-matic
 
@@ -16,10 +16,8 @@ SLOT="0"
 KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 sparc x86"
 IUSE="ipv6 ssl kerberos clearpasswd"
 
-PROVIDE="virtual/imapd"
-PROVIDE="${PROVIDE} virtual/imap-c-client"
 DEPEND="!net-mail/vimap
-	!virtual/imap-c-client
+	!net-libs/c-client
 	>=sys-libs/pam-0.72
 	>=net-mail/mailbase-0.00-r8
 	ssl? ( dev-libs/openssl )
@@ -27,8 +25,15 @@ DEPEND="!net-mail/vimap
 
 RDEPEND="${DEPEND}
 	>=net-mail/uw-mailutils-${PV}
-	sys-apps/xinetd
-	!virtual/imapd"
+	sys-apps/xinetd"
+
+# get rid of old style virtual - bug 350792
+# all blockers really needed?
+RDEPEND="${RDEPEND}
+	!net-mail/dovecot
+	!mail-mta/courier
+	!net-mail/courier-imap
+	!net-mail/cyrus-imapd"
 
 pkg_setup() {
 	echo
@@ -69,13 +74,15 @@ src_unpack() {
 		# Apply our patch to actually build the shared library for PHP5
 		epatch "${FILESDIR}"/${PN}-2004c-amd64-so-fix.patch
 	fi
+	epatch "${FILESDIR}/${PN}-ldflags.patch"
 
 	# Now we must make all the individual Makefiles use different CFLAGS,
 	# otherwise they would all use -fPIC
 	sed -i -e "s|\`cat \$C/CFLAGS\`|${CFLAGS}|g" src/dmail/Makefile \
 		src/imapd/Makefile src/ipopd/Makefile src/mailutil/Makefile \
 		src/mlock/Makefile src/mtest/Makefile src/tmail/Makefile \
-		|| die "sed failed patching Makefile CFLAGS."
+		|| die "sed failed patching Makefile FLAGS."
+
 	# Now there is only c-client left, which should be built with -fPIC
 	append-flags -fPIC
 
@@ -167,11 +174,12 @@ src_install() {
 	doins c-client/linkage.{c,h}
 	doins c-client/{osdep,env_unix,env,fs,ftl,nl,tcp}.h
 	dolib.a c-client/c-client.a
-	dosym /usr/$(get_libdir)/c-client.a /usr/$(get_libdir)/libc-client.a
+	cd "${D}"/usr/$(get_libdir)
+	dosym c-client.a libc-client.a
+	cd "${S}"
 
 	doman src/ipopd/ipopd.8 src/imapd/imapd.8
 	doman src/dmail/dmail.1 src/tmail/tmail.1
-
 	dodoc README docs/*.txt docs/CONFIG docs/RELNOTES
 
 	docinto rfc

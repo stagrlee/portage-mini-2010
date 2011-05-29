@@ -1,7 +1,8 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-emulation/daphne/daphne-1.0.ebuild,v 1.4 2009/11/21 19:18:09 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-emulation/daphne/daphne-1.0.ebuild,v 1.6 2010/10/12 06:02:56 mr_bones_ Exp $
 
+EAPI=2
 inherit eutils toolchain-funcs games
 
 DESCRIPTION="Laserdisc Arcade Game Emulator"
@@ -15,23 +16,21 @@ IUSE=""
 
 DEPEND="media-libs/libogg
 	media-libs/libvorbis
-	media-libs/libsdl
+	media-libs/libsdl[video]
 	media-libs/sdl-mixer
 	media-libs/glew"
 
-S="${WORKDIR}"/v_1_0/src
+S=${WORKDIR}/v_1_0/src
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
+src_prepare() {
 	# Fix no sound issue with >=media-libs/libvorbis-1.2.0
 	epatch "${FILESDIR}/${P}"-vorbisfilefix.patch
 
 	# amd64 does not like int pointers
 	epatch "${FILESDIR}/${P}"-typefix.patch
 
-	epatch "${FILESDIR}/${P}"-gcc43.patch
+	epatch "${FILESDIR}/${P}"-gcc43.patch \
+		"${FILESDIR}"/${P}-ldflags.patch
 
 	sed -i "/m_appdir =/s:\.:${GAMES_DATADIR}/${PN}:" \
 		io/homedir.cpp \
@@ -54,6 +53,11 @@ src_unpack() {
 		|| die "sed failed"
 }
 
+src_configure() {
+	cd vldp2
+	egamesconf --disable-accel-detect
+}
+
 src_compile() {
 	local archflags
 
@@ -70,7 +74,6 @@ src_compile() {
 		DFLAGS="${CXXFLAGS} ${archflags}" \
 		|| die "src build failed"
 	cd vldp2
-	egamesconf --disable-accel-detect || die
 	emake \
 		-f Makefile.linux \
 		CC=$(tc-getCC) \

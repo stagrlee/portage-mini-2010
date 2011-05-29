@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-i18n/libguess/libguess-1.0.ebuild,v 1.1 2010/08/13 22:18:51 chainsaw Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-i18n/libguess/libguess-1.0.ebuild,v 1.6 2011/03/20 18:24:06 armin76 Exp $
 
 EAPI=2
 
@@ -10,7 +10,7 @@ SRC_URI="http://distfiles.atheme.org/${P}.tbz2"
 
 LICENSE="BSD-2"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~alpha ~amd64 ~hppa ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux"
 IUSE="examples"
 
 RDEPEND="

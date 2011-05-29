@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-libs/wxGTK/wxGTK-2.8.11.0.ebuild,v 1.2 2010/06/29 01:06:19 dirtyepic Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-libs/wxGTK/wxGTK-2.8.11.0.ebuild,v 1.9 2011/05/21 13:49:17 tomka Exp $
 
 EAPI="2"
 
@@ -16,7 +16,7 @@ BASE_P="${PN}-${BASE_PV}"
 # docs, and are released more frequently than wxGTK.
 SRC_URI="mirror://sourceforge/wxpython/wxPython-src-${PV}.tar.bz2"
 
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="~alpha amd64 arm hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc x86 ~x86-fbsd"
 IUSE="X doc debug gnome gstreamer odbc opengl pch sdl tiff"
 
 RDEPEND="
@@ -24,15 +24,15 @@ RDEPEND="
 	odbc?   ( dev-db/unixODBC )
 	sdl?    ( media-libs/libsdl )
 	X?  (
-		>=x11-libs/gtk+-2.4
-		>=dev-libs/glib-2.4
-		media-libs/jpeg
+		>=x11-libs/gtk+-2.4:2
+		>=dev-libs/glib-2.4:2
+		virtual/jpeg
 		x11-libs/libSM
 		x11-libs/libXinerama
 		x11-libs/libXxf86vm
-		gnome?  ( gnome-base/libgnomeprintui )
+		gnome?  ( gnome-base/libgnomeprintui:2.2 )
 		gstreamer? (
-			>=gnome-base/gconf-2.0
+			gnome-base/gconf:2
 			>=media-libs/gstreamer-0.10 )
 		opengl? ( virtual/opengl )
 		tiff?   ( media-libs/tiff )
@@ -61,6 +61,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/${PN}-2.8.11-collision.patch
 	epatch "${FILESDIR}"/${PN}-2.8.7-mmedia.patch              # Bug #174874
 	epatch "${FILESDIR}"/${PN}-2.8.10.1-odbc-defines.patch     # Bug #310923
+	epatch "${FILESDIR}"/${PN}-2.8.11-libpng15.patch           # Bug #355035
 }
 
 src_configure() {

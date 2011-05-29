@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/virtuoso.eclass,v 1.6 2010/08/22 08:09:51 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/virtuoso.eclass,v 1.10 2011/04/20 09:53:29 scarabeus Exp $
 
 # @ECLASS: virtuoso.eclass
 # @MAINTAINER:
@@ -11,11 +11,11 @@
 # This eclass provides common code for splitting Virtuoso OpenSource database
 
 case ${EAPI:-0} in
-	2|3) : ;;
+	2|3|4) : ;;
 	*) die "EAPI=${EAPI} is not supported" ;;
 esac
 
-inherit base autotools flag-o-matic multilib
+inherit base autotools multilib
 
 MY_P="virtuoso-opensource-${PV}"
 
@@ -59,7 +59,6 @@ virtuoso_src_prepare() {
 
 	EPATCH_SUFFIX='patch' EPATCH_FORCE='yes' epatch
 	base_src_prepare
-	epatch_user
 
 	# @ECLASS-VARIABLE: VOS_EXTRACT
 	# @DESCRIPTION:
@@ -108,8 +107,6 @@ virtuoso_src_prepare() {
 # Runs ./configure with common and user options specified via myconf variable
 virtuoso_src_configure() {
 	debug-print-function ${FUNCNAME} "$@"
-
-	use amd64 && append-flags '-m64'
 
 	# Override some variables to make tests work
 	if [[ ${PN} != virtuoso-server ]]; then

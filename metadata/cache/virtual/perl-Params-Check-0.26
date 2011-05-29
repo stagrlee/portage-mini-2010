@@ -1,12 +1,12 @@
 
-|| ( ~dev-lang/perl-5.12.2 ~dev-lang/perl-5.12.1 ~dev-lang/perl-5.10.1 ~perl-core/Params-Check-0.26 )
+|| ( ~dev-lang/perl-5.12.3 ~dev-lang/perl-5.12.2 ~dev-lang/perl-5.10.1 ~perl-core/Params-Check-0.26 )
 0
 
 
 
 
 A generic input parsing/checking mechanism
-~amd64 ~ppc ~x86
+~amd64 ~ppc ~ppc64 ~x86
 
 
 

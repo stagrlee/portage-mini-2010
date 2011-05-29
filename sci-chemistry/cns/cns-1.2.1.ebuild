@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/cns/cns-1.2.1.ebuild,v 1.6 2010/06/28 21:05:46 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/cns/cns-1.2.1.ebuild,v 1.11 2011/05/11 07:27:13 jlec Exp $
 
-inherit eutils fortran toolchain-funcs versionator flag-o-matic
+inherit eutils toolchain-funcs versionator flag-o-matic
 
 MY_PN="${PN}_solve"
 MY_PV="$(delete_version_separator 2)"
@@ -21,8 +21,6 @@ RDEPEND="app-shells/tcsh"
 DEPEND="${RDEPEND}"
 S="${WORKDIR}/${MY_P}"
 
-FORTRAN="g77 gfortran"
-
 pkg_nofetch() {
 	elog "Fill out the form at http://cns.csb.yale.edu/cns_request/"
 	elog "and place these files:"
@@ -30,25 +28,30 @@ pkg_nofetch() {
 	elog "in ${DISTDIR}."
 }
 
-pkg_setup() {
-	fortran_pkg_setup
+get_fcomp() {
+	case $(tc-getFC) in
+		*gfortran* )
+			FCOMP="gfortran" ;;
+		ifort )
+			FCOMP="ifc" ;;
+		* )
+			FCOMP=$(tc-getFC) ;;
+	esac
+}
 
-	if use openmp; then
-		if [[ gcc-major-version < 4 ]] \
-			|| ( [[ gcc-major-version < 4 ]] && [[ gcc-minor-version < 2 ]] ); then
-			local msg="Sorry, you need gcc 4.2 or newer to use OpenMP."
-			eerror "$msg"
-			die "$msg"
-		fi
+pkg_setup() {
+	if [[ $(tc-getFC) =~ gfortran ]]; then
+		tc-has-openmp || die "Please ensure your compiler has openmp support"
 	fi
+	get_fcomp
 }
 
 src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
-	use openmp && append-fflags -fopenmp
-	use openmp && append-ldflags -lgomp
+	use openmp && append-fflags -fopenmp && \
+		append-ldflags -fopenmp
 
 	# Someone already did the same in the openmp version, apparently
 	use openmp || epatch "${FILESDIR}"/1.2-allow-unknown-architectures.patch
@@ -72,21 +75,21 @@ src_unpack() {
 src_compile() {
 	local GLOBALS
 	local MALIGN=
-	if [[ ${FORTRANC} = g77 ]]; then
+	if [[ $(tc-getFC) =~ g77 ]]; then
 		GLOBALS="-fno-globals"
 		MALIGN='\$(CNS_MALIGN_I86)'
 	fi
 
 	# Set up the compiler to use
 	pushd instlib/machine/unsupported/g77-unix 2>/dev/null
-	ln -s Makefile.header Makefile.header.${FORTRANC} || die
+	ln -s Makefile.header Makefile.header.${FCOMP} || die
 	popd 2>/dev/null
 
 	# make install really means build, since it's expected to be used in-place
 	emake \
 		CC="$(tc-getCC)" \
-		F77="${FORTRANC}" \
-		LD="${FORTRANC}" \
+		F77=$(tc-getFC) \
+		LD=$(tc-getFC) \
 		CCFLAGS="${CFLAGS} -DCNS_ARCH_TYPE_\$(CNS_ARCH_TYPE) \$(EXT_CCFLAGS)" \
 		LDFLAGS="${LDFLAGS}" \
 		F77OPT="${FFLAGS:- -O2} ${MALIGN}" \
@@ -117,6 +120,7 @@ src_install() {
 		-e "s:CNS_MODULE \$CNS_SOLVE/modules:CNS_MODULE \$CNS_DATA/modules:g" \
 		-e "s:CNS_HELPLIB \$CNS_SOLVE/helplib:CNS_HELPLIB \$CNS_DATA/helplib:g" \
 		-e "s:\$CNS_SOLVE/bin/cns_info:\$CNS_DATA/cns_info:g" \
+		-e "/^g77on/d" \
 		"${S}"/cns_solve_env
 	# I don't entirely understand why the sh version requires a leading /
 	# for CNS_SOLVE and CNS_ROOT, but it does
@@ -129,6 +133,7 @@ src_install() {
 		-e "s:CNS_MODULE=\$CNS_SOLVE/modules:CNS_MODULE=\$CNS_DATA/modules:g" \
 		-e "s:CNS_HELPLIB=\$CNS_SOLVE/helplib:CNS_HELPLIB=\$CNS_DATA/helplib:g" \
 		-e "s:\$CNS_SOLVE/bin/cns_info:\$CNS_DATA/cns_info:g" \
+		-e "/^g77on/d" \
 		"${T}"/cns_solve_env_sh
 
 	# Get rid of setup stuff we don't need in the installed script

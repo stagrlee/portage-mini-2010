@@ -1,12 +1,13 @@
-# Copyright 1999-2006 Gentoo Foundation.
+# Copyright 1999-2011 Gentoo Foundation.
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/desc/linguas.desc,v 1.50 2010/09/07 13:38:19 reavertm Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/desc/linguas.desc,v 1.54 2011/05/29 15:05:44 phajdan.jr Exp $
 
 # This file contains descriptions of LINGUAS USE_EXPAND flags.
 
 # Keep it sorted.
 
 af - Afrikaans locale
+ak - Akan locale
 am - Amharic locale
 ar - Arabic locale
 as - Assamese locale
@@ -24,6 +25,7 @@ br - Breton locale
 brx - Bodo locale for India
 bs - Bosnian locale
 ca - Catalan locale
+ca_XV - Asturian and Catalan locale (Valencia)
 ca@valencia - Catalan locale (Valencia)
 crh - Crimean Tatar (Crimean Turkish) locale
 cs - Czech locale
@@ -54,6 +56,7 @@ et_EE - Estonian locale
 eu - Basque locale
 fa - Persian locale
 fi - Finnish locale
+fil - Filipino locale
 fo -  Faroese locale
 fr - French locale
 fr_CA - French locale for Canada
@@ -61,6 +64,7 @@ fy - Frisian locale
 fy_NL - Frisian language locale for the Netherlands
 ga - Irish locale
 ga_IE - Irish locale for Ireland
+gd - Gaelic locale
 gl - Galician locale
 gu - Gujarati locale
 gu_IN - Gujarati locale for India
@@ -72,6 +76,7 @@ hr - Croatian locale
 hsb - Upper Sorbian locale
 hu - Hungarian locale
 hy - Armenian locale
+hy_AM - Armenian locale
 ia - Interlingua locale
 id - Indonesian locale
 is - Icelandic locale
@@ -90,10 +95,12 @@ ku - Kurdish (latin) locale
 ky - Kyrgyz (Kirghiz) locale
 la - Latin2 locale
 lb - Luxembourgish locale
+lg - Ganda locale
 lo - Lao locale
 lt - Lithuanian locale
 lv - Latvian locale
 mai - Maithili locale
+me - Montenegrin (Crnogorski) locale
 mk - Macedonian locale
 ml - Malayalam locale
 ml_IN - Malayalam locale for India
@@ -121,7 +128,9 @@ or - Oriya locale
 or_IN - Oriya locale for India
 pa - Punjabi locale for India
 pa_IN - Punjabi locale for India
+pap - Paiamento local
 pl - Polish locale
+ps - Pushto locale
 pt - Portuguese locale
 pt_BR - Portuguese locale for Brasil
 pt_PT - Portuguese locale for Portugal
@@ -135,6 +144,7 @@ sd - Sindhi locale
 se - Northern Saami locale
 sh - Serbo-Croatian locale
 sh_YU - Serbo-Croatian locale
+son - Songhai locale
 si - Sinhala locale
 sk - Slovak locale
 sl - Slovenian locale
@@ -158,6 +168,7 @@ te - Telugu locale
 te_IN - Telugu locale for India
 tg - Tajik locale
 th - Thai locale
+ti - Tigrinya locale
 ti_ER - Tigrinya locale for Eritrea
 tk - Turkmen locale
 tl - Tagalog locale

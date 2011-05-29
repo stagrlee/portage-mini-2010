@@ -1,6 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/sepolgen/sepolgen-1.0.17-r1.ebuild,v 1.2 2010/04/04 18:53:45 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-python/sepolgen/sepolgen-1.0.17-r1.ebuild,v 1.4 2011/04/25 19:07:08 arfrever Exp $
+
+EAPI="3"
 
 inherit python
 
@@ -17,9 +19,7 @@ DEPEND=""
 RDEPEND=">=dev-lang/python-2.5
 	>=sys-libs/libselinux-2.0"
 
-src_unpack() {
-	unpack ${A}
-
+src_prepare() {
 	# fix up default paths to not be RH specific
 	sed -i -e 's:/usr/share/selinux/devel:/usr/share/selinux/strict:' \
 		"${S}/src/sepolgen/defaults.py" || die
@@ -46,9 +46,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	python_mod_optimize $(python_get_sitedir)
+	python_mod_optimize sepolgen
 }
 
 pkg_postrm() {
-	python_mod_cleanup $(python_get_sitedir)
+	python_mod_cleanup sepolgen
 }

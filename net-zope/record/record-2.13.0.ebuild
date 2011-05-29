@@ -1,11 +1,11 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-zope/record/record-2.13.0.ebuild,v 1.1 2010/07/04 04:38:41 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-zope/record/record-2.13.0.ebuild,v 1.4 2011/01/13 22:22:57 xarthisius Exp $
 
 EAPI="3"
 PYTHON_DEPEND="2"
 SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
+RESTRICT_PYTHON_ABIS="3.* *-jython"
 DISTUTILS_SRC_TEST="nosetests"
 
 inherit distutils
@@ -15,11 +15,11 @@ MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Special Record objects used in Zope2."
 HOMEPAGE="http://pypi.python.org/pypi/Record"
-SRC_URI="http://pypi.python.org/packages/source/${MY_PN:0:1}/${MY_PN}/${MY_P}.zip"
+SRC_URI="mirror://pypi/${MY_PN:0:1}/${MY_PN}/${MY_P}.zip"
 
 LICENSE="ZPL"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~ppc ~sparc ~x86"
 IUSE=""
 
 RDEPEND="net-zope/extensionclass"

@@ -2,7 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
   <herd>voip</herd>
-  <use>
-    <flag name="bri">Enable ISDN BRI support (bristuff)</flag>
-  </use>
+  <maintainer>
+    <email>chainsaw@gentoo.org</email>
+    <name>Tony Vroon</name>
+  </maintainer>
 </pkgmetadata>

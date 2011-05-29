@@ -1,9 +1,13 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-backup/bacula/bacula-5.0.3-r1.ebuild,v 1.1 2010/08/23 17:52:44 tomjbe Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-backup/bacula/bacula-5.0.3-r1.ebuild,v 1.9 2011/05/14 09:28:46 tomjbe Exp $
 
 EAPI="2"
-inherit eutils multilib
+PYTHON_DEPEND="python? 2"
+PYTHON_USE_WITH="threads"
+PYTHON_USE_WITH_OPT="python"
+
+inherit eutils multilib python
 
 MY_PV=${PV/_beta/-b}
 MY_P=${PN}-${MY_PV}
@@ -18,7 +22,7 @@ SRC_URI="mirror://sourceforge/bacula/${MY_P}.tar.gz"
 
 LICENSE="AGPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~hppa ~ppc ~sparc ~x86"
+KEYWORDS="amd64 hppa ppc sparc x86"
 IUSE="bacula-clientonly bacula-nodir bacula-nosd ipv6 logwatch mysql postgres python qt4 readline +sqlite3 ssl static tcpd vim-syntax X"
 
 # maintainer comment:
@@ -35,14 +39,13 @@ DEPEND="
 	)
 	qt4? (
 		x11-libs/qt-svg:4
-		>=x11-libs/qwt-5
+		x11-libs/qwt:5
 	)
 	ssl? ( dev-libs/openssl )
 	logwatch? ( sys-apps/logwatch )
 	tcpd? ( >=sys-apps/tcp-wrappers-7.6 )
 	readline? ( >=sys-libs/readline-4.1 )
-	sys-libs/ncurses
-	python? ( dev-lang/python[threads] )"
+	sys-libs/ncurses"
 #	doc? (
 #		app-text/ghostscript-gpl
 #		dev-tex/latex2html[png]
@@ -105,6 +108,11 @@ pkg_setup() {
 			einfo "for information about running bacula as a non-root user."
 			einfo
 		fi
+	fi
+
+	if use python; then
+		python_set_active_version 2
+		python_pkg_setup
 	fi
 }
 
@@ -331,8 +339,8 @@ src_install() {
 	for script in ${myscripts}; do
 		# copy over init script and config to a temporary location
 		# so we can modify them as needed
-		cp "${FILESDIR}/${PV}/${script}".confd "${T}/${script}".confd || die "failed to copy ${script}.confd"
-		cp "${FILESDIR}/${PV}/${script}".initd "${T}/${script}".initd || die "failed to copy ${script}.initd"
+		cp "${FILESDIR}/${script}".confd "${T}/${script}".confd || die "failed to copy ${script}.confd"
+		cp "${FILESDIR}/${script}".initd "${T}/${script}".initd || die "failed to copy ${script}.initd"
 		# set database dependancy for the director init script
 		case "${script}" in
 			bacula-dir)

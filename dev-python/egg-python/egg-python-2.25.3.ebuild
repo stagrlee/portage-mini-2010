@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-python/egg-python/egg-python-2.25.3.ebuild,v 1.5 2010/09/11 19:02:00 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-python/egg-python/egg-python-2.25.3.ebuild,v 1.8 2011/02/26 13:27:05 eva Exp $
 
 EAPI="2"
 
@@ -8,6 +8,10 @@ EAPI="2"
 # deprecated, have deps we don't really want and there are no users in-tree.
 G_PY_PN="gnome-python-extras"
 G_PY_BINDINGS="eggtray"
+
+SUPPORT_PYTHON_ABIS="1"
+PYTHON_DEPEND="2"
+RESTRICT_PYTHON_ABIS="3.*"
 
 inherit gnome-python-common
 
@@ -17,7 +21,7 @@ SRC_URI="mirror://gnome/sources/${G_PY_PN}/${PVP}/${G_PY_PN}-${PV}.tar.bz2"
 DESCRIPTION="EggTrayIcon bindings for Python"
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~ia64 ppc ~ppc64 ~sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 ia64 ppc ppc64 sparc x86 ~x86-fbsd"
 IUSE="examples"
 
 RDEPEND=">=dev-python/libbonobo-python-2.22.1

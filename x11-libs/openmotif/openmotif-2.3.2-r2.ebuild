@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-libs/openmotif/openmotif-2.3.2-r2.ebuild,v 1.13 2010/06/07 12:18:26 angelos Exp $
+# $Header: /var/cvsroot/gentoo-x86/x11-libs/openmotif/openmotif-2.3.2-r2.ebuild,v 1.18 2011/03/07 11:04:25 ulm Exp $
 
 EAPI=3
 
@@ -26,15 +26,14 @@ RDEPEND="x11-libs/libXmu
 	x11-libs/libXp
 	unicode? ( virtual/libiconv )
 	xft? ( x11-libs/libXft )
-	jpeg? ( media-libs/jpeg )
-	png? ( media-libs/libpng )"
+	jpeg? ( virtual/jpeg )
+	png? ( >=media-libs/libpng-1.4 )"
 DEPEND="${RDEPEND}
 	sys-devel/flex
 	x11-misc/xbitmaps"
 RDEPEND="${RDEPEND}
 	!x11-libs/motif-config
 	!x11-libs/lesstif
-	!<=x11-libs/openmotif-2.3.0
 	doc? ( app-doc/openmotif-manual )"
 
 pkg_nofetch() {
@@ -104,9 +103,6 @@ src_configure() {
 	# bug #80421
 	filter-flags -ftracer
 
-	# multilib includes don't work right in this package...
-	has_multilib_profile && append-flags "-I$(get_ml_incdir)"
-
 	# feel free to fix properly if you care
 	append-flags -fno-strict-aliasing
 
@@ -163,7 +159,7 @@ pkg_postinst() {
 	If you have binary-only applications requiring libXm.so.3, you may
 	therefore create a symlink from libXm.so.3 to libXm.so.4.
 	Please note, however, that there will be no Gentoo support for this.
-	Alternatively, you may install x11-libs/openmotif-compat-2.2* for
+	Alternatively, you may install slot 2.2 of x11-libs/openmotif for
 	the Open Motif 2.2 libraries.
 	EOF
 }

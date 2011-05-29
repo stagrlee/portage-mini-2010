@@ -1,0 +1,22 @@
+net-libs/libpcap >=net-libs/libnet-1.1.1
+net-libs/libpcap >=net-libs/libnet-1.1.1
+0
+mirror://sourceforge/ntwib/netwib-5.38.0-src.tgz doc? ( mirror://sourceforge/ntwib/netwib-5.38.0-doc_html.tgz )
+
+http://www.laurentconstantin.com/en/netw/netwib/ http://ntwib.sourceforge.net/
+GPL-3
+Library of Ethernet, IP, UDP, TCP, ICMP, ARP and RARP protocols
+~amd64 ~hppa ~ppc x86
+multilib toolchain-funcs
+doc
+
+
+
+2
+
+configure install prepare
+
+
+
+
+

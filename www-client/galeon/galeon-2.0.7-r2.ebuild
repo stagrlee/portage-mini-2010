@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/www-client/galeon/galeon-2.0.7-r2.ebuild,v 1.4 2010/07/26 19:33:06 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/www-client/galeon/galeon-2.0.7-r2.ebuild,v 1.7 2011/03/20 22:25:06 nirbheek Exp $
 
 EAPI="2"
 inherit autotools gnome2 eutils
@@ -12,15 +12,15 @@ SRC_URI="mirror://sourceforge/galeon/${P}.tar.bz2
 
 LICENSE="GPL-2"
 IUSE=""
-KEYWORDS="amd64 ~ia64 ~ppc -sparc x86"
+KEYWORDS="amd64 ~ia64 ppc -sparc x86"
 SLOT="0"
-RDEPEND=">=net-libs/xulrunner-1.9.2
-	>=x11-libs/gtk+-2.12.0
-	>=dev-libs/libxml2-2.6.6
+RDEPEND=">=net-libs/xulrunner-1.9.2:1.9
+	>=x11-libs/gtk+-2.12.0:2
+	>=dev-libs/libxml2-2.6.6:2
 	>=gnome-base/libgnomeui-2.5.2
-	>=gnome-base/gnome-vfs-2
-	>=gnome-base/gnome-desktop-2.10.0
-	>=gnome-base/libglade-2.3.1"
+	>=gnome-base/gnome-vfs-2:2
+	>=gnome-base/gnome-desktop-2.10.0:2
+	>=gnome-base/libglade-2.3.1:2.0"
 DEPEND="${RDEPEND}
 	app-text/rarian
 	dev-util/pkgconfig

@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/xine-lib/xine-lib-1.1.19.ebuild,v 1.3 2010/08/20 14:35:28 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/xine-lib/xine-lib-1.1.19.ebuild,v 1.14 2011/05/11 19:11:38 aballier Exp $
 
 EAPI=3
 inherit eutils flag-o-matic toolchain-funcs multilib
@@ -24,7 +24,7 @@ HOMEPAGE="http://xine.sourceforge.net"
 
 LICENSE="GPL-2"
 SLOT="1"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd"
 
 IUSE="-aalib -libcaca esd win32codecs nls +css +X directfb +vorbis +alsa
 gnome sdl speex +theora ipv6 altivec opengl aac -fbcon +xv xvmc
@@ -60,12 +60,12 @@ RDEPEND="X? ( x11-libs/libXext
 	imagemagick? ( media-gfx/imagemagick )
 	dts? ( media-libs/libdca )
 	aac? ( >=media-libs/faad2-2.6.1 )
-	>=media-video/ffmpeg-0.4.9_p20070129
+	virtual/ffmpeg
 	modplug? ( >=media-libs/libmodplug-0.8.8.1 )
 	nls? ( virtual/libintl )
-	gtk? ( =x11-libs/gtk+-2* )
+	gtk? ( x11-libs/gtk+:2 )
 	pulseaudio? ( media-sound/pulseaudio )
-	truetype? ( =media-libs/freetype-2* media-libs/fontconfig )
+	truetype? ( media-libs/freetype:2 media-libs/fontconfig )
 	virtual/libiconv
 	wavpack? ( >=media-sound/wavpack-4.31 )
 	musepack? ( >=media-sound/musepack-tools-444 )
@@ -90,7 +90,8 @@ DEPEND="${RDEPEND}
 
 src_prepare() {
 	epatch "${DISTDIR}"/${PN}-1.1.15-textrel-fix.patch \
-		"${FILESDIR}"/${P}-xvmc.patch
+		"${FILESDIR}"/${P}-xvmc.patch \
+		"${FILESDIR}"/${P}-ffmpeg.patch
 }
 
 src_configure() {

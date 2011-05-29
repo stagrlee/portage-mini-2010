@@ -1,6 +1,10 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/mips/package.use.mask,v 1.21 2010/06/19 01:13:16 abcd Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/mips/package.use.mask,v 1.33 2011/05/20 19:17:04 xarthisius Exp $
+
+# Kacper Kowalik <xarthisius@gentoo.org> (20 May 2011)
+# depends on dev-libs/dmalloc which is not keyworded
+net-nds/ypbind debug
 
 # uses games-board/ggz-gtk-client
 games-strategy/freeciv ggz
@@ -74,3 +78,29 @@ app-portage/layman mercurial
 
 # deps missing keywords
 games-strategy/freeciv auth ggz
+
+# Mart Raudsepp <leio@gentoo.org> (27 Sept 2010)
+# Extra functionality that has external unkeyworded dependencies
+# and is not tested yet
+net-fs/samba ads cluster debug
+
+# Mart Raudsepp <leio@gentoo.org> (03 Oct 2010)
+# dev-util/glade not tested and keyworded yet
+x11-libs/gtksourceview glade
+x11-libs/vte glade
+
+# Matt Turner <mattst88@gentoo.org> (06 Dec 2010)
+# dev-db/tokyocabinet not keyworded
+mail-client/mutt tokyocabinet
+
+# Matt Turner <mattst88@gentoo.org> (06 Dec 2010)
+# dev-perl/GSSAPI not keyworded
+dev-perl/Authen-SASL kerberos
+
+# Matt Turner <mattst88@gentoo.org> (26 Dec 2010)
+# dev-lang/spidermonkey not keyworded
+www-client/elinks javascript
+
+# Matt Turner <mattst88@gentoo.org> (26 Dec 2010)
+# media-gfx/ufraw not keyworded
+media-gfx/imagemagick raw

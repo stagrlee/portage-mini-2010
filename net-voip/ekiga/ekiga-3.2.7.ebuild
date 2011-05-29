@@ -1,14 +1,14 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-voip/ekiga/ekiga-3.2.7.ebuild,v 1.1 2010/08/19 17:10:07 pva Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-voip/ekiga/ekiga-3.2.7.ebuild,v 1.8 2011/02/28 17:15:37 ssuominen Exp $
 
-EAPI="2"
+EAPI=3
 
 KDE_REQUIRED="optional"
 CMAKE_REQUIRED="never"
 GCONF_DEBUG="no" # debug managed by the ebuild
 
-inherit kde4-base gnome2
+inherit eutils kde4-base gnome2
 # gnome2 at the end to make it default
 
 DESCRIPTION="H.323 and SIP VoIP softphone"
@@ -16,11 +16,11 @@ HOMEPAGE="http://www.ekiga.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~sparc x86"
 IUSE="avahi dbus debug doc eds gconf gnome gstreamer h323 kde kontact ldap
 libnotify mmx nls +shm static v4l xcap xv"
 
-RDEPEND=">=dev-libs/glib-2.8.0:2
+RDEPEND=">=dev-libs/glib-2.14.0:2
 	dev-libs/libsigc++:2
 	dev-libs/libxml2:2
 	>=net-libs/opal-3.6.8[audio,sip,video,debug=,h323?]
@@ -35,7 +35,7 @@ RDEPEND=">=dev-libs/glib-2.8.0:2
 		( >=gnome-base/libgnome-2.14.0
 		>=gnome-base/libgnomeui-2.14.0 ) ) )
 	gstreamer? ( >=media-libs/gst-plugins-base-0.10.21.3:0.10 )
-	kde? ( kontact? ( >=kde-base/kdepimlibs-${KDE_MINIMAL} ) )
+	kde? ( kontact? ( $(add_kdebase_dep kdepimlibs) ) )
 	ldap? ( dev-libs/cyrus-sasl:2
 		net-nds/openldap )
 	libnotify? ( x11-libs/libnotify )
@@ -117,6 +117,8 @@ pkg_setup() {
 }
 
 src_prepare() {
+	epatch "${FILESDIR}"/${P}-libnotify-0.7.patch
+
 	gnome2_src_prepare
 
 	# remove call to gconftool-2 --shutdown, upstream bug 555976

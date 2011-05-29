@@ -1,6 +1,16 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/base/use.mask,v 1.106 2010/07/27 22:59:38 mabi Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/base/use.mask,v 1.119 2011/05/21 16:42:43 olemarkus Exp $
+
+# These ABIs are in constant change and currently only available for SVN snapshots
+php_targets_php5-4
+php_targets_php5-5
+
+# deprecated and replaced by USE="udev"
+hal
+
+# Its deps are not mature enough yet
+ayatana
 
 # Only available on x86
 fdftk
@@ -17,7 +27,7 @@ gluon
 # KDE4 specific enablefinal flag
 # Uses huge amounts of ram, and those ricers would be spamming bugzilla.
 # By huge i mean around 8Gigs at least.
-# Most applications also fails with this approach now
+# Most applications also fail with this approach now
 kdeenablefinal
 
 # profile specific USE flags
@@ -63,6 +73,9 @@ ps3
 vis
 ultra1
 
+# arm arch specific USE flags
+neon
+
 # nVidia XvMC requires nvidia-drivers/nvidia-legacy-drivers
 nvidia
 
@@ -89,7 +102,7 @@ video_cards_sunffb
 video_cards_sunleo
 video_cards_suntcx
 
-# not needed on non-mips system
+# not needed on non-mips systems
 video_cards_newport
 video_cards_impact
 
@@ -101,6 +114,12 @@ video_cards_fglrx
 video_cards_via
 video_cards_vmware
 video_cards_virtualbox
+
+# not needed on non-arm systems
+video_cards_omapfb
+
+# linux-only drivers
+video_cards_qxl
 
 # not needed on non-x86, non-amd64, non-ppc systems
 input_devices_synaptics
@@ -211,9 +230,7 @@ macbook
 ada
 
 # lvm2 clustered use flags (moved from default-linux)
-clvm
 gulm
-cman
 
 # tcc is x86 only
 tcc
@@ -231,11 +248,6 @@ prefix
 # Mask kdeprefix since its broken by now
 kdeprefix
 
-# Diego E. Pettenò <flameeyes@gentoo.org> (6 Jul 2009)
-#  on behalf of QA Team
-# Removal of cman is scheduled for 2009-10-06
-cman
-
 # Samuli Suominen <ssuominen@gentoo.org> (01 Aug 2009)
 # RealMagic Hollywood+/Creative DXR3 support
 dxr3
@@ -250,12 +262,12 @@ pvm
 ruby_targets_jruby
 ruby_targets_ree18
 
+# Diego E. Pettenò <flameeyes@gentoo.org> (19 oct 2010)
+# masking flags that only apply to FreeBSD
+kqueue
+
+# Nirbheek Chauahn <nirbheek@gentoo.org> (17 Mar 2011)
 # Nirbheek Chauhan <nirbheek@gentoo.org> (30 Dec 2009)
 # gobject-introspection USE-flag
-# introspection is not mature yet. 
-# gir-repository especially is a big pile of junk
+# introspection still has some kinks to iron out
 introspection
-
-# Jonathan Callen <abcd@gentoo.org> (23 Jun 2010)
-# x11-libs/gtk+:3 is not yet in the tree
-gtk3

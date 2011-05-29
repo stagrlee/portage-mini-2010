@@ -1,11 +1,11 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-client/balsa/balsa-2.4.8.ebuild,v 1.1 2010/08/30 20:40:11 eva Exp $
+# $Header: /var/cvsroot/gentoo-x86/mail-client/balsa/balsa-2.4.8.ebuild,v 1.9 2011/04/16 11:02:37 ulm Exp $
 
 EAPI="2"
 GCONF_DEBUG="no"
 
-inherit gnome2
+inherit eutils gnome2
 
 DESCRIPTION="Email client for GNOME"
 HOMEPAGE="http://pawsa.fedorapeople.org/balsa/"
@@ -13,15 +13,15 @@ SRC_URI="http://pawsa.fedorapeople.org/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~ppc ~sparc ~x86"
+KEYWORDS="alpha amd64 ppc sparc x86"
 # Doesn't currently build with -gnome
 IUSE="crypt gnome gtkhtml +gtkspell kerberos ldap libnotify networkmanager rubrica sqlite ssl webkit xface"
 
 # TODO: esmtp can be optional
-RDEPEND=">=dev-libs/glib-2.16
-	>=x11-libs/gtk+-2.18
+RDEPEND=">=dev-libs/glib-2.16:2
+	>=x11-libs/gtk+-2.18:2
 	dev-libs/gmime:2.4
-	dev-libs/libunique
+	dev-libs/libunique:1
 	>=net-libs/libesmtp-1.0.3
 	net-mail/mailbase
 	media-libs/libcanberra[gtk]
@@ -33,22 +33,22 @@ RDEPEND=">=dev-libs/glib-2.16
 		>=gnome-base/libbonobo-2.0
 		>=gnome-base/libgnome-2.0
 		>=gnome-base/libgnomeui-2.0
-		>=gnome-base/gconf-2.0
+		>=gnome-base/gconf-2.0:2
 		>=gnome-base/gnome-keyring-2.20
-		>=x11-libs/gtksourceview-2.10 )
-	gtkhtml? ( >=gnome-extra/gtkhtml-3.14 )
+		>=x11-libs/gtksourceview-2.10:2.0 )
+	gtkhtml? ( >=gnome-extra/gtkhtml-3.14:3.14 )
 	sqlite? ( >=dev-db/sqlite-2.8 )
 	libnotify? ( x11-libs/libnotify )
 	gtkspell? (
 		=app-text/gtkspell-2*
 		app-text/enchant )
-	!gtkspell? ( virtual/aspell-dict )
+	!gtkspell? ( app-text/aspell )
 	kerberos? ( app-crypt/mit-krb5 )
 	ldap? ( net-nds/openldap )
 	networkmanager? ( >=net-misc/networkmanager-0.7 )
-	rubrica? ( dev-libs/libxml2 )
+	rubrica? ( dev-libs/libxml2:2 )
 	ssl? ( dev-libs/openssl )
-	webkit? ( >=net-libs/webkit-gtk-1.1.14 )
+	webkit? ( >=net-libs/webkit-gtk-1.1.14:2 )
 	xface? ( >=media-libs/compface-1.5.1 )"
 DEPEND="${RDEPEND}
 	dev-util/intltool
@@ -99,4 +99,9 @@ pkg_setup() {
 		$(use_with sqlite)
 		$(use_with ssl)
 		$(use_with xface compface)"
+}
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-libnotify-0.7.patch
+	gnome2_src_prepare
 }

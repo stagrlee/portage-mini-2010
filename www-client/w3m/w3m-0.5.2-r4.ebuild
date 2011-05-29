@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/www-client/w3m/w3m-0.5.2-r4.ebuild,v 1.6 2010/07/09 00:02:45 jer Exp $
+# $Header: /var/cvsroot/gentoo-x86/www-client/w3m/w3m-0.5.2-r4.ebuild,v 1.9 2011/04/13 15:09:00 ulm Exp $
 
 EAPI="2"
 inherit eutils
@@ -11,7 +11,7 @@ SRC_URI="mirror://sourceforge/w3m/${P}.tar.gz"
 
 LICENSE="w3m"
 SLOT="0"
-KEYWORDS="alpha amd64 ia64 ppc ppc64 sparc x86"
+KEYWORDS="alpha amd64 ~arm ia64 ppc ppc64 sparc x86"
 IUSE="X fbcon gpm gtk imlib lynxkeymap migemo nls nntp ssl unicode xface linguas_ja"
 
 # We cannot build w3m with gtk+2 w/o X because gtk+2 ebuild doesn't
@@ -20,13 +20,12 @@ DEPEND=">=sys-libs/ncurses-5.2-r3
 	>=sys-libs/zlib-1.1.3-r2
 	>=dev-libs/boehm-gc-6.2
 	X? ( x11-libs/libXext x11-libs/libXdmcp )
-	gtk? ( >=x11-libs/gtk+-2 )
+	gtk? ( x11-libs/gtk+:2 )
 	!gtk? ( imlib? ( >=media-libs/imlib2-1.1.0 ) )
 	xface? ( media-libs/compface )
 	gpm? ( >=sys-libs/gpm-1.19.3-r5 )
 	migemo? ( >=app-text/migemo-0.40 )
 	ssl? ( >=dev-libs/openssl-0.9.6b )"
-PROVIDE="virtual/w3m"
 
 src_prepare() {
 	epatch "${FILESDIR}/${P}-ambwidth.patch"

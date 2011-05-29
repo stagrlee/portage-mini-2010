@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-dns/ez-ipupdate/ez-ipupdate-3.0.11_beta8-r6.ebuild,v 1.1 2010/07/20 20:31:31 sbriesen Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-dns/ez-ipupdate/ez-ipupdate-3.0.11_beta8-r6.ebuild,v 1.3 2011/01/23 20:21:09 sbriesen Exp $
 
 EAPI="2"
 
@@ -21,6 +21,7 @@ KEYWORDS="~amd64 ~ppc ~sparc ~x86"
 IUSE=""
 
 DEPEND=""
+RDEPEND=""
 
 src_prepare() {
 	epatch "${WORKDIR}/${PN}_${MY_PV}-${PATCH_VERSION}.diff"
@@ -37,8 +38,11 @@ src_prepare() {
 	chmod +x missing
 }
 
-src_compile() {
+src_configure() {
 	econf --bindir=/usr/sbin || die "econf failed"
+}
+
+src_compile() {
 	emake || die "emake failed"
 }
 

@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-portage/layman/layman-9999.ebuild,v 1.13 2010/06/22 18:32:50 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-portage/layman/layman-9999.ebuild,v 1.17 2011/04/14 20:13:00 darkside Exp $
 
 EAPI="2"
 PYTHON_DEPEND="2:2.5"
@@ -11,7 +11,7 @@ inherit eutils distutils git
 DESCRIPTION="A python script for retrieving gentoo overlays."
 HOMEPAGE="http://layman.sourceforge.net"
 SRC_URI=""
-EGIT_REPO_URI="git://layman.git.sourceforge.net/gitroot/layman/layman"
+EGIT_REPO_URI="git://git.overlays.gentoo.org/proj/layman.git"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -21,7 +21,7 @@ IUSE="bazaar cvs darcs git mercurial subversion test"
 COMMON_DEPS="dev-lang/python[xml]"
 DEPEND="${COMMON_DEPS}
 	test? ( dev-vcs/subversion )
-	app-text/xmlto"
+	app-text/asciidoc"
 RDEPEND="${COMMON_DEPS}
 	bazaar? ( dev-vcs/bzr )
 	cvs? ( dev-vcs/cvs )
@@ -36,18 +36,6 @@ RDEPEND="${COMMON_DEPS}
 	)"
 RESTRICT_PYTHON_ABIS="2.4 3.*"
 
-pkg_setup() {
-	if ! has_version dev-vcs/subversion; then
-		ewarn "You do not have dev-vcs/subversion installed!"
-		ewarn "While layman does not exactly depend on this"
-		ewarn "version control system you should note that"
-		ewarn "most available overlays are offered via"
-		ewarn "dev-vcs/subversion. If you do not install it"
-		ewarn "you will be unable to use these overlays."
-		ewarn
-	fi
-}
-
 src_test() {
 	testing() {
 		for suite in layman/tests/{dtest,external}.py ; do
@@ -60,15 +48,15 @@ src_test() {
 
 src_compile() {
 	distutils_src_compile
-	emake -C doc || die "emake -C doc failed"
+	# override MAKEOPTS to prevent build failure
+	emake -j1 -C doc || die "emake -C doc failed"
 }
 
 src_install() {
 	distutils_src_install
 
-	dodir /etc/layman
-
-	cp etc/layman.cfg "${D}"/etc/layman/
+	insinto /etc/layman
+	doins etc/layman.cfg || die
 
 	doman doc/layman.8
 	dohtml doc/layman.8.html

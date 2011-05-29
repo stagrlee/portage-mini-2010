@@ -1,7 +1,9 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/atlas-c++/atlas-c++-0.6.2.ebuild,v 1.1 2010/03/19 21:10:36 tupone Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/atlas-c++/atlas-c++-0.6.2.ebuild,v 1.6 2011/05/02 09:47:29 tupone Exp $
 EAPI=2
+
+inherit eutils autotools
 
 MY_PN="Atlas-C++"
 MY_P=${MY_PN}-${PV}
@@ -11,7 +13,7 @@ SRC_URI="mirror://sourceforge/worldforge/${MY_P}.tar.bz2"
 
 SLOT="0"
 LICENSE="LGPL-2.1"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+KEYWORDS="amd64 ~ppc x86"
 IUSE="doc"
 
 RDEPEND=""
@@ -19,6 +21,11 @@ DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )"
 
 S=${WORKDIR}/${MY_P}
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-Werror.patch
+	eautoreconf
+}
 
 src_compile() {
 	emake || die "Error: emake failed!"
@@ -30,6 +37,6 @@ src_compile() {
 src_install() {
 	emake DESTDIR="${D}" install || die "install failed"
 	use doc && dohtml -r doc/html/*
-	use doc && doman doc/man/*
+	use doc && doman doc/man/man3/[^i]*
 	dodoc AUTHORS ChangeLog HACKING NEWS README ROADMAP THANKS TODO
 }

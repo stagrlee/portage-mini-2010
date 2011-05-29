@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/reduce/reduce-3.13.080428-r1.ebuild,v 1.5 2010/07/15 20:08:33 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/reduce/reduce-3.13.080428-r1.ebuild,v 1.8 2011/05/28 13:53:28 ranger Exp $
 
-EAPI="3"
+EAPI=3
 
 inherit eutils toolchain-funcs
 
@@ -14,7 +14,7 @@ SRC_URI="http://kinemage.biochem.duke.edu/downloads/software/reduce31/${MY_P}.tg
 
 LICENSE="richardson"
 SLOT="0"
-KEYWORDS="amd64 ~ppc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ppc x86 ~amd64-linux ~x86-linux"
 IUSE=""
 
 RDEPEND=""
@@ -24,7 +24,9 @@ DEPEND="${RDEPEND}
 S="${WORKDIR}/${MY_P}"
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PV}-LDFLAGS.patch
+	epatch \
+		"${FILESDIR}"/${PV}-LDFLAGS.patch \
+		"${FILESDIR}"/${PV}-CFLAGS.patch
 }
 
 src_compile() {
@@ -46,11 +48,7 @@ src_install() {
 	dodoc README.usingReduce.txt || die
 }
 
-pkg_info() {
+pkg_postinst() {
 	elog "To use the PDBv3 dictionary instead of PDBv2, set the environment"
 	elog "variable REDUCE_HET_DICT to ${EPREFIX}/usr/share/reduce/reduce_wwPDB_het_dict.txt"
-}
-
-pkg_postinst() {
-	pkg_info
 }

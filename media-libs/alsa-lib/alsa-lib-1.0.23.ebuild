@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/alsa-lib/alsa-lib-1.0.23.ebuild,v 1.2 2010/04/19 16:16:39 arfrever Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/alsa-lib/alsa-lib-1.0.23.ebuild,v 1.10 2011/02/17 17:26:29 sping Exp $
 
 PYTHON_DEPEND="python? 2"
 
@@ -15,7 +15,7 @@ SRC_URI="mirror://alsaproject/lib/${MY_P}.tar.bz2"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 sh sparc x86 ~amd64-linux ~x86-linux"
 IUSE="doc debug alisp python"
 
 DEPEND=">=media-sound/alsa-headers-${PV}
@@ -86,8 +86,8 @@ src_install() {
 }
 
 pkg_postinst() {
-	elog "Please try in-kernel ALSA drivers instead of the alsa-drivers ebuild."
-	elog "If alsa-drivers works for you where a *recent* kernel does not, we want "
+	elog "Please try in-kernel ALSA drivers instead of the alsa-driver ebuild."
+	elog "If alsa-driver works for you where a *recent* kernel does not, we want "
 	elog "to know about this. Our e-mail address is alsa-bugs@gentoo.org"
 	elog "However, if you notice no sound output or instability, please try to "
 	elog "upgrade your kernel to a newer version first."

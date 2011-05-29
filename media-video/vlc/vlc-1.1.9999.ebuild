@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-video/vlc/vlc-1.1.9999.ebuild,v 1.19 2010/09/09 11:03:42 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-video/vlc/vlc-1.1.9999.ebuild,v 1.29 2011/05/24 14:45:34 aballier Exp $
 
 EAPI="3"
 
@@ -24,7 +24,7 @@ MY_PV="${MY_PV/-beta/-test}"
 MY_P="${PN}-${MY_PV}"
 VLC_SNAPSHOT_TIME="0013"
 
-PATCHLEVEL="88"
+PATCHLEVEL="98"
 DESCRIPTION="VLC media player - Video player and streamer"
 HOMEPAGE="http://www.videolan.org/vlc/"
 if [ "${PV%9999}" != "${PV}" ] ; then # Live ebuild
@@ -51,7 +51,7 @@ else
 fi
 IUSE="a52 aac aalib alsa altivec atmo avahi bidi cdda cddb dbus dc1394
 	debug dirac directfb dts dvb dvd elibc_glibc fbcon fluidsynth +ffmpeg flac fontconfig
-	+gcrypt ggi gnome gnutls httpd id3tag ieee1394 jack kate kde libass libcaca
+	+gcrypt ggi gme gnome gnutls httpd id3tag ieee1394 jack kate kde libass libcaca
 	libnotify libproxy libtiger libv4l libv4l2 lirc live lua matroska mmx
 	modplug mp3 mpeg mtp musepack ncurses nsplugin ogg opengl optimisememory oss
 	png projectm pulseaudio pvr +qt4 remoteosd rtsp run-as-root samba
@@ -65,7 +65,7 @@ RDEPEND="
 		a52? ( >=media-libs/a52dec-0.7.4-r3 )
 		aalib? ( media-libs/aalib )
 		aac? ( >=media-libs/faad2-2.6.1 )
-		alsa? ( media-libs/alsa-lib )
+		alsa? ( >=media-libs/alsa-lib-1.0.23 )
 		avahi? ( >=net-dns/avahi-0.6[dbus] )
 		bidi? ( >=dev-libs/fribidi-0.10.4 )
 		cdda? (	cddb? ( >=media-libs/libcddb-1.2.0 ) )
@@ -76,12 +76,13 @@ RDEPEND="
 		dts? ( media-libs/libdca )
 		dvd? (	media-libs/libdvdread >=media-libs/libdvdnav-0.1.9 )
 		elibc_glibc? ( >=sys-libs/glibc-2.8 )
-		ffmpeg? ( >=media-video/ffmpeg-0.4.9_p20090201 )
+		ffmpeg? ( virtual/ffmpeg )
 		flac? ( media-libs/libogg >=media-libs/flac-1.1.2 )
 		fluidsynth? ( media-sound/fluidsynth )
 		fontconfig? ( media-libs/fontconfig )
 		gcrypt? ( >=dev-libs/libgcrypt-1.2.0 )
 		ggi? ( media-libs/libggi )
+		gme? ( media-libs/game-music-emu )
 		gnome? ( gnome-base/gnome-vfs )
 		gnutls? ( >=net-libs/gnutls-1.7.4 >=dev-libs/libgcrypt-1.2.0 )
 		id3tag? ( media-libs/libid3tag sys-libs/zlib )
@@ -105,15 +106,15 @@ RDEPEND="
 		ncurses? ( sys-libs/ncurses )
 		nsplugin? ( >=net-libs/xulrunner-1.9.2 x11-libs/libXpm x11-libs/libXt x11-libs/libxcb x11-libs/xcb-util )
 		ogg? ( media-libs/libogg )
-		opengl? ( virtual/opengl || ( <=x11-libs/libX11-1.3.5[xcb] >x11-libs/libX11-1.3.5 ) )
+		opengl? ( virtual/opengl || ( >=x11-libs/libX11-1.3.99.901 <x11-libs/libX11-1.3.99.901[xcb] ) )
 		png? ( media-libs/libpng sys-libs/zlib )
 		projectm? ( media-libs/libprojectm )
-		pulseaudio? ( >=media-sound/pulseaudio-0.9.11
-			!X? ( >=media-sound/pulseaudio-0.9.11[-X] ) )
+		pulseaudio? ( || ( >=media-sound/pulseaudio-0.9.22
+			( >=media-sound/pulseaudio-0.9.11 x11-libs/libX11 ) ) )
 		qt4? ( x11-libs/qt-gui:4 x11-libs/qt-core:4 x11-libs/libX11 )
 		remoteosd? ( >=dev-libs/libgcrypt-1.2.0 )
 		samba? ( || ( >=net-fs/samba-3.4.6[smbclient] <net-fs/samba-3.4 ) )
-		schroedinger? ( >=media-libs/schroedinger-1.0.6 )
+		schroedinger? ( >=media-libs/schroedinger-1.0.10 )
 		sdl? ( >=media-libs/libsdl-1.2.8
 			sdl-image? ( media-libs/sdl-image sys-libs/zlib	) )
 		shout? ( media-libs/libshout )
@@ -134,7 +135,7 @@ RDEPEND="
 		upnp? ( net-libs/libupnp )
 		v4l2? ( libv4l2? ( media-libs/libv4l ) )
 		v4l? ( libv4l? ( media-libs/libv4l ) )
-		vaapi? ( x11-libs/libva >=media-video/ffmpeg-0.5_p22846 )
+		vaapi? ( x11-libs/libva virtual/ffmpeg )
 		vcdx? ( >=dev-libs/libcdio-0.78.2 >=media-video/vcdimager-0.7.22 )
 		vorbis? ( media-libs/libvorbis )
 		win32codecs? ( media-libs/win32codecs )
@@ -148,6 +149,7 @@ RDEPEND="
 
 DEPEND="${RDEPEND}
 	!!<=media-video/vlc-1.0.99999
+	alsa? ( >=media-sound/alsa-headers-1.0.23 )
 	dvb? ( sys-kernel/linux-headers )
 	kde? ( >=kde-base/kdelibs-4 )
 	v4l? ( sys-kernel/linux-headers )
@@ -182,6 +184,7 @@ pkg_setup() {
 	vlc_use_force vlm stream
 	vlc_use_force vaapi ffmpeg
 	vlc_use_force nsplugin xcb
+	has_version '<media-sound/pulseaudio-0.9.22' && vlc_use_force pulseaudio X
 
 	# Useflags that will be automagically discarded if deps are not met
 	vlc_use_needs bidi truetype
@@ -249,6 +252,7 @@ src_configure() {
 		$(use_enable fluidsynth) \
 		$(use_enable fontconfig) \
 		$(use_enable ggi) \
+		$(use_enable gme) \
 		$(use_enable gnome gnomevfs) \
 		$(use_enable gnutls) \
 		$(use_enable httpd) \
@@ -335,7 +339,8 @@ src_configure() {
 		$(vlc_use_enable_force remoteosd libgcrypt) \
 		$(vlc_use_enable_force gnutls libgcrypt) \
 		$(vlc_use_enable_force vaapi avcodec) \
-		$(vlc_use_enable_force nsplugin xcb)
+		$(vlc_use_enable_force nsplugin xcb) \
+		$(has_version '<media-sound/pulseaudio-0.9.22' && use pulseaudio && echo '--with-x')
 }
 
 src_install() {

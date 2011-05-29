@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-devel/llvm/llvm-9999.ebuild,v 1.5 2010/09/17 14:35:32 voyageur Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-devel/llvm/llvm-9999.ebuild,v 1.12 2011/04/21 09:24:25 grobian Exp $
 
 EAPI="3"
 inherit subversion eutils multilib toolchain-funcs
@@ -25,8 +25,8 @@ DEPEND="dev-lang/perl
 	|| ( >=sys-devel/binutils-2.18 >=sys-devel/binutils-apple-3.2.3 )
 	libffi? ( virtual/libffi )
 	ocaml? ( dev-lang/ocaml )
-	test? ( dev-util/dejagnu )
-	udis86? ( dev-libs/udis86 )"
+	udis86? ( amd64? ( dev-libs/udis86[pic] )
+		!amd64? ( dev-libs/udis86 ) )"
 RDEPEND="dev-lang/perl"
 
 S=${WORKDIR}/${PN}-${PV/_pre*}
@@ -77,9 +77,10 @@ src_prepare() {
 		-i tools/llvm-config/llvm-config.in.in || die "llvm-config sed failed"
 
 	einfo "Fixing rpath"
-	sed -e 's/\$(RPATH) -Wl,\$(\(ToolDir\|LibDir\))//g' -i Makefile.rules || die "sed failed"
+	sed -e 's,\$(RPATH) -Wl\,\$(\(ToolDir\|LibDir\)),$(RPATH) -Wl\,'"${EPREFIX}"/usr/$(get_libdir)/${PN}, \
+		-i Makefile.rules || die "rpath sed failed"
 
-	epatch "${FILESDIR}"/${PN}-2.7-nodoctargz.patch
+	epatch "${FILESDIR}"/${PN}-2.9-nodoctargz.patch
 	epatch "${FILESDIR}"/${PN}-2.6-commandguide-nops.patch
 }
 
@@ -156,11 +157,22 @@ src_install() {
 	# Fix install_names on Darwin.  The build system is too complicated
 	# to just fix this, so we correct it post-install
 	if [[ ${CHOST} == *-darwin* ]] ; then
-		for lib in lib{EnhancedDisassembly,LLVM-${PN},LLVMHello,LTO,profile_rt}.dylib ; do
-			# libEnhancedDisassembly is Darwin10 only
+		for lib in lib{EnhancedDisassembly,LLVM-${PV},LTO}.dylib {BugpointPasses,LLVMHello,profile_rt}.dylib ; do
+			# libEnhancedDisassembly is Darwin10 only, so non-fatal
 			[[ -f ${ED}/usr/lib/${PN}/${lib} ]] || continue
-			install_name_tool -id "${EPREFIX}"/usr/lib/${PN}/${lib} \
+			ebegin "fixing install_name of $lib"
+			install_name_tool \
+				-id "${EPREFIX}"/usr/lib/${PN}/${lib} \
 				"${ED}"/usr/lib/${PN}/${lib}
+			eend $?
+		done
+		for f in "${ED}"/usr/bin/* "${ED}"/usr/lib/${PN}/libLTO.dylib ; do
+			ebegin "fixing install_name reference to libLLVM-${PV}.dylib of ${f##*/}"
+			install_name_tool \
+				-change "@executable_path/../lib/libLLVM-${PV}.dylib" \
+					"${EPREFIX}"/usr/lib/${PN}/libLLVM-${PV}.dylib \
+				"${f}"
+			eend $?
 		done
 	fi
 }

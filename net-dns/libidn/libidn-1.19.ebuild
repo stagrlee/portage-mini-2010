@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-dns/libidn/libidn-1.19.ebuild,v 1.9 2010/09/12 20:12:24 klausman Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-dns/libidn/libidn-1.19.ebuild,v 1.12 2011/01/09 16:51:34 jer Exp $
 
 inherit java-pkg-opt-2 mono elisp-common
 
@@ -10,14 +10,17 @@ SRC_URI="mirror://gnu/libidn/${P}.tar.gz"
 
 LICENSE="LGPL-2.1 GPL-3"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ~ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh ~sparc x86 ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~sparc-fbsd ~x86-fbsd"
 IUSE="doc emacs java mono nls static-libs"
 
 COMMON_DEPEND="emacs? ( virtual/emacs )
 	mono? ( >=dev-lang/mono-0.95 )"
 DEPEND="${COMMON_DEPEND}
 	nls? ( >=sys-devel/gettext-0.17 )
-	java? ( >=virtual/jdk-1.4 dev-java/gjdoc )"
+	java? (
+		>=virtual/jdk-1.4
+		doc? ( dev-java/gjdoc )
+	)"
 RDEPEND="${COMMON_DEPEND}
 	nls? ( virtual/libintl )
 	java? ( >=virtual/jre-1.4 )"
@@ -36,6 +39,7 @@ src_compile() {
 		$(use_enable java) \
 		$(use_enable mono csharp mono) \
 		$(use_enable static-libs static) \
+		--disable-valgrind-tests \
 		--with-lispdir="${SITELISP}/${PN}" \
 		--with-packager="Gentoo" \
 		--with-packager-version="r${PR}" \

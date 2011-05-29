@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-misc/nx/nx-3.4.0-r3.ebuild,v 1.1 2010/08/26 15:20:32 voyageur Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-misc/nx/nx-3.4.0-r3.ebuild,v 1.5 2011/03/17 06:16:03 wormo Exp $
 
 EAPI=2
 inherit autotools eutils multilib
@@ -21,7 +21,7 @@ SRC_URI="$URI_BASE/$SRC_NX_X11 $URI_BASE/$SRC_NXAGENT $URI_BASE/$SRC_NXPROXY $UR
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE=""
 
 RDEPEND="x11-libs/libXau
@@ -31,9 +31,9 @@ RDEPEND="x11-libs/libXau
 	x11-libs/libXpm
 	x11-libs/libXrandr
 	x11-libs/libXtst
-	>=media-libs/jpeg-6b-r4
 	>=media-libs/libpng-1.2.8
-	>=sys-libs/zlib-1.2.3"
+	>=sys-libs/zlib-1.2.3
+	virtual/jpeg"
 
 DEPEND="${RDEPEND}
 		x11-misc/gccmakedep
@@ -73,6 +73,9 @@ src_prepare() {
 	echo "#define CcCmd $(tc-getCC)" >> ${HOSTCONF}
 	echo "#define OptimizedCDebugFlags ${CFLAGS} GccAliasingArgs" >> ${HOSTCONF}
 	echo "#define OptimizedCplusplusDebugFlags ${CXXFLAGS} GccAliasingArgs" >> ${HOSTCONF}
+	# Respect LDFLAGS
+	echo "#define ExtraLoadFlags ${LDFLAGS}" >> ${HOSTCONF}
+	echo "#define SharedLibraryLoadFlags -shared ${LDFLAGS}" >> ${HOSTCONF}
 }
 
 src_configure() {

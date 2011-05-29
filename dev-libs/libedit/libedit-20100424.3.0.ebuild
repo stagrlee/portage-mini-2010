@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-libs/libedit/libedit-20100424.3.0.ebuild,v 1.1 2010/08/15 11:52:03 flameeyes Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-libs/libedit/libedit-20100424.3.0.ebuild,v 1.3 2011/05/22 03:03:22 naota Exp $
 
 EAPI=2
 
@@ -15,7 +15,7 @@ SRC_URI="http://www.thrysoee.dk/editline/${MY_P}.tar.gz"
 
 LICENSE="BSD-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos"
 IUSE="static-libs"
 
 DEPEND="sys-libs/ncurses
@@ -31,6 +31,11 @@ src_configure() {
 		--enable-widec \
 		--disable-dependency-tracking \
 		--enable-fast-install
+}
+
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-bsd.patch
+	epatch "${FILESDIR}"/${P}-weak-reference.patch
 }
 
 # No tests are shipped

@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-i18n/nkf/nkf-2.1.0.ebuild,v 1.1 2010/01/23 09:02:26 matsuu Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-i18n/nkf/nkf-2.1.0.ebuild,v 1.3 2011/04/23 15:09:01 grobian Exp $
 
-EAPI="2"
+EAPI="3"
 
 inherit eutils distutils perl-module toolchain-funcs
 
@@ -13,7 +13,7 @@ SRC_URI="mirror://sourceforge.jp/nkf/44486/${P}.tar.gz
 
 LICENSE="as-is"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-macos"
 IUSE="perl python linguas_ja"
 
 src_prepare() {
@@ -64,4 +64,12 @@ src_install() {
 		cd "${S}/NKF.python"
 		distutils_src_install
 	fi
+}
+
+pkg_postinst() {
+	use python && distutils_pkg_postinst
+}
+
+pkg_postrm() {
+	use python && distutils_pkg_postrm
 }

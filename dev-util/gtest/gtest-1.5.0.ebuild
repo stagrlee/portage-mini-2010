@@ -1,8 +1,8 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-util/gtest/gtest-1.5.0.ebuild,v 1.1 2010/05/18 12:02:00 matsuu Exp $
+# $Header: /var/cvsroot/gentoo-x86/dev-util/gtest/gtest-1.5.0.ebuild,v 1.11 2011/04/10 10:11:34 flameeyes Exp $
 
-EAPI="2"
+EAPI="3"
 PYTHON_DEPEND="2"
 inherit autotools eutils python
 
@@ -12,7 +12,7 @@ SRC_URI="http://googletest.googlecode.com/files/${P}.tar.bz2"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~alpha amd64 arm hppa ~ia64 ~ppc ~ppc64 ~s390 ~sh ~sparc x86 ~ppc-macos"
 IUSE="examples threads static-libs"
 
 pkg_setup() {
@@ -34,13 +34,18 @@ src_configure() {
 		$(use_with threads pthreads) || die
 }
 
+src_test() {
+	# explicitly use parallel make
+	emake check || die
+}
+
 src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed"
 
 	dodoc CHANGES CONTRIBUTORS README || die
 
 	if ! use static-libs ; then
-		rm "${D}"/usr/lib*/*.la || die
+		rm "${ED}"/usr/lib*/*.la || die
 	fi
 
 	if use examples ; then

@@ -1,88 +1,74 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/www-client/midori/midori-9999.ebuild,v 1.18 2010/09/06 21:07:20 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/www-client/midori/midori-9999.ebuild,v 1.33 2011/05/16 08:46:20 angelos Exp $
 
-EAPI=2
-
-PYTHON_DEPEND="2:2.6"
-
-inherit eutils multilib python xfconf git
+EAPI=3
+inherit eutils fdo-mime gnome2-utils python waf-utils git-2
 
 DESCRIPTION="A lightweight web browser based on WebKitGTK+"
 HOMEPAGE="http://www.twotoasts.de/index.php?/pages/midori_summary.html"
-EGIT_REPO_URI="git://git.xfce.org/apps/midori"
-EGIT_PROJECT="midori"
-SRC_URI=""
+EGIT_REPO_URI="git://git.xfce.org/apps/${PN}"
 
-LICENSE="LGPL-2"
+LICENSE="LGPL-2.1 MIT"
 SLOT="0"
 KEYWORDS=""
-IUSE="doc gnome +html idn libnotify nls +unique vala"
+IUSE="doc gnome idn libnotify nls +unique vala"
 
-RDEPEND="libnotify? ( x11-libs/libnotify )
-	>=net-libs/libsoup-2.25.2
-	>=net-libs/webkit-gtk-1.1.1
+RDEPEND="dev-libs/libxml2:2
 	>=dev-db/sqlite-3.0
-	dev-libs/libxml2
-	>=x11-libs/gtk+-2.10:2
-	gnome? ( net-libs/libsoup[gnome] )
+	>=net-libs/libsoup-2.25.2:2.4
+	net-libs/webkit-gtk:2
+	x11-libs/gtk+:2
+	gnome? ( net-libs/libsoup-gnome:2.4 )
 	idn? ( net-dns/libidn )
-	unique? ( dev-libs/libunique )"
+	libnotify? ( x11-libs/libnotify )
+	unique? ( dev-libs/libunique:1 )
+	vala? ( dev-lang/vala:0.10 )"
 DEPEND="${RDEPEND}
+	|| ( dev-lang/python:2.7 dev-lang/python:2.6 )
 	dev-util/intltool
-	dev-util/pkgconfig
 	doc? ( dev-util/gtk-doc )
-	html? ( dev-python/docutils )
 	nls? ( sys-devel/gettext )"
 
 pkg_setup() {
 	python_set_active_version 2
+	python_pkg_setup
+
+	DOCS=( AUTHORS ChangeLog HACKING INSTALL TODO TRANSLATE )
+	HTML_DOCS=( data/faq.html data/faq.css )
 }
 
 src_prepare() {
-	# moving docs to version-specific directory
-	sed -i -e "s:\${DOCDIR}/${PN}:\${DOCDIR}/${PF}/:g" wscript || die
-	sed -i -e "s:/${PN}/user/midori.html:/${PF}/user/midori.html:g" midori/midori-browser.c || die
+	# Make it work with slotted vala versions
+	sed -i -e "s/conf.env, 'valac'/conf.env, 'valac-0.10', var='VALAC'/" wscript || die
 }
 
 src_configure() {
 	strip-linguas -i po
 
-	CCFLAGS="${CFLAGS}" LINKFLAGS="${LDFLAGS}" ./waf \
-		--prefix="/usr/" \
-		--libdir="/usr/$(get_libdir)" \
+	waf-utils_src_configure \
 		--disable-docs \
 		--enable-addons \
 		$(use_enable doc apidocs) \
-		$(use_enable html userdocs) \
 		$(use_enable idn libidn) \
 		$(use_enable libnotify) \
-		$(use_enable nls nls) \
+		$(use_enable nls) \
 		$(use_enable unique) \
-		$(use_enable vala) \
-		configure || die "configure failed"
+		$(use_enable vala)
 }
 
-src_compile() {
-	# This is from dev-libs/boost, keep it synced
-	jobs=$( echo " ${MAKEOPTS} " | \
-		sed -e 's/ --jobs[= ]/ -j /g' \
-		-e 's/ -j \([1-9][0-9]*\)/ -j\1/g' \
-		-e 's/ -j\>/ -j1/g' | \
-		( while read -d ' ' j ; do if [[ "${j#-j}" = "$j" ]]; then continue; fi;
-		jobs="${j#-j}"; done; echo ${jobs} ) )
-	if [[ "${jobs}" != "" ]]; then NUMJOBS="-j"${jobs}; fi;
-
-	./waf build ${NUMJOBS} || die "build failed"
-}
-
-src_install() {
-	DESTDIR=${D} ./waf install || die "install failed"
-	dodoc AUTHORS ChangeLog INSTALL TODO || die "dodoc failed"
+pkg_preinst() {
+	gnome2_icon_savelist
 }
 
 pkg_postinst() {
-	xfconf_pkg_postinst
-	ewarn "Midori tends to crash due to bugs in WebKit."
-	ewarn "Report bugs at http://www.twotoasts.de/bugs"
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
+	gnome2_icon_cache_update
+}
+
+pkg_postrm() {
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
+	gnome2_icon_cache_update
 }

@@ -1,4 +1,4 @@
->=virtual/jdk-1.4 ~dev-java/servletapi-2.4 >=dev-java/java-config-2.1.9-r1 source? ( app-arch/zip ) >=dev-java/ant-core-1.7.0 >=dev-java/javatoolkit-0.3.0-r2
+>=virtual/jdk-1.4 ~dev-java/servletapi-2.4 >=dev-java/java-config-2.1.9-r1 source? ( app-arch/zip ) >=dev-java/ant-core-1.7.0 >=dev-java/javatoolkit-0.3.0-r2 >=dev-lang/python-2.4
 >=virtual/jre-1.4 ~dev-java/servletapi-2.4 >=dev-java/java-config-2.1.9-r1 source? ( app-arch/zip )
 0
 mirror://apache/jakarta/commons/el/source/commons-el-1.0-src.tar.gz
@@ -6,7 +6,7 @@ mirror://apache/jakarta/commons/el/source/commons-el-1.0-src.tar.gz
 http://jakarta.apache.org/commons/el/
 Apache-1.1
 EL is the JSP 2.0 Expression Language Interpreter from Apache.
-amd64 ~ppc ppc64 x86 ~x86-fbsd
+amd64 ppc ppc64 x86 ~x86-fbsd
 eutils java-ant-2 java-osgi java-pkg-2 java-utils-2 multilib portability toolchain-funcs versionator
 elibc_FreeBSD source elibc_FreeBSD elibc_FreeBSD
 

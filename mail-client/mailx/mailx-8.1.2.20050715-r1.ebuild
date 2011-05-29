@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-client/mailx/mailx-8.1.2.20050715-r1.ebuild,v 1.14 2010/01/11 17:57:56 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/mail-client/mailx/mailx-8.1.2.20050715-r1.ebuild,v 1.16 2011/03/20 13:26:20 eras Exp $
 
 inherit eutils flag-o-matic
 
@@ -17,19 +17,20 @@ SRC_URI="mirror://gentoo/mailx_${MY_PV}.orig.tar.gz
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="alpha amd64 arm hppa ia64 mips ppc ppc64 s390 sh sparc x86 ~amd64-linux ~x86-linux ~ppc-macos"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86 ~amd64-linux ~x86-linux ~ppc-macos"
 IUSE=""
 
 DEPEND=">=net-libs/liblockfile-1.03
 	virtual/mta
-	!mail-client/mailutils
-	mail-client/mailx-support
-	!virtual/mailx"
-PROVIDE="virtual/mailx"
+	mail-client/mailx-support"
+
+RDEPEND="${DEPEND}
+	!mail-client/nail
+	!net-mail/mailutils"
 
 src_unpack() {
 	unpack ${A}
-	cd ${S}
+	cd "${S}"
 	epatch "${DISTDIR}/${debian_patch}"
 	epatch "${FILESDIR}/${P}-nostrip.patch"
 	sed -i -e "s: -O2: \$(EXTRAFLAGS):g" Makefile

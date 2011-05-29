@@ -1,11 +1,39 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/arm/package.use.mask,v 1.34 2010/08/15 14:19:14 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/arm/package.use.mask,v 1.51 2011/05/09 14:27:48 ssuominen Exp $
+
+# Andreas K. Huettel <dilfridge@gentoo.org> (08 Apr 2011)
+# x11-libs/qscintilla still needs arm keywords, so...
+kde-base/pykde4 qscintilla
+
+# Pacho Ramos <pacho@gentoo.org> (02 Apr 2011)
+# quvi support is needed to play youtube files now
+media-video/totem youtube
+
+# Markus Meier <maekke@gentoo.org> (13 Mar 2011)
+# needs stable kde stuff
+sys-auth/polkit kde
+
+# Alexey Shvetsov <alexxy@gentoo.org> (04 Mar 2011)
+# Mask unsatisfied kde-deps bug #357403
+=kde-base/kdelibs-4.6* policykit
+=kde-base/solid-4.6* bluetooth
+
+# Sebastian Pipping <sping@gentoo.org> (22 Feb 2011)
+# No media-sound/lilypond here, yet (bug #356069)
+app-text/asciidoc test
+
+# Michael Weber <xmw@gentoo.org> (10 Feb 2011)
+# kde-base/kdelibs is not stable for arm
+net-libs/libproxy kde
+
+# Justin Lecher <jlec@gentoo.org> (14 Jen 2011)
+# x11-libs/fltk is not keyworded for arm
+app-misc/nut X
 
 # Arfrever Frehtes Taifersar Arahesis <arfrever@gentoo.org> (29 Jul 2010)
 # Mask python3 for stable portage until python-3.x is marked stable.
-=sys-apps/portage-2.1.8* python3
-=sys-apps/portage-2.1.7* python3
+=sys-apps/portage-2.1.9* python3
 
 # Nirbheek Chauhan <nirbheek@gentoo.org> (26 Jun 2010)
 # Inter-process communication doesn't work on anything except x86/amd64/arm
@@ -51,7 +79,7 @@ dev-libs/boost mpi
 
 # missing keywords
 media-sound/sox ladspa
-media-plugins/gst-plugins-meta lame taglib
+media-plugins/gst-plugins-meta aac dv lame taglib wavpack
 
 # projectm not keyworded, bug #314969
 media-video/vlc projectm

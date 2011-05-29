@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/pymol/pymol-1.2.3-r1.ebuild,v 1.7 2010/09/16 17:28:20 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-chemistry/pymol/pymol-1.2.3-r1.ebuild,v 1.9 2010/09/19 19:32:44 jlec Exp $
 
 EAPI="3"
 

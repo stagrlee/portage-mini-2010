@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-p2p/amule/amule-2.2.6.ebuild,v 1.9 2010/05/18 12:48:46 hwoarang Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-p2p/amule/amule-2.2.6.ebuild,v 1.13 2011/05/08 18:24:23 armin76 Exp $
 
 EAPI="2"
 
@@ -52,6 +52,7 @@ pkg_preinst() {
 
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-fallocate.diff
+	epatch "${FILESDIR}"/${P}-gcc45.patch
 }
 
 src_configure() {

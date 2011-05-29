@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/ruby-ng-gnome2.eclass,v 1.3 2010/08/22 07:28:24 graaff Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/ruby-ng-gnome2.eclass,v 1.7 2011/05/29 13:47:14 naota Exp $
 #
 # @ECLASS: ruby-ng-gnome2.eclass
 # @MAINTAINER:
@@ -13,11 +13,19 @@
 # This eclass simplifies installation of the various pieces of
 # ruby-gnome2 since they share a very common installation procedure.
 
-inherit ruby-ng multilib
+inherit ruby-ng multilib versionator
 
 IUSE=""
 
-subbinding=${PN#ruby-} ; subbinding=${subbinding%2}
+# Define EPREFIX if needed
+has "${EAPI:-0}" 0 1 2 && ! use prefix && EPREFIX=
+
+subbinding=${PN#ruby-}
+if [ $(get_version_component_range "1-2") == "0.19" ]; then
+	subbinding=${subbinding/%2}
+else
+	subbinding=${subbinding/-/_}
+fi
 S=${WORKDIR}/ruby-gnome2-all-${PV}/${subbinding}
 SRC_URI="mirror://sourceforge/ruby-gnome2/ruby-gnome2-all-${PV}.tar.gz"
 HOMEPAGE="http://ruby-gnome2.sourceforge.jp/"
@@ -40,7 +48,9 @@ each_ruby_compile() {
 	# unfortunately rely on the lazy load of other extensions; see bug
 	# #320545.
 	find . -name Makefile -print0 | xargs -0 \
-		sed -i -e 's:-Wl,--no-undefined ::' || die "--no-undefined removal failed"
+		sed -i -e 's:-Wl,--no-undefined ::' \
+		-e "s/^ldflags  = /ldflags = $\(LDFLAGS\) /" \
+		|| die "--no-undefined removal failed"
 
 	emake || die "emake failed"
 }
@@ -50,7 +60,8 @@ each_ruby_compile() {
 # Install the files in the subbinding for each specific ruby target.
 each_ruby_install() {
 	# Create the directories, or the package will create them as files.
-	dodir $(${RUBY} -r rbconfig -e 'print Config::CONFIG["sitearchdir"]') /usr/$(get_libdir)/pkgconfig
+	local archdir=$(ruby_rbconfig_value "sitearchdir")
+	dodir ${archdir#${EPREFIX}} /usr/$(get_libdir)/pkgconfig
 
 	emake DESTDIR="${D}" install || die "make install failed"
 }

@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-gfx/rawstudio/rawstudio-1.2.ebuild,v 1.5 2010/06/21 10:10:04 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/rawstudio/rawstudio-1.2.ebuild,v 1.7 2011/03/12 10:34:50 radhermit Exp $
 
 EAPI=2
 inherit eutils
@@ -17,11 +17,11 @@ IUSE=""
 RDEPEND=">=dev-libs/libxml2-2.4
 	>=gnome-base/gconf-2
 	media-gfx/exiv2
-	media-libs/jpeg
 	=media-libs/lcms-1*
 	media-libs/tiff
 	sys-apps/dbus
-	>=x11-libs/gtk+-2.8"
+	virtual/jpeg
+	>=x11-libs/gtk+-2.8:2"
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig
 	sys-devel/gettext"

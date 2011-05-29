@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-emulation/dosbox/dosbox-0.74.ebuild,v 1.5 2010/07/19 19:16:05 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-emulation/dosbox/dosbox-0.74.ebuild,v 1.9 2011/04/28 07:41:09 mr_bones_ Exp $
 
 EAPI=2
 inherit eutils games
@@ -18,9 +18,11 @@ DEPEND="alsa? ( media-libs/alsa-lib )
 	opengl? ( virtual/opengl )
 	debug? ( sys-libs/ncurses )
 	media-libs/libpng
-	media-libs/libsdl[joystick,video]
+	media-libs/libsdl[joystick,video,X]
 	media-libs/sdl-net
 	media-libs/sdl-sound"
+
+PATCHES=( "${FILESDIR}"/${P}-gcc46.patch )
 
 src_configure() {
 	egamesconf \

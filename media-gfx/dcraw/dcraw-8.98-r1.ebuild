@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-gfx/dcraw/dcraw-8.98-r1.ebuild,v 1.6 2010/04/04 15:49:56 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/dcraw/dcraw-8.98-r1.ebuild,v 1.8 2011/04/25 22:09:10 hanno Exp $
 
 EAPI="2"
 
@@ -12,12 +12,12 @@ SRC_URI="http://www.cybercom.net/~dcoffin/dcraw/archive/${P}.tar.gz
 	mirror://gentoo/parse-1.69.tar.bz2
 	gimp? ( mirror://gentoo/rawphoto-1.32.tar.bz2 )"
 
-LICENSE="freedist GPL-2"
+LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sparc x86"
 IUSE="nls gimp jpeg lcms"
 
-COMMON_DEPEND="jpeg? ( >=media-libs/jpeg-6b )
+COMMON_DEPEND="jpeg? ( virtual/jpeg )
 	lcms? ( media-libs/lcms )
 	gimp? ( media-gfx/gimp )"
 DEPEND="${COMMON_DEPEND}

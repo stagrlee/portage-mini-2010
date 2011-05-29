@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-gfx/povray/povray-3.6.1-r4.ebuild,v 1.10 2010/08/13 10:45:28 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/povray/povray-3.6.1-r4.ebuild,v 1.14 2011/04/15 17:34:19 ssuominen Exp $
 
 inherit flag-o-matic eutils autotools
 
@@ -13,20 +13,19 @@ SLOT="0"
 KEYWORDS="alpha amd64 hppa ia64 ~mips ppc ppc64 sparc x86 ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos"
 IUSE="svga tiff X"
 
-DEPEND="media-libs/libpng
+DEPEND=">=media-libs/libpng-1.4
 	tiff? ( >=media-libs/tiff-3.6.1 )
-	media-libs/jpeg
+	virtual/jpeg
 	sys-libs/zlib
 	X? ( x11-libs/libXaw )
 	svga? ( media-libs/svgalib )"
+RDEPEND="${DEPEND}"
 
 src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
-	has_version ">=media-libs/libpng-1.4" && epatch \
-		"${FILESDIR}"/${P}-libpng14.patch
-
+	epatch "${FILESDIR}"/${P}-libpng14.patch
 	epatch "${FILESDIR}"/${P}-configure.patch
 	epatch "${FILESDIR}"/${P}-find-egrep.patch
 
@@ -65,8 +64,7 @@ src_compile() {
 		COMPILED_BY="Portage (Gentoo `uname`) on `hostname -f`" \
 		$(use_with svga) \
 		$(use_with tiff) \
-		$(use_with X) \
-		|| die
+		$(use_with X)
 
 	emake || die
 }

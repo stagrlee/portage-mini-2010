@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/gnome-base/libgnomecanvas/libgnomecanvas-2.30.1.ebuild,v 1.8 2010/09/11 18:40:05 josejx Exp $
+# $Header: /var/cvsroot/gentoo-x86/gnome-base/libgnomecanvas/libgnomecanvas-2.30.1.ebuild,v 1.12 2011/03/16 10:48:17 nirbheek Exp $
 
 EAPI="2"
 GCONF_DEBUG="no"
@@ -12,14 +12,14 @@ HOMEPAGE="http://www.gnome.org/"
 
 LICENSE="LGPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~ia64 ~mips ppc ~ppc64 ~sh ~sparc x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm ia64 ~mips ppc ppc64 sh sparc x86 ~x86-fbsd"
 IUSE="doc glade"
 
-RDEPEND=">=dev-libs/glib-2.10
-	>=x11-libs/gtk+-2.13
+RDEPEND=">=dev-libs/glib-2.10:2
+	>=x11-libs/gtk+-2.13:2
 	>=media-libs/libart_lgpl-2.3.8
 	>=x11-libs/pango-1.0.1
-	glade? ( >=gnome-base/libglade-2 )"
+	glade? ( >=gnome-base/libglade-2:2.0 )"
 
 DEPEND="${RDEPEND}
 	>=dev-lang/perl-5

@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-libs/opal/opal-3.6.8.ebuild,v 1.1 2010/08/19 17:07:27 pva Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-libs/opal/opal-3.6.8.ebuild,v 1.3 2010/11/01 22:40:14 halcy0n Exp $
 
 EAPI="2"
 
@@ -14,7 +14,7 @@ SRC_URI="mirror://sourceforge/opalvoip/${P}.tar.bz2
 
 LICENSE="MPL-1.0"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~sparc ~x86"
 IUSE="+audio capi celt debug doc dtmf examples fax ffmpeg h224 h281 h323 iax
 ipv6 ivr ixj java ldap lid +plugins sbc sip sipim srtp ssl stats swig theora
 +video vpb vxml wav x264 x264-static xml"
@@ -28,7 +28,7 @@ RDEPEND=">=net-libs/ptlib-2.6.6[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?
 	plugins? ( dev-libs/ilbc-rfc3951
 		media-sound/gsm
 		capi? ( net-dialup/capi4k-utils )
-		celt? ( >=media-libs/celt-0.5.0 )
+		celt? ( media-libs/celt )
 		ffmpeg? ( >=media-video/ffmpeg-0.5[encode] )
 		ixj? ( sys-kernel/linux-headers )
 		sbc? ( media-libs/libsamplerate )

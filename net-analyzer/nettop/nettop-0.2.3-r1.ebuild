@@ -1,6 +1,6 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-analyzer/nettop/nettop-0.2.3-r1.ebuild,v 1.3 2008/02/09 12:05:15 drac Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-analyzer/nettop/nettop-0.2.3-r1.ebuild,v 1.5 2011/02/03 09:44:21 jlec Exp $
 
 inherit eutils
 
@@ -10,11 +10,13 @@ HOMEPAGE="http://srparish.net/software/"
 
 SLOT="0"
 LICENSE="BSD"
-KEYWORDS="amd64 ppc sparc x86"
+KEYWORDS="amd64 ~arm ppc sparc x86"
 IUSE=""
 
-DEPEND=">=sys-libs/slang-1.4
+DEPEND="
+	sys-libs/slang
 	net-libs/libpcap"
+RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	ewarn "This is known to break with distcc, see bug #169245 for details"
@@ -35,6 +37,6 @@ src_compile() {
 }
 
 src_install() {
-	dosbin nettop
-	dodoc ChangeLog README THANKS
+	dosbin nettop || die
+	dodoc ChangeLog README THANKS || die
 }

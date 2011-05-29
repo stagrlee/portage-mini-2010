@@ -1,6 +1,9 @@
 # Unmask the flag which corresponds to ARCH.
 -arm
 
+# Unmask arm arch specific USE flags
+-neon
+
 # Markus Meier <maekke@gentoo.org> (22 Aug 2010)
 # net-wireless/wimax not tested
 wimax
@@ -50,7 +53,8 @@ java-internal
 java-external
 
 # No hardware to test by the team
-iphone
+dvb
+ios
 ipod
 
 # Stuff that doesn't make sense on this arch
@@ -75,6 +79,12 @@ fusion
 debug-utils
 schroedinger
 hardened
+frei0r
+google-gadgets
+oracle
+libvirt
+pdfannotextractor
+prelude
 
 # havent tested yet
 cupsddk
@@ -120,6 +130,14 @@ tokyocabinet
 vaapi
 rtmp
 vpx
+iplayer
+plotutils
+lpsol
+upnp
+quvi
+
+# Unmask ARM-only video-cards
+-video_cards_omapfb
 
 # 2006/02/05 - Donnie Berkholz <dberkholz@gentoo.org>
 # Modular X: mask for architectures on which they aren't available
@@ -138,6 +156,7 @@ video_cards_mach64
 video_cards_mga
 video_cards_neomagic
 video_cards_newport
+video_cards_nouveau
 video_cards_nsc
 video_cards_nv
 video_cards_r128

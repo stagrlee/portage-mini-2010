@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-sound/aqualung/aqualung-0.9_beta11.ebuild,v 1.4 2010/05/23 18:28:25 pacho Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-sound/aqualung/aqualung-0.9_beta11.ebuild,v 1.7 2011/05/12 18:38:52 billie Exp $
 
 EAPI=2
 
@@ -19,13 +19,14 @@ IUSE="alsa cdda cddb debug flac ffmpeg ifp jack ladspa lame libsamplerate lua
 	mac modplug mp3 musepack oss podcast pulseaudio sndfile speex systray vorbis wavpack"
 KEYWORDS="amd64 x86"
 
-RDEPEND="alsa? ( virtual/alsa )
+RDEPEND="alsa? ( media-libs/alsa-lib )
 	cdda? ( dev-libs/libcdio )
 	cddb? ( media-libs/libcddb )
 	flac? ( media-libs/flac )
-	ffmpeg? ( media-video/ffmpeg )
+	ffmpeg? ( virtual/ffmpeg )
 	ifp? ( media-libs/libifp )
 	jack? ( media-sound/jack-audio-connection-kit )
+	ladspa? ( media-libs/liblrdf )
 	lame? ( media-sound/lame )
 	libsamplerate? ( media-libs/libsamplerate )
 	lua? ( dev-lang/lua )
@@ -40,7 +41,6 @@ RDEPEND="alsa? ( virtual/alsa )
 	wavpack? ( media-sound/wavpack )
 	x11-libs/gtk+:2"
 DEPEND="${RDEPEND}
-	ladspa? ( media-libs/liblrdf )
 	dev-libs/libxml2
 	dev-util/pkgconfig"
 

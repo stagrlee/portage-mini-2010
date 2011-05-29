@@ -1,16 +1,12 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/prefix/linux/package.mask,v 1.4 2010/06/09 13:42:52 darkside Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/prefix/linux/package.mask,v 1.9 2011/02/07 20:51:37 darkside Exp $
 
-# Jeremy Olexa <darkside@gentoo.org> (09 Jun 2010)
-# Revert global ghostscript-gpl mask because it appears to work fine on linux.
-->=app-text/ghostscript-gpl-8.64
+# Jeremy Olexa <darkside@gentoo.org> (07 Feb 2011)
+# Fails while bootstrapping (compiler issue), bug 353630
+=sys-process/procps-3.2.8-r2
 
-# Fabian Groffen <grobian@gentoo.org> (16 Apr 2010)
-# installs a broken zlib.h on all but Linux systems, bug #310209
--=sys-libs/zlib-1.2.4
+# Fabian Groffen <grobian@gentoo.org> (24 Jan 2011)
+# unmask, on Linux this should mostly work
+-=sys-fs/e2fsprogs-1.41.14
 
-# Jeremy Olexa <darkside@gentoo.org> (29 Dec 2008)
-# app-misc/pax-utils-0.1.19 works fine on linux (and it should because it is
-# globally masked for GNU-isms)
--~app-misc/pax-utils-0.1.19

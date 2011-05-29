@@ -1,21 +1,21 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-voip/sflphone/sflphone-0.9.8.4.ebuild,v 1.1 2010/09/07 15:45:38 elvanor Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-voip/sflphone/sflphone-0.9.8.4.ebuild,v 1.7 2011/03/21 23:20:39 nirbheek Exp $
 
 EAPI="2"
 
-inherit autotools
+inherit autotools eutils
 
 DESCRIPTION="SFLphone is a robust standards-compliant enterprise softphone, for desktop and embedded systems."
 HOMEPAGE="http://www.sflphone.org/"
-SRC_URI="https://projects.savoirfairelinux.com/attachments/download/1327/${P}.tar.gz"
+SRC_URI="http://www.elvanor.net/files/gentoo/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~amd64 x86"
 IUSE="debug gnome gsm iax networkmanager speex"
 
-DEPEND="media-sound/pulseaudio
+CDEPEND="media-sound/pulseaudio
 	media-libs/libsamplerate
 	net-libs/ccrtp
 	net-libs/libzrtpcpp
@@ -34,20 +34,26 @@ DEPEND="media-sound/pulseaudio
 	gnome? ( dev-libs/atk
 		dev-libs/check
 		dev-libs/log4c
-		net-libs/libsoup
 		gnome-base/libgnomeui
-		gnome-base/orbit
+		gnome-base/orbit:2
 		gnome-extra/evolution-data-server
 		media-libs/libart_lgpl
 		media-libs/freetype
 		media-libs/fontconfig
+		net-libs/libsoup:2.4
 		x11-libs/cairo
 		x11-libs/libnotify
 		x11-libs/libICE
 		x11-libs/libSM )"
-RDEPEND="${DEPEND}"
+
+DEPEND="${CDEPEND}
+		gnome? ( app-text/gnome-doc-utils )"
+
+RDEPEND="${CDEPEND}"
 
 src_prepare() {
+	epatch "${FILESDIR}"/${P}-libnotify-0.7.patch
+
 	if ! use gnome; then
 		ewarn
 		ewarn "No clients selected. Use USE=gnome to get the gnome client."

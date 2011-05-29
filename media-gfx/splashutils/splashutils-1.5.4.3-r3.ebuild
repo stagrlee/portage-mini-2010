@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-gfx/splashutils/splashutils-1.5.4.3-r3.ebuild,v 1.6 2010/08/28 20:52:22 spock Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/splashutils/splashutils-1.5.4.3-r3.ebuild,v 1.14 2011/05/08 15:30:15 spock Exp $
 
 EAPI="2"
 
@@ -36,12 +36,12 @@ SLOT="0"
 KEYWORDS="amd64 ppc x86"
 RDEPEND="gpm? ( sys-libs/gpm )
 	truetype? ( >=media-libs/freetype-2 )
-	png? ( >=media-libs/libpng-1.2.7 )
+	png? ( >=media-libs/libpng-1.4.3[static-libs] )
 	mng? (
-		=media-libs/lcms-1*
-		media-libs/libmng
+		media-libs/lcms:0[static-libs]
+		|| ( media-libs/libmng[static-libs] <media-libs/libmng-1.0.10-r1 )
 		)
-	>=media-libs/jpeg-6b:0[static-libs]
+	virtual/jpeg[static-libs]
 	>=sys-apps/baselayout-1.9.4-r5
 	app-arch/cpio
 	media-gfx/fbgrab
@@ -89,7 +89,10 @@ src_prepare() {
 	epatch "${FILESDIR}"/splashutils-1.5.4.3-makefile.patch
 	epatch "${FILESDIR}"/splashutils-1.5.4.3-splash_geninitramfs.patch
 	epatch "${FILESDIR}"/splashutils-1.5.4.3-libjpeg.patch
+	epatch "${FILESDIR}"/splashutils-1.5.4.3-libpng15_compat.patch
 	epatch "${FILESDIR}"/splashutils-1.5.4.3-daemon-exit-signal.patch
+	epatch "${FILESDIR}"/splashutils-1.5.4.3-splash-functions.patch
+	epatch "${FILESDIR}"/splashutils-1.5.4.3-splash_util.patch
 
 	cd "${SG}"
 	if has_version ">=sys-apps/openrc-0.4.0"; then
@@ -104,6 +107,12 @@ src_prepare() {
 	epatch "${FILESDIR}"/splashutils-1.5.4.3-openrc-effects.patch
 	epatch "${FILESDIR}"/initrd.splash-cmp-str-instead-of-int.patch
 	cd "${S}"
+
+	# Latest version of klibc defined its own version of ferror, so there is
+	# not need for the hack in klibc_compat.h
+	if has_version ">=dev-libs/klibc-1.5.20"; then
+		echo > "libs/klibc_compat.h"
+	fi
 
 	rm -f m4/*
 	eautoreconf

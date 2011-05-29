@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/jbig2dec/jbig2dec-0.11.ebuild,v 1.1 2010/06/10 09:00:48 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/jbig2dec/jbig2dec-0.11.ebuild,v 1.7 2011/03/29 18:14:33 xmw Exp $
 
 EAPI=2
 
@@ -10,10 +10,12 @@ SRC_URI="http://ghostscript.com/~giles/jbig2/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 ppc x86"
 IUSE="png static-libs"
 
-DEPEND="png? ( >=media-libs/libpng-1.2.43-r2:0 )"
+DEPEND="png? ( >=media-libs/libpng-1.4 )"
+
+RESTRICT="test" #324275
 
 src_configure() {
 	econf \

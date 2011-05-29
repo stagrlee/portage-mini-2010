@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-fs/autofs/autofs-5.0.4-r5.ebuild,v 1.7 2010/07/18 12:14:26 nixnut Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-fs/autofs/autofs-5.0.4-r5.ebuild,v 1.9 2011/05/15 11:03:49 pva Exp $
 
 inherit eutils multilib autotools
 
@@ -83,7 +83,7 @@ DEPEND="ldap? ( >=net-nds/openldap-2.0
 RDEPEND="${DEPEND}"
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="alpha amd64 arm ~hppa ia64 ~mips ppc ~ppc64 sparc x86"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ~ppc64 sparc x86"
 
 src_unpack() {
 	unpack ${P}.tar.bz2
@@ -116,6 +116,10 @@ src_unpack() {
 }
 
 src_compile() {
+	# work around bug #355975 (mount modifies timestamp of /etc/mtab)
+	# with >=sys-apps/util-linux-2.19,
+	addpredict "/etc/mtab"
+
 	CFLAGS="${CFLAGS}" \
 	econf \
 		$(use_with ldap openldap) \

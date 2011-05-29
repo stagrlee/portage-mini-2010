@@ -1,14 +1,15 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-libs/lapack-reference/lapack-reference-3.1.1-r1.ebuild,v 1.20 2008/12/07 19:10:42 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-libs/lapack-reference/lapack-reference-3.1.1-r1.ebuild,v 1.25 2011/05/28 11:14:37 jlec Exp $
 
-inherit eutils autotools flag-o-matic fortran multilib
+inherit autotools eutils flag-o-matic multilib toolchain-funcs
 
 MyPN="${PN/-reference/}"
 
 DESCRIPTION="FORTRAN reference implementation of LAPACK Linear Algebra PACKage"
 HOMEPAGE="http://www.netlib.org/lapack/index.html"
-SRC_URI="http://www.netlib.org/lapack/${MyPN}-lite-${PV}.tgz
+SRC_URI="
+	http://www.netlib.org/lapack/${MyPN}-lite-${PV}.tgz
 	mirror://gentoo/${P}-autotools.patch.bz2"
 
 LICENSE="BSD"
@@ -16,19 +17,19 @@ SLOT="0"
 KEYWORDS="alpha amd64 hppa ia64 ppc ppc64 s390 sparc x86 ~x86-fbsd"
 IUSE="doc"
 
-DEPEND="virtual/blas
-	dev-util/pkgconfig
-	app-admin/eselect-lapack"
-RDEPEND="virtual/blas
+RDEPEND="
 	app-admin/eselect-lapack
+	virtual/blas
+	virtual/fortran"
+DEPEND="
+	${RDEPEND}
+	dev-util/pkgconfig
 	doc? ( app-doc/lapack-docs )"
 
 S="${WORKDIR}/${MyPN}-lite-${PV}"
 
 pkg_setup() {
-	FORTRAN="g77 gfortran ifc"
-	fortran_pkg_setup
-	if  [[ ${FORTRANC} == if* ]]; then
+	if  [[ $(tc-getFC) =~ if ]]; then
 		ewarn "Using Intel Fortran at your own risk"
 		export LDFLAGS="$(raw-ldflags)"
 		export NOOPT_FFLAGS=-O
@@ -44,7 +45,7 @@ src_unpack() {
 	eautoreconf
 
 	# set up the testing routines
-	sed -e "s:g77:${FORTRANC}:" \
+	sed -e "s:g77:$(tc-getFC):" \
 		-e "s:-funroll-all-loops -O3:${FFLAGS} $(pkg-config --cflags blas):" \
 		-e "s:LOADOPTS =:LOADOPTS = ${LDFLAGS} $(pkg-config --cflags blas):" \
 		-e "s:../../blas\$(PLAT).a:$(pkg-config --libs blas):" \
@@ -56,8 +57,7 @@ src_unpack() {
 src_compile() {
 	econf \
 		--libdir="/usr/$(get_libdir)/lapack/reference" \
-		--with-blas="$(pkg-config --libs blas)" \
-		|| die "econf failed"
+		--with-blas="$(pkg-config --libs blas)"
 	emake || die "emake failed"
 }
 

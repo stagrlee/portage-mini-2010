@@ -1,6 +1,6 @@
 # Copyright 1999-2007 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/depend.php.eclass,v 1.26 2010/07/13 23:48:46 mabi Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/depend.php.eclass,v 1.29 2011/03/18 15:59:25 olemarkus Exp $
 
 # Author: Stuart Herbert <stuart@gentoo.org>
 # Author: Luca Longinotti <chtekk@gentoo.org>
@@ -25,8 +25,8 @@ inherit eutils phpconfutils
 # Set this after setting DEPEND/RDEPEND in your ebuild if the ebuild requires PHP5
 # with cli SAPI.
 need_php5_cli() {
-	DEPEND="${DEPEND} =virtual/php-5*"
-	RDEPEND="${RDEPEND} =virtual/php-5*"
+	DEPEND="${DEPEND} =dev-lang/php-5*"
+	RDEPEND="${RDEPEND} =dev-lang/php-5*"
 	PHP_VERSION="5"
 }
 
@@ -76,8 +76,8 @@ uses_php5() {
 # Set this after setting DEPEND/RDEPEND in your ebuild if the ebuild requires PHP
 # (any version) with cli SAPI.
 need_php_cli() {
-	DEPEND="${DEPEND} virtual/php"
-	RDEPEND="${RDEPEND} virtual/php"
+	DEPEND="${DEPEND} dev-lang/php"
+	RDEPEND="${RDEPEND} dev-lang/php"
 }
 
 # @FUNCTION: need_php_httpd
@@ -207,6 +207,15 @@ require_php_with_use() {
 	einfo "Checking for required PHP feature(s) ..."
 
 	for x in $@ ; do
+		case $x in
+			pcre|spl|reflection|mhash)
+				eqawarn "require_php_with_use MUST NOT check for the pcre, spl, mhash or reflection USE flag."
+				eqawarn "These USE flags are removed from >=dev-lang/php-5.3 and your ebuild will break"
+				eqawarn "if you check the USE flags against PHP 5.3 ebuilds."
+				eqawarn "Please use USE dependencies from EAPI 2 instead"
+				;;
+		esac
+
 		if ! built_with_use =${PHP_PKG} ${x} && ! phpconfutils_built_with_use =${PHP_PKG} ${x} ; then
 			einfo "  Discovered missing USE flag: ${x}"
 			missing_use="${missing_use} ${x}"

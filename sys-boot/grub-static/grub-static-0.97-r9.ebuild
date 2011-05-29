@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-boot/grub-static/grub-static-0.97-r9.ebuild,v 1.8 2009/12/12 18:13:33 robbat2 Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-boot/grub-static/grub-static-0.97-r9.ebuild,v 1.11 2011/04/10 14:26:12 ulm Exp $
 
 # XXX: we need to review menu.lst vs grub.conf handling.  We've been converting
 #      all systems to grub.conf (and symlinking menu.lst to grub.conf), but
@@ -20,7 +20,7 @@ SLOT="0"
 KEYWORDS="-* amd64 x86"
 IUSE=""
 DEPEND="!sys-boot/grub"
-PROVIDE="virtual/bootloader"
+RDEPEND="${DEPEND}"
 
 # These are already stripped since we use a binpkg.
 QA_PRESTRIPPED="/sbin/grub /bin/mbchk"
@@ -139,6 +139,8 @@ setup_boot_dir() {
 }
 
 pkg_postinst() {
+	mount-boot_pkg_postinst
+
 	if [[ -n ${DONT_MOUNT_BOOT} ]]; then
 		elog "WARNING: you have DONT_MOUNT_BOOT in effect, so you must apply"
 		elog "the following instructions for your /boot!"

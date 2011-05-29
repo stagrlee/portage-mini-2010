@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/sk1libs/sk1libs-0.9.1.ebuild,v 1.3 2010/08/07 17:38:50 jlec Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/sk1libs/sk1libs-0.9.1.ebuild,v 1.6 2011/03/27 10:29:39 ssuominen Exp $
 
 EAPI=2
 
@@ -15,14 +15,14 @@ HOMEPAGE="http://sk1project.org/index.php"
 SRC_URI="http://uniconvertor.googlecode.com/files/${P}.tar.gz"
 
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~hppa ~x86"
 LICENSE="GPL-2 LGPL-2"
 IUSE=""
 
 DEPEND="
 	media-libs/freetype:2
-	media-libs/jpeg
-	>=media-libs/lcms-1.15[python]"
+	virtual/jpeg
+	>=media-libs/lcms-1.15:0[python]"
 RDEPEND="${DEPEND}
 	app-text/ghostscript-gpl
 	media-libs/netpbm"

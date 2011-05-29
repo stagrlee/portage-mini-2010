@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-gfx/luminance-hdr/luminance-hdr-2.0.0.ebuild,v 1.2 2010/06/13 17:06:24 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/luminance-hdr/luminance-hdr-2.0.0.ebuild,v 1.5 2010/11/14 17:02:55 fauli Exp $
 
 EAPI="2"
 
@@ -15,22 +15,22 @@ SRC_URI="mirror://sourceforge/${OLD_PN}/${PN}_${PV}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 
 IUSE="debug openmp"
 
 DEPEND="
 	media-gfx/dcraw
 	>=media-gfx/exiv2-0.14
-	>=media-libs/jpeg-6b-r7
 	>=media-libs/openexr-1.2.2-r2
 	>=media-libs/tiff-3.8.2-r2
 	>=sci-libs/fftw-3.0.1-r2
 	sci-libs/gsl
+	>=sys-devel/gcc-4.2[openmp?]
+	virtual/jpeg
 	x11-libs/qt-core:4
 	x11-libs/qt-gui:4
-	x11-libs/qt-webkit:4
-	>=sys-devel/gcc-4.2[openmp?]"
+	x11-libs/qt-webkit:4"
 RDEPEND="${DEPEND}"
 
 DOCS="AUTHORS Changelog README TODO"

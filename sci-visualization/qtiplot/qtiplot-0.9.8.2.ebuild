@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-visualization/qtiplot/qtiplot-0.9.8.2.ebuild,v 1.2 2010/09/17 07:50:37 pva Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-visualization/qtiplot/qtiplot-0.9.8.2.ebuild,v 1.8 2010/10/22 17:14:24 hwoarang Exp $
 
 EAPI=3
 
@@ -14,10 +14,10 @@ SRC_URI="mirror://berlios/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2 GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
-IUSE="doc python ods"
+KEYWORDS="amd64 x86"
+IUSE="doc ods python"
 
-LANGS="cn cz de es fr ro ru ja sv"
+LANGS="cn cz de es fr ja ro ru sv"
 for l in ${LANGS}; do
 	lu=${l/cz/cs}
 	lu=${lu/cn/zh_CN}
@@ -29,7 +29,7 @@ done
 CDEPEND="
 	x11-libs/qt-opengl:4
 	x11-libs/qt-qt3support:4
-	x11-libs/qt-assistant:4
+	|| ( >=x11-libs/qt-assistant-4.7.0:4[compat] <x11-libs/qt-assistant-4.7.0:4 )
 	x11-libs/qt-svg:4
 	>=x11-libs/gl2ps-1.3.5
 	>=dev-cpp/muParser-1.32
@@ -50,11 +50,7 @@ DEPEND="${CDEPEND}
 		   >=app-text/docbook-xml-dtd-4.4-r2:4.4 )"
 
 RDEPEND="${CDEPEND}
-	python? (
-		dev-python/PyQt4[X]
-		dev-python/pygsl
-		dev-python/rpy
-		sci-libs/scipy )"
+	python? ( dev-python/PyQt4[X] )"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-0.9.7.12-system-QTeXEngine.patch"
@@ -183,6 +179,15 @@ src_install() {
 }
 
 pkg_postinst() {
+	if use python; then
+		elog "You might want to emerge"
+		elog "\t dev-python/pygsl"
+		elog "\t dev-python/rpy"
+		elog "\t sci-libs/scipy and"
+		elog "\t dev-python/sympy"
+		elog "to gain full python support."
+	fi
+
 	fdo-mime_desktop_database_update
 	python_mod_optimize ${PN}
 }

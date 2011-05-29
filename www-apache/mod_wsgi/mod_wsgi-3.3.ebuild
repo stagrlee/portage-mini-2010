@@ -1,10 +1,12 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/www-apache/mod_wsgi/mod_wsgi-3.3.ebuild,v 1.1 2010/08/08 08:46:35 djc Exp $
+# $Header: /var/cvsroot/gentoo-x86/www-apache/mod_wsgi/mod_wsgi-3.3.ebuild,v 1.5 2011/04/22 21:58:23 arfrever Exp $
 
-EAPI="2"
+EAPI="3"
+PYTHON_DEPEND="*"
+PYTHON_USE_WITH="threads"
 
-inherit apache-module
+inherit apache-module eutils python
 
 DESCRIPTION="An Apache2 module for running Python WSGI applications."
 HOMEPAGE="http://code.google.com/p/modwsgi/"
@@ -12,11 +14,11 @@ SRC_URI="http://modwsgi.googlecode.com/files/${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86"
+KEYWORDS="amd64 ppc x86"
 IUSE=""
 
-DEPEND=">=dev-lang/python-2.3[threads]"
-RDEPEND="${DEPEND}"
+DEPEND=""
+RDEPEND=""
 
 APACHE2_MOD_CONF="70_${PN}"
 APACHE2_MOD_DEFINE="WSGI"
@@ -25,10 +27,14 @@ DOCFILES="README"
 
 need_apache2
 
+src_prepare() {
+	epatch "${FILESDIR}/${P}-python-3.2.patch"
+}
+
 src_configure() {
 	econf --with-apxs=${APXS}
 }
 
 src_compile() {
-	emake || die "emake failed"
+	default
 }

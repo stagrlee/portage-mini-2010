@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-portage/mirrorselect/mirrorselect-2.1.0-r2.ebuild,v 1.1 2010/08/01 20:12:24 idl0r Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-portage/mirrorselect/mirrorselect-2.1.0-r2.ebuild,v 1.8 2011/01/04 19:58:01 c1pher Exp $
 
 EAPI="2"
 SUPPORT_PYTHON_ABIS="1"
@@ -13,7 +13,7 @@ SRC_URI="mirror://gentoo/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ~ppc ppc64 s390 sh sparc x86 ~x86-fbsd"
 IUSE=""
 
 RDEPEND="dev-lang/python[xml]

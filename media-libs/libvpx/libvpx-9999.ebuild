@@ -1,17 +1,20 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-libs/libvpx/libvpx-9999.ebuild,v 1.5 2010/06/12 21:45:36 spatz Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-libs/libvpx/libvpx-9999.ebuild,v 1.8 2011/02/21 06:25:32 darkside Exp $
 
-EAPI=2
+EAPI=3
 inherit multilib toolchain-funcs
 
 if [[ ${PV} == *9999* ]]; then
 	inherit git
 	EGIT_REPO_URI="git://review.webmproject.org/${PN}.git"
 	KEYWORDS=""
-else
+elif [[ ${PV} == *pre* ]]; then
 	SRC_URI="mirror://gentoo/${P}.tar.bz2"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64 ~arm ~x86 ~amd64-linux"
+else
+	SRC_URI="http://webm.googlecode.com/files/${PN}-v${PV}.tar.bz2"
+	KEYWORDS="~amd64 ~arm ~x86 ~amd64-linux"
 fi
 
 DESCRIPTION="WebM VP8 Codec SDK"
@@ -33,8 +36,8 @@ DEPEND="amd64? ( dev-lang/yasm )
 src_configure() {
 	tc-export CC
 	./configure \
-		--prefix=/usr \
-		--libdir=/usr/$(get_libdir) \
+		--prefix="${EPREFIX}"/usr \
+		--libdir="${EPREFIX}"/usr/$(get_libdir) \
 		--enable-pic \
 		--enable-vp8 \
 		--enable-shared \
@@ -53,7 +56,8 @@ src_configure() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" install || die
+	# http://bugs.gentoo.org/show_bug.cgi?id=323805
+	emake -j1 DESTDIR="${D}" install || die
 
 	dodoc AUTHORS CHANGELOG README || die
 }

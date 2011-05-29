@@ -1,22 +1,27 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/portage/portage-9999.ebuild,v 1.4 2010/04/28 07:26:51 zmedico Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/portage/portage-2.2_rc98.ebuild,v 1.1 2010/10/18 11:54:33 zmedico Exp $
 
 # Require EAPI 2 since we now require at least python-2.6 (for python 3
 # syntax support) which also requires EAPI 2.
 EAPI=2
-inherit git eutils multilib python
+inherit eutils multilib python git
 
 DESCRIPTION="Portage is the package management and distribution system for Gentoo"
 HOMEPAGE="http://www.gentoo.org/proj/en/portage/index.xml"
 LICENSE="GPL-2"
 KEYWORDS=""
-PROVIDE="virtual/portage"
 SLOT="0"
-IUSE="build doc epydoc python3 selinux"
+IUSE="build doc epydoc +ipc linguas_pl python3 selinux"
+GITHUB_REPO="portage-funtoo"
+GITHUB_USER="funtoo"
+GITHUB_TAG="funtoo-${PVR}"
 
 python_dep="python3? ( =dev-lang/python-3* )
-	!python3? ( || ( dev-lang/python:2.8 dev-lang/python:2.7 dev-lang/python:2.6 >=dev-lang/python-3 ) )"
+	!python3? (
+		build? ( || ( dev-lang/python:2.8 dev-lang/python:2.7 dev-lang/python:2.6 ) )
+		!build? ( || ( dev-lang/python:2.8 dev-lang/python:2.7 dev-lang/python:2.6 >=dev-lang/python-3 ) )
+	)"
 
 # The pysqlite blocker is for bug #282760.
 DEPEND="${python_dep}
@@ -32,7 +37,9 @@ RDEPEND="${python_dep}
 	elibc_glibc? ( >=sys-apps/sandbox-2.2 )
 	elibc_uclibc? ( >=sys-apps/sandbox-2.2 )
 	>=app-misc/pax-utils-0.1.17
-	selinux? ( sys-libs/libselinux )"
+	selinux? ( sys-libs/libselinux )
+	!<app-shells/bash-3.2_p17
+	>=net-misc/wget-1.12-r3"
 PDEPEND="
 	!build? (
 		>=net-misc/rsync-2.6.4
@@ -52,8 +59,13 @@ prefix_src_archives() {
 	done
 }
 
-EGIT_REPO_URI="git://git.overlays.gentoo.org/proj/portage.git"
-S="${WORKDIR}"/${PN}
+EGIT_REPO_URI="git://github.com/funtoo/portage-funtoo.git"
+EGIT_BRANCH="funtoo-path"
+EGIT_COMMIT="d9b1a83f5536f18b6c32404905177f5fec93dce6"
+PV_PL="2.1.2"
+PATCHVER_PL=""
+SRC_URI="$SRC_URI linguas_pl? ( mirror://gentoo/${PN}-man-pl-${PV_PL}.tar.bz2 )"
+S_PL="${WORKDIR}"/${PN}-${PV_PL}
 
 compatible_python_is_selected() {
 	[[ $(/usr/bin/python -c 'import sys ; sys.stdout.write(sys.hexversion >= 0x2060000 and "good" or "bad")') = good ]]
@@ -86,12 +98,31 @@ pkg_setup() {
 }
 
 src_prepare() {
-	local _version="'$(cd "${S}/.git" && git describe --tags | sed -e 's|-\([0-9]\+\)-.\+$|_p\1|')'[1:]"
-	einfo "Setting portage.VERSION to ${_version} ..."
-	sed -i "s/^VERSION=.*/VERSION=${_version}/" pym/portage/__init__.py || \
+	cd ${S}
+	if [ -n "${PATCHVER}" ] ; then
+		if [[ -L $S/bin/ebuild-helpers/portageq ]] ; then
+			rm "$S/bin/ebuild-helpers/portageq" \
+				|| die "failed to remove portageq helper symlink"
+		fi
+		epatch "${WORKDIR}/${PN}-${PATCHVER}.patch"
+	fi
+	einfo "Setting portage.VERSION to ${PVR} ..."
+	sed -e "s/^VERSION=.*/VERSION=\"${PVR}\"/" -i pym/portage/__init__.py || \
 		die "Failed to patch portage.VERSION"
+	sed -e "1s/VERSION/${PVR}/" -i doc/fragment/version || \
+		die "Failed to patch VERSION in doc/fragment/version"
+	sed -e "1s/VERSION/${PVR}/" -i man/* || \
+		die "Failed to patch VERSION in man page headers"
+
+	if ! use ipc ; then
+		einfo "Disabling ipc..."
+		sed -e "s:_enable_ipc_daemon = True:_enable_ipc_daemon = False:" \
+			-i pym/_emerge/AbstractEbuildProcess.py || \
+			die "failed to patch AbstractEbuildProcess.py"
+	fi
 
 	if use python3; then
+		einfo "Converting shebangs for python3..."
 		python_convert_shebangs -r 3 .
 	fi
 }
@@ -122,10 +153,10 @@ src_compile() {
 }
 
 src_test() {
+	# make files executable, in case they were created by patch
+	find bin -type f | xargs chmod +x
 	PYTHONPATH=${S}/pym:${PYTHONPATH:+:}${PYTHONPATH} \
 		./pym/portage/tests/runTests || die "test(s) failed"
-	# Prevent installation of *.pyc for python scripts.
-	find "$S/bin" -name "*.py[co]" -print0 | xargs -0 rm
 }
 
 src_install() {
@@ -137,8 +168,10 @@ src_install() {
 	insinto /etc
 	doins etc-update.conf dispatch-conf.conf || die
 
-	insinto "${portage_share_config}"
-	doins "${S}/cnf/"{sets.conf,make.globals} || die
+	insinto "$portage_share_config/sets"
+	doins "$S"/cnf/sets/*.conf || die
+	insinto "$portage_share_config"
+	doins "$S/cnf/make.globals" || die
 	if [ -f "make.conf.${ARCH}".diff ]; then
 		patch make.conf "make.conf.${ARCH}".diff || \
 			die "Failed to patch make.conf.example"
@@ -156,10 +189,7 @@ src_install() {
 	insinto /etc/logrotate.d
 	doins "${S}"/cnf/logrotate.d/elog-save-summary || die
 
-	# BSD and OSX need a sed wrapper so that find/xargs work properly
-	if use userland_GNU; then
-		rm "${S}"/bin/ebuild-helpers/sed || die "Failed to remove sed wrapper"
-	fi
+	# Funtoo has removed the sed wrapper from the upstream sources...
 
 	local x symlinks
 
@@ -167,18 +197,25 @@ src_install() {
 	for x in $(find bin -type d) ; do
 		exeinto $portage_base/$x || die "exeinto failed"
 		cd "$S"/$x || die "cd failed"
-		doexe $(find . -mindepth 1 -maxdepth 1 -type f ! -type l) || \
-			die "doexe failed"
+		files=$(find . -mindepth 1 -maxdepth 1 -type f ! -type l)
+		if [ -n "$files" ] ; then
+			doexe $files || die "doexe failed"
+		fi
 		symlinks=$(find . -mindepth 1 -maxdepth 1 -type l)
 		if [ -n "$symlinks" ] ; then
 			cp -P $symlinks "$D$portage_base/$x" || die "cp failed"
 		fi
 	done
 
+	# create this manually until it's in a release tarball
+	dosym ../../banned-helper $portage_base/bin/ebuild-helpers/4/prepalldocs
+
 	cd "$S" || die "cd failed"
 	for x in $(find pym/* -type d) ; do
 		insinto $portage_base/$x || die "insinto failed"
 		cd "$S"/$x || die "cd failed"
+		# __pycache__ directories contain no py files
+		[[ "*.py" != $(echo *.py) ]] || continue
 		doins *.py || die "doins failed"
 		symlinks=$(find . -mindepth 1 -maxdepth 1 -type l)
 		if [ -n "$symlinks" ] ; then
@@ -197,15 +234,17 @@ src_install() {
 	doexe  "${S}"/pym/portage/tests/runTests
 
 	doman "${S}"/man/*.[0-9]
+	if use linguas_pl; then
+		doman -i18n=pl "${S_PL}"/man/pl/*.[0-9]
+		doman -i18n=pl_PL.UTF-8 "${S_PL}"/man/pl_PL.UTF-8/*.[0-9]
+	fi
 
-	echo 'Producing ChangeLog from Git history...'
-	( cd "${S}/.git" && git log --stat > "${S}"/ChangeLog )
-	dodoc "${S}"/{ChangeLog,NEWS,RELEASE-NOTES} || die 'dodoc failed'
+	dodoc "${S}"/{NEWS,RELEASE-NOTES}
 	use doc && dohtml -r "${S}"/doc/*
 	use epydoc && dohtml -r "${WORKDIR}"/api
 
 	dodir /usr/bin
-	for x in ebuild egencache emerge portageq repoman ; do
+	for x in ebuild egencache emerge portageq quickpkg repoman ; do
 		dosym ../${libdir}/portage/bin/${x} /usr/bin/${x}
 	done
 
@@ -213,11 +252,9 @@ src_install() {
 	local my_syms="archive-conf
 		dispatch-conf
 		emaint
-		emerge-webrsync
 		env-update
 		etc-update
 		fixpackages
-		quickpkg
 		regenworld"
 	local x
 	for x in ${my_syms}; do
@@ -228,6 +265,10 @@ src_install() {
 
 	dodir /etc/portage
 	keepdir /etc/portage
+
+		if [[ ! -e /etc/portage/portdir ]] ; then
+			echo "$(portageq portdir)" >> "${D}"/etc/portage/portdir
+		fi
 }
 
 pkg_preinst() {

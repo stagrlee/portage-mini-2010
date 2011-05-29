@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/mail-mta/netqmail/netqmail-1.05-r8.ebuild,v 1.9 2009/07/15 21:26:24 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/mail-mta/netqmail/netqmail-1.05-r8.ebuild,v 1.12 2011/03/28 09:32:33 eras Exp $
 
 inherit eutils toolchain-funcs fixheadtails flag-o-matic
 
@@ -25,7 +25,7 @@ SRC_URI="
 LICENSE="public-domain"
 SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86"
-IUSE="gencertdaily highvolume mailwrapper noauthcram qmail-spp ssl vanilla"
+IUSE="gencertdaily highvolume noauthcram qmail-spp ssl vanilla"
 RESTRICT="test"
 
 DEPEND="
@@ -35,20 +35,25 @@ DEPEND="
 	ssl? ( dev-libs/openssl )
 "
 RDEPEND="
-	mailwrapper? ( net-mail/mailwrapper )
-	!mailwrapper? ( !virtual/mta )
+	!mail-mta/courier
+	!mail-mta/esmtp
+	!mail-mta/exim
+	!mail-mta/mini-qmail
+	!mail-mta/msmtp
+	!mail-mta/nbsmtp
+	!mail-mta/nullmailer
+	!mail-mta/postfix
+	!mail-mta/qmail-ldap
+	!mail-mta/sendmail
+	!mail-mta/ssmtp
 	sys-apps/ucspi-tcp
-	sys-process/daemontools
+	virtual/daemontools
 	net-mail/dot-forward
 	!noauthcram? (
 		|| ( >=net-mail/checkpassword-0.90 >=net-mail/checkpassword-pam-0.99 )
 		>=net-mail/cmd5checkpw-0.30
 	)
 	${DEPEND}
-"
-PROVIDE="
-	virtual/mta
-	virtual/mda
 "
 
 # Important: QMAIL_CONF_SPLIT should always be a prime number!
@@ -199,14 +204,8 @@ src_install() {
 	diropts -m 755
 	dodir /usr/sbin /usr/lib
 
-	if use mailwrapper
-	then
-		insinto /etc/mail
-		doins ${FILESDIR}/mailer.conf
-	else
-		dosym /var/qmail/bin/sendmail /usr/sbin/sendmail
-		dosym /var/qmail/bin/sendmail /usr/lib/sendmail
-	fi
+	dosym /var/qmail/bin/sendmail /usr/sbin/sendmail
+	dosym /var/qmail/bin/sendmail /usr/lib/sendmail
 
 	einfo "Setting up the default aliases ..."
 	diropts -m 700 -o alias -g qmail

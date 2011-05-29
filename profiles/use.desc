@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/use.desc,v 1.443 2010/09/07 21:43:47 mabi Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/use.desc,v 1.460 2011/05/09 19:43:53 ulm Exp $
 
 # Keep them sorted
 
@@ -23,10 +23,10 @@ altivec - Adds support for optimizations for G4 and G5/ppc970 processors
 ao - Use libao audio output library for sound playback
 apache2 - Add Apache2 support
 apm - Adds APM (Advanced Power Management) support
+aqua - Include support for the Mac OS X Aqua (Carbon/Cocoa) GUI
 atm - Enable Asynchronous Transfer Mode protocol support
 audiofile - Adds support for libaudiofile where applicable
 avahi - Add avahi/Zeroconf support
-aqua - Include support for the Aqua / Carbon GUI
 bash-completion - Enable bash-completion support
 bcmath - Adds support for libbcmath
 berkdb - Adds support for sys-libs/db (Berkeley DB for MySQL)
@@ -143,11 +143,11 @@ gtk - Adds support for x11-libs/gtk+ (The GIMP Toolkit)
 gtkhtml - Adds support for gnome-extra/gtkhtml
 guile - Adds support for the guile Scheme interpreter
 gzip - Compress files with Lempel-Ziv coding (LZ77)
-hal - Enable Hardware Abstraction Layer (HAL) support
 handbook - Enable handbooks generation for KDE4.
 hardened - activate default security enhancements for toolchain (gcc, glibc, binutils)
 hddtemp - Enable monitoring of hdd temperature (app-admin/hddtemp)
 hdf5 - Adds support for the Hierarchical Data Format v5
+hscolour - Includes coloured haskell sources to generated documentation (dev-haskell/hscolour)
 ibm - Add support for IBM ppc64 specific systems
 iconv - Enable support for the iconv character set conversion library
 icq - Enable ICQ IM protocol support
@@ -161,6 +161,7 @@ inifile - Adds dbm support for .ini files
 innodb - Adds innodb support for mySQL (transaction support)
 interbase - Adds support for Interbase database
 iodbc - Adds support for iODBC library
+ios - Enable support for Apple's iDevice with iOS operating system (iPad, iPhone, iPod, etc)
 ipod - Enable support for iPod device access
 ipv6 - Adds support for IP version 6
 jabber - Enable jabber IM protocol support
@@ -173,12 +174,12 @@ jingle - Enables voice calls for jabber
 joystick - Add support for joysticks in all packages
 jpeg - Adds JPEG image support
 jpeg2k - Support for JPEG 2000, a wavelet-based image compression format
-kontact - Enable support for the KDE personal information manager (kde-base/kdepim*)
 kde - Adds support for kde-base/kde (K Desktop Enviroment)
 kdeenablefinal - EXPERIMENTAL: KDE ebuilds will use the enable-final flag, yielding compilation speedups at the cost of heavy mem usage and potentially causing problems. We strongly discourage setting this
 kdeprefix - Makes a KDE prefixed install into /usr/kde/${SLOT} if enabled or into /usr (FHS compatible) otherwise
 kerberos - Adds kerberos support
 kolab - Adds support for the Kolab groupware server
+kontact - Enable support for the KDE personal information manager (kde-base/kdepim*)
 ladspa - Enables the ability to support ladspa plugins
 lame - Prefer using LAME libraries for MP3 encoding support
 lapack - Adds support for the virtual/lapack numerical library
@@ -196,15 +197,14 @@ lirc - Adds support for lirc (Linux's Infra-Red Remote Control)
 livecd - !!internal use only!! DO NOT SET THIS FLAG YOURSELF!, used during livecd building
 lm_sensors - Adds linux lm_sensors (hardware sensors) support
 lua - Enable Lua scripting support
+lzma - Support for LZMA (de)compression algorithm
 lzo - Enables support for lzo compression
 m17n-lib - Enable m17n-lib support
 mad - Adds support for mad (high-quality mp3 decoder library and cli frontend)
 maildir - Adds support for maildir (~/.maildir) style mail spools
-mailwrapper - Adds mailwrapper support to allow multiple MTAs to be installed
 matroska - Adds support for the matroska container format (extensions .mkv, .mka and .mks)
 matrox - Adds Matrox MGA support to mplayer
 mbox - Adds support for mbox (/var/spool/mail) style mail spools
-mcve - Support for the MCVE credit card payment system
 memlimit - Adds memory usage limiting in supporting programs
 mhash - Adds support for the mhash library
 migemo - Enables migemo support for Japanese
@@ -216,9 +216,9 @@ mmap - Adds mmap (memory map) support
 mmx - Adds support for optimizations for Pentium MMX and Athlon class processors
 mng - Adds support for libmng (MNG images)
 modplug - Adds libmodplug support
+modules - Build the kernel modules
 mono - Build Mono bindings to support dotnet type stuff
 motif - Adds support for the Motif toolkit
-modules - Build the kernel modules
 mozilla - Adds support for the Mozilla web-browser
 mp3 - Add support for reading mp3 files
 mp4 - Support for MP4 container format
@@ -277,13 +277,13 @@ php - Include support for the PHP language
 plasma - Build optional plasma widgets that require kde-base/libplasma
 plotutils - Add support for plotutils (library for 2-D vector graphics)
 png - Adds support for libpng (PNG images)
-policykit - Use sys-auth/policykit to gain privileges
+policykit - Enable PolicyKit authentication support
 portaudio - Adds support for the crossplatform portaudio audio API
 posix - Adds support for POSIX-compatible functions
 postgres - Adds support for the postgresql database
 ppds - Adds support for automatically generated ppd (printing driver) files
-prelude - Adds support/bindings for the Prelude Intrusion Detection System
 prefix - Defines if a Gentoo Prefix offset installation is used
+prelude - Adds support/bindings for the Prelude Intrusion Detection System
 profile - Adds support for software performance analysis (will likely vary from ebuild to ebuild)
 pulseaudio - Adds support for PulseAudio sound server
 python - Adds support/bindings for the Python language
@@ -323,6 +323,7 @@ soap - Adds support for SOAP (Simple Object Access Protocol)
 sockets - Adds support for tcp/ip sockets
 socks5 - Adds support for the socks5 proxy
 solid - Adds support for the Solid database engine
+sound - Enable sound support
 source - Zip the sources and install them
 sox - Adds support for Sound eXchange (SoX)
 speex - Adds support for the speex audio codec (used for speech)
@@ -358,6 +359,7 @@ tk - Adds support for Tk GUI toolkit
 tokenizer - Adds support for the PHP file parser
 truetype - Adds support for FreeType and/or FreeType2 fonts
 uclibc - Enable uclibc specific patches and build or link uclibc
+udev - Enable sys-fs/udev integration (device discovery, power and storage device support, etc)
 unicode - Adds support for Unicode
 usb - Adds USB support to applications that have optional USB support (e.g. cups)
 v4l - Enables video4linux support
@@ -368,7 +370,6 @@ vhosts - Adds support for installing web-based applications into a virtual-hosti
 videos - Install optional video files (used in some games)
 vim-syntax - Pulls in related vim syntax scripts
 vnc - Enable VNC (remote desktop viewer) support
-voodoo3 - Adds support for 3Dfx's Voodoo3 video chipset, else defaults to Voodoo4/5 support if not in USE
 vorbis - Adds support for the OggVorbis audio codec
 wavpack - Add support for wavpack audio compression tools
 wddx - Adds support for Web Distributed Data eXchange
@@ -384,11 +385,12 @@ xemacs - Add support for XEmacs
 xface - Adds xface support used to allow a small image of xface format to be included in an email via the header 'X-Face'
 xft - Build with support for XFT font renderer (x11-libs/libXft)
 xine - Add support for the XINE movie libraries
-xinerama - Add support for the xinerama X11 extension, which allows you to stretch your display across multiple monitors
+xinerama - Add support for the xinerama X11 extension, which is mandatory if you work in multiple monitors setup
 xinetd - Add support for the xinetd super-server
 xml - Add support for XML files
 xmlrpc - Support for xml-rpc library
 xmp - Enable support for Extensible Metadata Platform (Adobe XMP)
+xmpp - Enable support for Extensible Messaging and Presence Protocol (XMPP) formerly known as Jabber
 xosd - Sends display using the X On Screen Display library
 xpm - Adds support for XPM graphics format
 xscreensaver - Adds support for XScreenSaver extension

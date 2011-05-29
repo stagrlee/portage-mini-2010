@@ -1,6 +1,6 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sci-electronics/geda/geda-1.6.1.ebuild,v 1.5 2010/07/11 18:56:04 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/sci-electronics/geda/geda-1.6.1.ebuild,v 1.8 2011/04/25 13:44:57 tomjbe Exp $
 
 EAPI="2"
 
@@ -13,27 +13,18 @@ SRC_URI="http://geda.seul.org/release/v$(get_version_component_range 1-2)/${PV}/
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~ppc sparc x86"
+KEYWORDS="amd64 ppc sparc x86"
 IUSE="debug doc examples nls stroke threads"
 
 CDEPEND="
-	>=dev-libs/glib-2.12
-	>=x11-libs/gtk+-2.10
+	dev-libs/glib:2
+	x11-libs/gtk+:2
 	>=x11-libs/cairo-1.2.0
 	>=dev-scheme/guile-1.8[deprecated]
 	nls? ( virtual/libintl )
 	stroke? ( >=dev-libs/libstroke-0.5.1 )"
 
 DEPEND="${CDEPEND}
-	!sci-libs/libgeda
-	!sci-electronics/geda-docs
-	!sci-electronics/geda-examples
-	!sci-electronics/geda-gattrib
-	!sci-electronics/geda-gnetlist
-	!sci-electronics/geda-gschem
-	!sci-electronics/geda-gsymcheck
-	!sci-electronics/geda-symbols
-	!sci-electronics/geda-utils
 	sys-apps/groff
 	dev-util/desktop-file-utils
 	x11-misc/shared-mime-info

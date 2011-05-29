@@ -1,6 +1,6 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/games-action/trackballs/trackballs-1.1.4.ebuild,v 1.6 2009/11/07 18:39:22 mr_bones_ Exp $
+# $Header: /var/cvsroot/gentoo-x86/games-action/trackballs/trackballs-1.1.4.ebuild,v 1.9 2011/04/12 16:45:30 mr_bones_ Exp $
 
 EAPI=2
 inherit eutils games
@@ -18,7 +18,7 @@ IUSE="nls"
 RDEPEND="virtual/opengl
 	virtual/glu
 	media-libs/libsdl[audio,joystick,video]
-	>=dev-scheme/guile-1.8
+	>=dev-scheme/guile-1.8[deprecated]
 	media-libs/sdl-mixer
 	media-libs/sdl-image
 	media-libs/sdl-ttf
@@ -35,6 +35,19 @@ src_prepare() {
 		src/Makefile.in \
 		po/Makefile.in.in \
 		|| die "sed failed"
+	# Fix _FORTIFY_SOURCE buffer overflow due to wrong sizeof
+	sed -i \
+		-e 's/\(snprintf(\(name\),sizeof\)(str)/\1(\2)/' \
+		src/enterHighScoreMode.cc || die
+	# Fix -Wformat-security warning due to non-literal with no format arguments
+	sed -i \
+		-e 's/\(snprintf(levelname,sizeof(levelname),\)\(name)\)/\1 "%s", \2/' \
+		-e 's/\(snprintf(Settings::settings->specialLevel,sizeof(Settings::settings->specialLevel),\)\(levelname)\)/\1 "%s", \2/' \
+		src/editMode.cc || die
+	sed -i \
+		-e 's/\(snprintf(\(textureName\),\)63\(,textureNames\[i\])\)/\1 sizeof(\2), "%s"\3/' \
+		src/map.cc || die
+	epatch "${FILESDIR}"/${P}-warning.patch
 }
 
 src_configure() {
