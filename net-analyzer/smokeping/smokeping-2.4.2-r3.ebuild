@@ -42,6 +42,7 @@ pkg_setup() {
 }
 
 src_prepare() {
+	epatch "${FILESDIR}/${P}-locale-msgs.patch"
 	rm -rf lib/Digest # provided by dev-perl/Digest-HMAC
 	rm -rf lib/CGI # provided by dev-perl/CGI-Session
 	rm -r lib/{BER.pm,SNMP_Session.pm,SNMP_util.pm} # dev-perl/SNMP_Session
