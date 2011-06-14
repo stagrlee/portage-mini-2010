@@ -1,10 +1,10 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/eclass/git-2.eclass,v 1.9 2011/05/20 15:53:43 scarabeus Exp $
+# $Header: /var/cvsroot/gentoo-x86/eclass/git-2.eclass,v 1.11 2011/06/08 15:18:13 dberkholz Exp $
 
 # @ECLASS: git-2.eclass
 # @MAINTAINER:
-# Tomas Chvatal <scarabeus@gentoo.org>
+# Donnie Berkholz <dberkholz@gentoo.org>
 # @BLURB: Eclass for fetching and unpacking git repositories.
 # @DESCRIPTION:
 # Eclass for easing maitenance of live ebuilds using git as remote repository.

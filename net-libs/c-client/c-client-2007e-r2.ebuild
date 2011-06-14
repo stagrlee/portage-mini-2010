@@ -1,6 +1,6 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-libs/c-client/c-client-2007e-r2.ebuild,v 1.2 2011/05/27 10:53:55 hwoarang Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-libs/c-client/c-client-2007e-r2.ebuild,v 1.8 2011/06/12 15:56:35 armin76 Exp $
 
 EAPI="2"
 
@@ -16,8 +16,8 @@ SRC_URI="ftp://ftp.cac.washington.edu/imap/${MY_P}.tar.Z"
 
 LICENSE="as-is"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-fbsd"
-IUSE="doc kernel_linux kernel_FreeBSD pam ssl"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ~ppc ~ppc64 s390 sh sparc x86 ~x86-fbsd"
+IUSE="doc kernel_linux kernel_FreeBSD kolab pam ssl"
 
 RDEPEND="ssl? ( dev-libs/openssl )
 	!net-mail/uw-imap"
@@ -60,6 +60,12 @@ src_prepare() {
 		-e "s/RANLIB=ranlib/RANLIB=$(tc-getRANLIB)/" \
 		-i src/osdep/unix/Makefile || die "Respecting build flags"
 
+	# Add kolab support.
+	# http://kolab.org/cgi-bin/viewcvs-kolab.cgi/server/patches/imap/
+	if use kolab ; then
+		epatch "${FILESDIR}"/${PN}-2006k_KOLAB_Annotations.patch || die "epatch failed"
+	fi
+
 	elibtoolize
 }
 
@@ -83,10 +89,8 @@ src_install() {
 	# Now the shared library
 	dolib.so c-client/libc-client.so.1.0.0 || die
 
-	cd "${D}"/usr/$(get_libdir)
-	ln -s libc-client.so.1.0.0 libc-client.so.1
-	ln -s libc-client.so.1.0.0 libc-client.so
-	cd "${S}"
+	dosym libc-client.so.1.0.0 /usr/$(get_libdir)/libc-client.so
+	dosym libc-client.so.1.0.0 /usr/$(get_libdir)/libc-client.so.1
 
 	# Headers
 	insinto /usr/include/imap

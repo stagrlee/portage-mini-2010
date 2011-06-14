@@ -1,6 +1,6 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/media-gfx/imagemagick/imagemagick-6.6.8.5.ebuild,v 1.6 2011/05/02 15:55:49 jer Exp $
+# $Header: /var/cvsroot/gentoo-x86/media-gfx/imagemagick/imagemagick-6.6.8.5.ebuild,v 1.8 2011/06/09 06:06:06 radhermit Exp $
 
 EAPI=3
 inherit multilib toolchain-funcs versionator
@@ -13,7 +13,7 @@ SRC_URI="mirror://${PN}/${MY_P}.tar.xz"
 
 LICENSE="imagemagick"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~hppa ~mips ~ppc ~x86 ~ppc-aix ~x86-fbsd ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x64-solaris ~x86-solaris"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~mips ~ppc ~x86 ~ppc-aix ~x86-fbsd ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~sparc-solaris ~x64-solaris ~x86-solaris"
 IUSE="autotrace bzip2 +corefonts cxx djvu fftw fontconfig fpx graphviz gs hdri jbig jpeg jpeg2k lcms lqr lzma openexr openmp perl png q32 q8 raw static-libs svg tiff truetype webp wmf X xml zlib"
 IUSE="${IUSE} video_cards_nvidia" # opencl support
 
@@ -22,7 +22,7 @@ RDEPEND=">=sys-devel/libtool-2.2.6b
 	autotrace? ( >=media-gfx/autotrace-0.31.1 )
 	bzip2? ( app-arch/bzip2 )
 	djvu? ( app-text/djvu )
-	fftw? ( sci-libs/fftw )
+	fftw? ( sci-libs/fftw:3.0 )
 	fontconfig? ( media-libs/fontconfig )
 	fpx? ( >=media-libs/libfpx-1.3.0-r1 )
 	graphviz? ( >=media-gfx/graphviz-2.6 )
@@ -30,7 +30,7 @@ RDEPEND=">=sys-devel/libtool-2.2.6b
 	jbig? ( media-libs/jbigkit )
 	jpeg? ( virtual/jpeg )
 	jpeg2k? ( media-libs/jasper )
-	lcms? ( =media-libs/lcms-2* )
+	lcms? ( media-libs/lcms:2 )
 	lqr? ( >=media-libs/liblqr-0.1.0 )
 	openexr? ( media-libs/openexr )
 	perl? ( >=dev-lang/perl-5.8.6-r6 )
@@ -38,7 +38,7 @@ RDEPEND=">=sys-devel/libtool-2.2.6b
 	raw? ( media-gfx/ufraw )
 	svg? ( >=gnome-base/librsvg-2.9.0 )
 	tiff? ( >=media-libs/tiff-3.5.5 )
-	truetype? ( =media-libs/freetype-2*
+	truetype? ( media-libs/freetype:2
 		corefonts? ( media-fonts/corefonts ) )
 	video_cards_nvidia? ( x11-drivers/nvidia-drivers )
 	webp? ( media-libs/libwebp )
